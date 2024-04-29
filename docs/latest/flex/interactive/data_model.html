@@ -11,10 +11,10 @@
 <meta name="description" content="When working with GraphScope Interactive, the data model must be defined while using custom graph data. This data model consists of two primary components: graph data and entity data. Graph Data: T..." />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Data Import Configuration" href="data_import.html" /><link rel="prev" title="Engine Configuration" href="configuration.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.1.2 and Furo 2024.04.27 -->
         <title>Data Model - GraphScope documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=437aa6ec" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css?v=2a6c4383" />
     <link rel="stylesheet" type="text/css" href="../../_static/panels-bootstrap.5fd3999ee7762ccc51105388f4a9d115.css?v=45cf7dbc" />
@@ -164,6 +164,8 @@ MathJax = {
 <label class="overlay toc-overlay" for="__toc">
   <div class="visually-hidden">Hide table of contents sidebar</div>
 </label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
 
 
 
@@ -582,6 +584,18 @@ MathJax = {
         
           
             
+              <dd><a href="../../../v0.27.0/index.html">
+                
+                  v0.27.0
+                
+              </a></dd>
+            
+          
+        
+      
+        
+          
+            
               <dd><a href="../../../v0.26.0/index.html">
                 
                   v0.26.0
@@ -609,18 +623,6 @@ MathJax = {
               <dd><a href="../../../v0.24.0/index.html">
                 
                   v0.24.0
-                
-              </a></dd>
-            
-          
-        
-      
-        
-          
-            
-              <dd><a href="../../../v0.23.0/index.html">
-                
-                  v0.23.0
                 
               </a></dd>
             
@@ -683,12 +685,12 @@ MathJax = {
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
-        <article role="main">
+        <article role="main" id="furo-main-content">
           <section class="tex2jax_ignore mathjax_ignore" id="data-model">
-<h1>Data Model<a class="headerlink" href="#data-model" title="Permalink to this heading">#</a></h1>
+<h1>Data Model<a class="headerlink" href="#data-model" title="Permalink to this heading">¶</a></h1>
 <p>When working with GraphScope Interactive, the data model must be defined while <a class="reference internal" href="custom_graph_data.html"><span class="doc std std-doc">using custom graph data</span></a>. This data model consists of two primary components: graph data and entity data.</p>
 <section id="graph-data">
-<h2>Graph Data<a class="headerlink" href="#graph-data" title="Permalink to this heading">#</a></h2>
+<h2>Graph Data<a class="headerlink" href="#graph-data" title="Permalink to this heading">¶</a></h2>
 <p>The graph data encompasses two fundamental elements:</p>
 <ul class="simple">
 <li><p><strong>Vertex (Vertices)</strong>: A vertex represents an entity in the graph. In the context of the property graph model, vertices are often referred to as nodes. Each vertex has a unique identifier and can have zero or more properties associated with it. For example, in a social network graph, a vertex could represent a person, with properties like name, age, and location.</p></li>
@@ -697,13 +699,15 @@ MathJax = {
 <p>Note: This graph model aligns with the property graph model, which offers a detailed explanation <a class="reference external" href="https://subscription.packtpub.com/book/data/9781784393441/1/ch01lvl1sec09/the-property-graph-model">here</a>. However, it’s essential to note our terminology: we use “vertex” instead of “node” and “edge” instead of “relationship”, and we only support <strong>directed</strong> edge instead of both directed and undirected edge.</p>
 <p>Within the <code class="docutils literal notranslate"><span class="pre">graph.yaml</span></code> file, vertices are delineated under the <code class="docutils literal notranslate"><span class="pre">vertex_types</span></code> section. Each vertex type is structured with mandatory fields: <code class="docutils literal notranslate"><span class="pre">type_name</span></code>, <code class="docutils literal notranslate"><span class="pre">properties</span></code>, and <code class="docutils literal notranslate"><span class="pre">primary_keys</span></code>. For instance:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">person</span>
+<span class="w">  </span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">all persons</span>
 <span class="w">  </span><span class="nt">properties</span><span class="p">:</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">property_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">id</span>
 <span class="w">      </span><span class="nt">property_type</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">primitive_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DT_SIGNED_INT64</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">property_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">name</span>
 <span class="w">      </span><span class="nt">property_type</span><span class="p">:</span>
-<span class="w">        </span><span class="nt">primitive_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DT_STRING</span>
+<span class="w">        </span><span class="nt">string</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">long_text</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">primary_keys</span><span class="p">:</span><span class="w"> </span><span class="c1"># these must also be listed in the properties</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">id</span><span class="w">  </span>
 </pre></div>
@@ -715,6 +719,7 @@ MathJax = {
 </ul>
 <p>Edges are defined within the <code class="docutils literal notranslate"><span class="pre">edge_types</span></code> section, characterized by the mandatory fields: <code class="docutils literal notranslate"><span class="pre">type_name</span></code>, <code class="docutils literal notranslate"><span class="pre">vertex_type_pair_relations</span></code>, and <code class="docutils literal notranslate"><span class="pre">properties</span></code>. The type_name and properties fields function similarly to those in vertices. However, the vertex_type_pair_relations field is exclusive to edges, specifying the permissible source and destination vertex types, as well as the relationship detailing how many source and destination vertices can be linked by this edge. Here’s an illustrative example:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">type_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">knows</span>
+<span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">The relationship between persons.</span>
 <span class="nt">vertex_type_pair_relations</span><span class="p">:</span>
 <span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">source_vertex</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">person</span>
 <span class="w">    </span><span class="nt">destination_vertex</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">person</span>
@@ -747,10 +752,10 @@ MathJax = {
 </ul>
 </section>
 <section id="entity-data">
-<h2>Entity Data<a class="headerlink" href="#entity-data" title="Permalink to this heading">#</a></h2>
+<h2>Entity Data<a class="headerlink" href="#entity-data" title="Permalink to this heading">¶</a></h2>
 <p>Entity data pertains to the properties associated with vertices and edges. In GraphScope Interactive, we support a diverse range of data types for these properties:</p>
 <section id="primitive-types">
-<h3>Primitive Types<a class="headerlink" href="#primitive-types" title="Permalink to this heading">#</a></h3>
+<h3>Primitive Types<a class="headerlink" href="#primitive-types" title="Permalink to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>DT_SIGNED_INT32</p></li>
 <li><p>DT_UNSIGNED_INT32</p></li>
@@ -759,20 +764,75 @@ MathJax = {
 <li><p>DT_BOOL</p></li>
 <li><p>DT_FLOAT</p></li>
 <li><p>DT_DOUBLE</p></li>
-<li><p>DT_STRING</p></li>
-<li><p>DT_DATE32</p></li>
 </ul>
-<p>In the <code class="docutils literal notranslate"><span class="pre">graph.yaml</span></code>, a primitive type, such as <code class="docutils literal notranslate"><span class="pre">DT_STRING</span></code>, can be written as:</p>
+<p>In the <code class="docutils literal notranslate"><span class="pre">graph.yaml</span></code>, a primitive type, such as <code class="docutils literal notranslate"><span class="pre">DT_DOUBLE</span></code>, can be written as:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">property_type</span><span class="p">:</span>
-<span class="w">  </span><span class="nt">primitive_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DT_STRING</span>
+<span class="w">  </span><span class="nt">primitive_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DT_DOUBLE</span>
 </pre></div>
 </div>
 </section>
+<section id="string-types">
+<h3>String Types<a class="headerlink" href="#string-types" title="Permalink to this heading">¶</a></h3>
+<p>We categorize string type into three subtypes:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">long_text</span></code>: A string type with no length limitation, allowing for unlimited text content.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">char</span></code>: A string type with a fixed length. The field defines an attribute fixed_length, which specifies the desired length of the string. The string will be restricted to the specified length.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">var_char</span></code>: A string type with variable length, bounded by a maximum length. The field defines an attribute max_length, which sets the maximum length of the string. The string will be limited to the specified maximum length.</p></li>
+</ul>
+<p>These three string type can be written in yaml as:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">string</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">long_text</span><span class="p">:</span><span class="w"> </span><span class="c1"># string with unlimited length</span>
+<span class="w">  </span><span class="nt">char</span><span class="p">:</span><span class="w">  </span><span class="c1"># string with fixed length</span>
+<span class="w">    </span><span class="nt">fixed_length</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;uint32&gt;</span>
+<span class="w">  </span><span class="nt">var_char</span><span class="p">:</span><span class="w">  </span><span class="c1"># string with variable length, bounded by max_length</span>
+<span class="w">    </span><span class="nt">max_length</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;uint32&gt;</span>
+</pre></div>
+</div>
+<p>Users can choose the appropriate string type based on their requirements. The long_text type is suitable for handling text with unlimited length. The char type is useful for scenarios that require fixed-length strings. The var_char type is ideal for situations where the string length needs to be restricted and a maximum length is specified.</p>
+<p>Note: fixed-length char is currently not supported.</p>
+</section>
+<section id="temporal-types">
+<h3>Temporal types<a class="headerlink" href="#temporal-types" title="Permalink to this heading">¶</a></h3>
+<p>Temporal types can be defined in the following ways:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">temporal</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">date</span><span class="p">:</span>
+<span class="w">    </span><span class="c1"># optional value: DF_YYYY_MM_DD, means ISO fomat: 2019-01-01</span>
+<span class="w">    </span><span class="nt">date_format</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;string&gt;</span><span class="w"> </span>
+<span class="w">  </span><span class="nt">time</span><span class="p">:</span>
+<span class="w">    </span><span class="c1"># optional value: TF_HH_MM_SS_SSS, means ISO format: 00:00:00.000</span>
+<span class="w">    </span><span class="nt">time_format</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;string&gt;</span>
+<span class="w">    </span><span class="c1"># optional value: TZF_UTC, TZF_OFFSET</span>
+<span class="w">    </span><span class="nt">time_zone_format</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;string&gt;</span>
+<span class="w">  </span><span class="nt">date_time</span><span class="p">:</span>
+<span class="w">    </span><span class="c1"># optional value: DTF_YYYY_MM_DD_HH_MM_SS_SSS,</span>
+<span class="w">    </span><span class="c1"># means ISO format: 2019-01-01 00:00:00.000</span>
+<span class="w">    </span><span class="nt">date_time_format</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;string&gt;</span>
+<span class="w">    </span><span class="nt">time_zone_format</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">&lt;string&gt;</span><span class="w"> </span><span class="c1"># optional value: TZF_UTC, TZF_OFFSET</span>
+<span class="w">  </span><span class="nt">date32</span><span class="p">:</span><span class="w"> </span><span class="c1"># int32 days since 1970-01-01</span>
+<span class="w">  </span><span class="nt">time32</span><span class="p">:</span><span class="w"> </span><span class="c1"># int32 milliseconds past midnight</span>
+<span class="w">  </span><span class="nt">timestamp</span><span class="p">:</span><span class="w">  </span><span class="c1"># int64 milliseconds since 1970-01-01 00:00:00.000000</span>
+</pre></div>
+</div>
+<p>Here is an explanation of each temporal type:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">date</span></code>: Denotes a date value. Optionally, the field date_format can be specified to define the format of the date. The date_format attribute could take a value like DF_YYYY_MM_DD, indicating the ISO format: “2019-01-01”.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">time</span></code>: Represents a time value. Optionally, the field time_format can be used to specify the format of the time. The time_format attribute could take a value like TF_HH_MM_SS_SSS, indicating the ISO format: “00:00:00.000”. The time_zone_format attribute can also be included to define the format of the time zone, with optional values of TZF_UTC or TZF_OFFSET.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">date_time</span></code>: Signifies a combination of date and time. The field date_time_format is optional and can be used to specify the format of the date and time. For example, a date_time_format value of DTF_YYYY_MM_DD_HH_MM_SS_SSS would indicate the ISO format: “2019-01-01 00:00:00.000”. The time_zone_format attribute can additionally be specified to define the format of the time zone, with optional values of TZF_UTC or TZF_OFFSET.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">date32</span></code>: Represents the date as an integer, with the value being the number of days since January 1, 1970.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">time32</span></code>: Represents the time as an integer, representing the number of milliseconds past midnight.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">timestamp</span></code>: Denotes a timestamp as an integer, representing the number of milliseconds since January 1, 1970 at 00:00:00.000.</p></li>
+</ul>
+<p>This YAML structure allows users to select the appropriate data type and format for handling temporal data, such as dates, times, and timestamps. The optional attributes provide flexibility to define the desired format or timezone representation.</p>
+<p>Note:</p>
+<ul class="simple">
+<li><p>Currently we only support <code class="docutils literal notranslate"><span class="pre">date</span></code> and <code class="docutils literal notranslate"><span class="pre">timestamp</span></code>. The other types will be supported in the near future.</p></li>
+</ul>
+</section>
 <section id="array-types">
-<h3>Array Types<a class="headerlink" href="#array-types" title="Permalink to this heading">#</a></h3>
+<h3>Array Types<a class="headerlink" href="#array-types" title="Permalink to this heading">¶</a></h3>
 <p>Array types are currently not supported, but are planned to be supported in the near future.
 Once supported, albeit requiring that every element within the array adheres to one of the previously mentioned primitive types.
-It’s crucial that all elements within a single array share the same type. In <code class="docutils literal notranslate"><span class="pre">graph.yaml</span></code>, user can describe designating a property as an array of the <code class="docutils literal notranslate"><span class="pre">DT_STRING</span></code> type as:</p>
+It’s crucial that all elements within a single array share the same type. In <code class="docutils literal notranslate"><span class="pre">graph.yaml</span></code>, user can describe designating a property as an array of the <code class="docutils literal notranslate"><span class="pre">DT_UNSIGNED_INT64</span></code> type as:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">property_type</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">array</span><span class="p">:</span>
 <span class="w">    </span><span class="nt">component_type</span><span class="p">:</span><span class="w"> </span>
@@ -846,6 +906,8 @@ It’s crucial that all elements within a single array share the same type. In <
 <li><a class="reference internal" href="#graph-data">Graph Data</a></li>
 <li><a class="reference internal" href="#entity-data">Entity Data</a><ul>
 <li><a class="reference internal" href="#primitive-types">Primitive Types</a></li>
+<li><a class="reference internal" href="#string-types">String Types</a></li>
+<li><a class="reference internal" href="#temporal-types">Temporal types</a></li>
 <li><a class="reference internal" href="#array-types">Array Types</a></li>
 </ul>
 </li>
@@ -863,7 +925,7 @@ It’s crucial that all elements within a single array share the same type. In <
 </div><script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=ccbe24c1"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
     <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
-    <script src="../../_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="../../_static/scripts/furo.js?v=4e2eecee"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
     </body>

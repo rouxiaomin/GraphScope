@@ -11,10 +11,10 @@
 <meta name="description" content="gs_interactive is a command-line tool designed to manage various aspects of GraphScope Interactive. This document provides a comprehensive guide on how to utilize its functionalities. Overview: gs_..." />
 <link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.1.2 and Furo 2024.04.27 -->
         <title>The Administrative tool - GraphScope documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=437aa6ec" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css?v=2a6c4383" />
     <link rel="stylesheet" type="text/css" href="../../../_static/panels-bootstrap.5fd3999ee7762ccc51105388f4a9d115.css?v=45cf7dbc" />
@@ -164,6 +164,8 @@ MathJax = {
 <label class="overlay toc-overlay" for="__toc">
   <div class="visually-hidden">Hide table of contents sidebar</div>
 </label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
 
 
 
@@ -582,6 +584,18 @@ MathJax = {
         
           
             
+              <dd><a href="../../../../v0.27.0/index.html">
+                
+                  v0.27.0
+                
+              </a></dd>
+            
+          
+        
+      
+        
+          
+            
               <dd><a href="../../../../v0.26.0/index.html">
                 
                   v0.26.0
@@ -609,18 +623,6 @@ MathJax = {
               <dd><a href="../../../../v0.24.0/index.html">
                 
                   v0.24.0
-                
-              </a></dd>
-            
-          
-        
-      
-        
-          
-            
-              <dd><a href="../../../../v0.23.0/index.html">
-                
-                  v0.23.0
                 
               </a></dd>
             
@@ -683,12 +685,12 @@ MathJax = {
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
-        <article role="main">
+        <article role="main" id="furo-main-content">
           <section class="tex2jax_ignore mathjax_ignore" id="the-administrative-tool">
-<h1>The Administrative tool<a class="headerlink" href="#the-administrative-tool" title="Permalink to this heading">#</a></h1>
+<h1>The Administrative tool<a class="headerlink" href="#the-administrative-tool" title="Permalink to this heading">¶</a></h1>
 <p><code class="docutils literal notranslate"><span class="pre">gs_interactive</span></code> is a command-line tool designed to manage various aspects of GraphScope Interactive. This document provides a comprehensive guide on how to utilize its functionalities.</p>
 <section id="overview">
-<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">¶</a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">gs_interactive</span></code> is organized into the following sections:</p>
 <ol class="arabic simple">
 <li><p><strong>root</strong>: Without any specific option, this is used to initialize and destroy the docker image for GraphScope Interactive.</p></li>
@@ -698,9 +700,9 @@ MathJax = {
 </ol>
 </section>
 <section id="detailed-usage">
-<h2>Detailed Usage<a class="headerlink" href="#detailed-usage" title="Permalink to this heading">#</a></h2>
+<h2>Detailed Usage<a class="headerlink" href="#detailed-usage" title="Permalink to this heading">¶</a></h2>
 <section id="root-commands">
-<h3>Root Commands<a class="headerlink" href="#root-commands" title="Permalink to this heading">#</a></h3>
+<h3>Root Commands<a class="headerlink" href="#root-commands" title="Permalink to this heading">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">gs_interactive</span> <span class="pre">-h</span> <span class="pre">(--help)</span></code>: Showing help message.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">gs_interactive</span> <span class="pre">init</span> <span class="pre">-c</span> <span class="pre">(--config)</span> <span class="pre">interactive.yaml</span></code>: Initializes the docker image for GraphScope Interactive. If the image isn’t present, it will be downloaded. This command also configures volume and port mappings.</p></li>
@@ -708,7 +710,7 @@ MathJax = {
 </ul>
 </section>
 <section id="service-commands">
-<h3>Service Commands<a class="headerlink" href="#service-commands" title="Permalink to this heading">#</a></h3>
+<h3>Service Commands<a class="headerlink" href="#service-commands" title="Permalink to this heading">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">gs_interactive</span> <span class="pre">service</span> <span class="pre">-h</span> <span class="pre">(--help)</span></code>: Showing help message.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">gs_interactive</span> <span class="pre">service</span> <span class="pre">start</span> <span class="pre">[-g</span> <span class="pre">(--graph)</span> <span class="pre">&lt;graph_name&gt;]</span> <span class="pre">[-c</span> <span class="pre">(--config)</span> <span class="pre">config.yaml]</span></code>: Starts the service with a specified graph and optional configurations. If no graph is provided, the default “modern” graph will be used.</p></li>
@@ -718,7 +720,7 @@ MathJax = {
 </ul>
 </section>
 <section id="database-commands">
-<h3>Database Commands<a class="headerlink" href="#database-commands" title="Permalink to this heading">#</a></h3>
+<h3>Database Commands<a class="headerlink" href="#database-commands" title="Permalink to this heading">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">gs_interactive</span> <span class="pre">database</span> <span class="pre">-h</span> <span class="pre">(--help)</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">gs_interactive</span> <span class="pre">database</span> <span class="pre">create</span> <span class="pre">-g</span> <span class="pre">(--graph)</span> <span class="pre">&lt;graph_name&gt;</span> <span class="pre">-c</span> <span class="pre">(--config)</span> <span class="pre">schema.yaml</span></code>: Creates a graph with the given name and schema. The graph name must be unique within GraphScope Interactive.</p></li>
@@ -727,7 +729,7 @@ MathJax = {
 </ul>
 </section>
 <section id="procedure-commands">
-<h3>Procedure Commands<a class="headerlink" href="#procedure-commands" title="Permalink to this heading">#</a></h3>
+<h3>Procedure Commands<a class="headerlink" href="#procedure-commands" title="Permalink to this heading">¶</a></h3>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">gs_interactive</span> <span class="pre">procedure</span> <span class="pre">-h</span> <span class="pre">(--help)</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">gs_interactive</span> <span class="pre">procedure</span> <span class="pre">compile</span> <span class="pre">-g</span> <span class="pre">(--graph)</span> <span class="pre">&lt;graph_name&gt;</span> <span class="pre">[-n</span> <span class="pre">(--name)</span> <span class="pre">&lt;proc_name&gt;]</span> <span class="pre">[-d</span> <span class="pre">(--desc)</span> <span class="pre">&lt;description&gt;]</span> <span class="pre">-i</span> <span class="pre">(--input)</span> <span class="pre">&lt;input_file/folder&gt;</span> <span class="pre">[--compile_only]</span></code>: Compiles (and enables by default) a given input file (or files in the input folder). If -n isn’t provided, the file name will be used as the stored procedure’s name. Without the -d option, an empty description will be used.</p></li>
@@ -802,7 +804,7 @@ MathJax = {
 </div><script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=ccbe24c1"></script>
     <script src="../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
-    <script src="../../../_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="../../../_static/scripts/furo.js?v=4e2eecee"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../../_static/copybutton.js?v=f281be69"></script>
     </body>

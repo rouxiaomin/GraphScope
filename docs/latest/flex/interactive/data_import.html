@@ -11,10 +11,10 @@
 <meta name="description" content="In our guide on using custom graph data, we introduced the basics of importing graph data using a simple YAML configuration. This section delves deeper, providing a thorough exploration of the exte..." />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="GraphScope Interactive Development guide" href="dev_guide.html" /><link rel="prev" title="Data Model" href="data_model.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.1.2 and Furo 2024.04.27 -->
         <title>Data Import Configuration - GraphScope documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=437aa6ec" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css?v=2a6c4383" />
     <link rel="stylesheet" type="text/css" href="../../_static/panels-bootstrap.5fd3999ee7762ccc51105388f4a9d115.css?v=45cf7dbc" />
@@ -164,6 +164,8 @@ MathJax = {
 <label class="overlay toc-overlay" for="__toc">
   <div class="visually-hidden">Hide table of contents sidebar</div>
 </label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
 
 
 
@@ -582,6 +584,18 @@ MathJax = {
         
           
             
+              <dd><a href="../../../v0.27.0/index.html">
+                
+                  v0.27.0
+                
+              </a></dd>
+            
+          
+        
+      
+        
+          
+            
               <dd><a href="../../../v0.26.0/index.html">
                 
                   v0.26.0
@@ -609,18 +623,6 @@ MathJax = {
               <dd><a href="../../../v0.24.0/index.html">
                 
                   v0.24.0
-                
-              </a></dd>
-            
-          
-        
-      
-        
-          
-            
-              <dd><a href="../../../v0.23.0/index.html">
-                
-                  v0.23.0
                 
               </a></dd>
             
@@ -683,16 +685,16 @@ MathJax = {
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
-        <article role="main">
+        <article role="main" id="furo-main-content">
           <section class="tex2jax_ignore mathjax_ignore" id="data-import-configuration">
-<h1>Data Import Configuration<a class="headerlink" href="#data-import-configuration" title="Permalink to this heading">#</a></h1>
+<h1>Data Import Configuration<a class="headerlink" href="#data-import-configuration" title="Permalink to this heading">¶</a></h1>
 <p>In our guide on <a class="reference internal" href="custom_graph_data.html"><span class="std std-doc">using custom graph data</span></a>, we introduced the basics of importing graph data using a simple YAML configuration. This section delves deeper, providing a thorough exploration of the extensive configuration options available for data import.</p>
 <section id="supported-data-source">
-<h2>Supported data source<a class="headerlink" href="#supported-data-source" title="Permalink to this heading">#</a></h2>
+<h2>Supported data source<a class="headerlink" href="#supported-data-source" title="Permalink to this heading">¶</a></h2>
 <p>Currently we only support import data to graph from local <code class="docutils literal notranslate"><span class="pre">csv</span></code> files or <code class="docutils literal notranslate"><span class="pre">odps</span></code> table. See configuration <code class="docutils literal notranslate"><span class="pre">loading_config.data_source.scheme</span></code>.</p>
 </section>
 <section id="sample-configuration-for-loading-modern-graph-from-csv-files">
-<h2>Sample Configuration for loading “Modern” Graph from csv files<a class="headerlink" href="#sample-configuration-for-loading-modern-graph-from-csv-files" title="Permalink to this heading">#</a></h2>
+<h2>Sample Configuration for loading “Modern” Graph from csv files<a class="headerlink" href="#sample-configuration-for-loading-modern-graph-from-csv-files" title="Permalink to this heading">¶</a></h2>
 <p>To illustrate, let’s examine the <code class="docutils literal notranslate"><span class="pre">examples/modern_import_full.yaml</span></code> file. This configuration is designed for importing the “modern” graph and showcases the full range of configuration possibilities. We’ll dissect each configuration item in the sections that follow.</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">loading_config</span><span class="p">:</span><span class="w"> </span>
 <span class="w">  </span><span class="nt">data_source</span><span class="p">:</span>
@@ -783,7 +785,7 @@ MathJax = {
 </div>
 </section>
 <section id="sample-configuration-for-loading-modern-graph-from-odps-tables">
-<h2>Sample configuration for loading “Modern Graph” from odps tables<a class="headerlink" href="#sample-configuration-for-loading-modern-graph-from-odps-tables" title="Permalink to this heading">#</a></h2>
+<h2>Sample configuration for loading “Modern Graph” from odps tables<a class="headerlink" href="#sample-configuration-for-loading-modern-graph-from-odps-tables" title="Permalink to this heading">¶</a></h2>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">graph</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">dd_graph</span>
 <span class="nt">loading_config</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">data_source</span><span class="p">:</span>
@@ -869,7 +871,7 @@ MathJax = {
 </div>
 </section>
 <section id="configuration-breakdown">
-<h2>Configuration Breakdown<a class="headerlink" href="#configuration-breakdown" title="Permalink to this heading">#</a></h2>
+<h2>Configuration Breakdown<a class="headerlink" href="#configuration-breakdown" title="Permalink to this heading">¶</a></h2>
 <p>The table below offers a detailed breakdown of each configuration item. In this table, we use the “.” notation to represent the hierarchy within the YAML structure.</p>
 <div class="table-wrapper colwidths-auto docutils container">
 <table class="docutils align-default">
@@ -1080,7 +1082,7 @@ MathJax = {
 </table>
 </div>
 <section id="loading-configurations">
-<h3>Loading Configurations<a class="headerlink" href="#loading-configurations" title="Permalink to this heading">#</a></h3>
+<h3>Loading Configurations<a class="headerlink" href="#loading-configurations" title="Permalink to this heading">¶</a></h3>
 <p>The <strong>loading_config</strong> section defines the primary settings for data loading. This includes specifying the data source, its format, and other metadata.</p>
 <ul class="simple">
 <li><p>loading_config.data_source.location: This is the path to the data source within the container. It’s essential to ensure this location is mapped from the host machine when initializing the service.</p></li>
@@ -1102,7 +1104,7 @@ MathJax = {
 </ul>
 </section>
 <section id="vertex-mappings">
-<h3>Vertex Mappings<a class="headerlink" href="#vertex-mappings" title="Permalink to this heading">#</a></h3>
+<h3>Vertex Mappings<a class="headerlink" href="#vertex-mappings" title="Permalink to this heading">¶</a></h3>
 <p>The <strong>vertex_mappings</strong> section outlines how raw data maps to graph vertices based on the defined schema.</p>
 <ul class="simple">
 <li><p>vertex_mappings.type_name: Specifies the name of the vertex type.</p></li>
@@ -1117,7 +1119,7 @@ MathJax = {
 </ul>
 </section>
 <section id="edge-mappings">
-<h3>Edge Mappings<a class="headerlink" href="#edge-mappings" title="Permalink to this heading">#</a></h3>
+<h3>Edge Mappings<a class="headerlink" href="#edge-mappings" title="Permalink to this heading">¶</a></h3>
 <p>The <strong>edge_mappings</strong> section details how raw data maps to graph edges as per the schema.</p>
 <ul class="simple">
 <li><p>edge_mappings.type_triplet: A triplet that uniquely defines an edge.</p>
@@ -1235,7 +1237,7 @@ MathJax = {
 </div><script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=ccbe24c1"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
     <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
-    <script src="../../_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="../../_static/scripts/furo.js?v=4e2eecee"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
     </body>

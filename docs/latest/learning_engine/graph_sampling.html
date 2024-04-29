@@ -11,10 +11,10 @@
 <meta name="description" content="Graph sampling is an effective technique for managing large graphs and is widely used in programming paradigms represented by the GraphSAGE framework. Sampling reduces data size and facilitates eff..." />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Guide and Examples" href="guide_and_examples.html" /><link rel="prev" title="Design of GLE" href="design_of_gle.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.1.2 and Furo 2024.04.27 -->
         <title>Graph Sampling - GraphScope documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=437aa6ec" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css?v=2a6c4383" />
     <link rel="stylesheet" type="text/css" href="../_static/panels-bootstrap.5fd3999ee7762ccc51105388f4a9d115.css?v=45cf7dbc" />
@@ -164,6 +164,8 @@ MathJax = {
 <label class="overlay toc-overlay" for="__toc">
   <div class="visually-hidden">Hide table of contents sidebar</div>
 </label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
 
 
 
@@ -582,6 +584,18 @@ MathJax = {
         
           
             
+              <dd><a href="../../v0.27.0/index.html">
+                
+                  v0.27.0
+                
+              </a></dd>
+            
+          
+        
+      
+        
+          
+            
               <dd><a href="../../v0.26.0/index.html">
                 
                   v0.26.0
@@ -609,18 +623,6 @@ MathJax = {
               <dd><a href="../../v0.24.0/index.html">
                 
                   v0.24.0
-                
-              </a></dd>
-            
-          
-        
-      
-        
-          
-            
-              <dd><a href="../../v0.23.0/index.html">
-                
-                  v0.23.0
                 
               </a></dd>
             
@@ -683,9 +685,9 @@ MathJax = {
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
-        <article role="main">
+        <article role="main" id="furo-main-content">
           <section class="tex2jax_ignore mathjax_ignore" id="graph-sampling">
-<h1>Graph Sampling<a class="headerlink" href="#graph-sampling" title="Permalink to this heading">#</a></h1>
+<h1>Graph Sampling<a class="headerlink" href="#graph-sampling" title="Permalink to this heading">¶</a></h1>
 <p>Graph sampling is an effective technique for managing large graphs and is widely used in programming paradigms represented by the GraphSAGE framework. Sampling reduces data size and facilitates efficient processing by Tensor-Based computing frameworks through data alignment.</p>
 <p>Before sampling, we are required to provide seeds, which can be either nodes or edges. Correspondingly, GLE provides graph traversal operators to prepare the seeds for batch-sampling:</p>
 <ul class="simple">
@@ -702,13 +704,13 @@ MathJax = {
 <p>Subgraph Sampling involves vertices of one-hop or multi-hop and all edges with src and dst vertices already sampled, which form a subgraph. This sampling method becomes more and more important as the research in GNN expressivity advances.</p>
 <p>Negative Sampling selects vertices that are not directly connected to the input vertices, and it is commonly used in unsupervised learning.</p>
 <section id="graph-traversal">
-<h2>Graph Traversal<a class="headerlink" href="#graph-traversal" title="Permalink to this heading">#</a></h2>
+<h2>Graph Traversal<a class="headerlink" href="#graph-traversal" title="Permalink to this heading">¶</a></h2>
 <p>Graph traversal, in GNN, has a different semantics than classical graph computation. The training model of mainstream deep learning algorithms iterates by batch. To meet this requirement, the data has to be accessible by batch, and we call this data access pattern traversal. In GNN algorithms, the data source is the graph, and the training samples usually consist of the vertices and edges of the graph. Graph traversal refers to providing the algorithm with the ability to access vertices, edges or subgraphs by batch.</p>
 <p>Currently GLE supports batch traversal of vertices and edges. This random traversal can be either putback-free or putback. In a no-replay traversal, gl.OutOfRangeError is triggered every time an epoch ends. The data source being traversed is partitioned, i.e. the current worker (in the case of distributed TF) only traverses the data on the Server corresponding to it.</p>
 <p>For usage and interfaces of graph traversal, please check <a class="reference external" href="https://graph-learn.readthedocs.io/en/latest/en/gl/graph/graph_operator/graph_traverse.html">the traversal part of GLE</a> for more details.</p>
 </section>
 <section id="neighborhood-sampling">
-<h2>Neighborhood Sampling<a class="headerlink" href="#neighborhood-sampling" title="Permalink to this heading">#</a></h2>
+<h2>Neighborhood Sampling<a class="headerlink" href="#neighborhood-sampling" title="Permalink to this heading">¶</a></h2>
 <p>Different implementation strategies such as random and edge-weight are available for each sampling operation. We have accumulated over 10 sampling operators through practical production and have made the operator programming interface open to allow user customization to keep up with the ever-evolving GNN.</p>
 <p>For sampling strategies, GLE currently has support for the following sampling strategies, corresponding to the <code class="docutils literal notranslate"><span class="pre">strategy</span></code> parameters when generating <code class="docutils literal notranslate"><span class="pre">NeighborSampler</span></code> objects.</p>
 <div class="table-wrapper colwidths-auto docutils container">
@@ -758,13 +760,13 @@ MathJax = {
 <p>For usage and interfaces of neighborhood sampling, please check <a class="reference external" href="https://graph-learn.readthedocs.io/en/latest/en/gl/graph/graph_operator/graph_sampling.html">the sampling part of GLE</a> for more details.</p>
 </section>
 <section id="subgraph-sampling">
-<h2>Subgraph Sampling<a class="headerlink" href="#subgraph-sampling" title="Permalink to this heading">#</a></h2>
+<h2>Subgraph Sampling<a class="headerlink" href="#subgraph-sampling" title="Permalink to this heading">¶</a></h2>
 <p>Unlike EgoGraph, SubGraph contains the edge_index of the graph topology, so the message passing path (forward computation path) can be determined directly by the edge_index, and the implementation of the conv layer can be done directly by the edge_index and the nodes/edges data. In addition, SubGraph is fully compatible with the Data in PyG, so the model part of PyG can be reused.</p>
 <p>Subgraph Sampling involves vertices of one-hop or multi-hop and all edges with src and dst vertices already sampled, which form a subgraph.</p>
 <p>This sampling method becomes more and more important as the research in GNN expressivity advances.</p>
 </section>
 <section id="negative-sampling">
-<h2>Negative Sampling<a class="headerlink" href="#negative-sampling" title="Permalink to this heading">#</a></h2>
+<h2>Negative Sampling<a class="headerlink" href="#negative-sampling" title="Permalink to this heading">¶</a></h2>
 <p><strong>Negative sampling</strong> refers to sampling vertices that have no direct edge relationship with a given vertex. Similar to neighbor sampling, negative sampling has different implementation strategies, such as random, in-degree of nodes, etc. As a common operator of GNN, negative sampling supports extensions and scenario-oriented customization. In addition, GLE provides the ability to negative sampling by specified attribute condition.</p>
 <p>GLE currently supports the following negative sampling strategies, corresponding to the strategy argument when generating NegativeSampler objects.</p>
 <div class="table-wrapper colwidths-auto docutils container">
@@ -804,7 +806,7 @@ MathJax = {
 <p>For usage and interfaces of negative sampling, please check <a class="reference external" href="https://graph-learn.readthedocs.io/en/latest/en/gl/graph/graph_operator/negative_sampling.html">the negative sampling part of GLE</a> for more details.</p>
 </section>
 <section id="gsl">
-<h2>GSL<a class="headerlink" href="#gsl" title="Permalink to this heading">#</a></h2>
+<h2>GSL<a class="headerlink" href="#gsl" title="Permalink to this heading">¶</a></h2>
 <p>GLE abstracts sampling operations into a set of interfaces, called GSL (Graph Sampling Language). Generally, graph sampling consists of several categories as follows.</p>
 <ul class="simple">
 <li><p>Traversal type (Traverse), which obtains point or edge data of a batch from the graph.</p></li>
@@ -896,7 +898,7 @@ MathJax = {
 </div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=ccbe24c1"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
-    <script src="../_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="../_static/scripts/furo.js?v=4e2eecee"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=f281be69"></script>
     </body>

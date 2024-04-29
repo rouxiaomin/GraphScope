@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.1.2 and Furo 2024.04.27 -->
         <title>graphscope.framework.dag_utils - GraphScope documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=437aa6ec" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css?v=2a6c4383" />
     <link rel="stylesheet" type="text/css" href="../../../_static/panels-bootstrap.5fd3999ee7762ccc51105388f4a9d115.css?v=45cf7dbc" />
@@ -157,6 +157,8 @@ MathJax = {
 <label class="overlay toc-overlay" for="__toc">
   <div class="visually-hidden">Hide table of contents sidebar</div>
 </label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
 
 
 
@@ -575,6 +577,18 @@ MathJax = {
         
           
             
+              <dd><a href="../../../../v0.27.0/index.html">
+                
+                  v0.27.0
+                
+              </a></dd>
+            
+          
+        
+      
+        
+          
+            
               <dd><a href="../../../../v0.26.0/index.html">
                 
                   v0.26.0
@@ -602,18 +616,6 @@ MathJax = {
               <dd><a href="../../../../v0.24.0/index.html">
                 
                   v0.24.0
-                
-              </a></dd>
-            
-          
-        
-      
-        
-          
-            
-              <dd><a href="../../../../v0.23.0/index.html">
-                
-                  v0.23.0
                 
               </a></dd>
             
@@ -667,7 +669,7 @@ MathJax = {
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
-        <article role="main">
+        <article role="main" id="furo-main-content">
           <h1>Source code for graphscope.framework.dag_utils</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python3</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
@@ -1753,7 +1755,7 @@ MathJax = {
     <span class="k">return</span> <span class="n">op</span></div>
 
 
-<span class="k">def</span> <span class="nf">archive_graph</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">save_to_graphar</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Archive a graph to gar format with a path.</span>
 
 <span class="sd">    Args:</span>
@@ -1770,8 +1772,9 @@ MathJax = {
         <span class="n">types_pb2</span><span class="o">.</span><span class="n">VERTEX_MAP_TYPE</span><span class="p">:</span> <span class="n">utils</span><span class="o">.</span><span class="n">i_to_attr</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">_vertex_map</span><span class="p">),</span>
         <span class="n">types_pb2</span><span class="o">.</span><span class="n">COMPACT_EDGES</span><span class="p">:</span> <span class="n">utils</span><span class="o">.</span><span class="n">b_to_attr</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">_compact_edges</span><span class="p">),</span>
         <span class="n">types_pb2</span><span class="o">.</span><span class="n">USE_PERFECT_HASH</span><span class="p">:</span> <span class="n">utils</span><span class="o">.</span><span class="n">b_to_attr</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">_use_perfect_hash</span><span class="p">),</span>
+        <span class="n">types_pb2</span><span class="o">.</span><span class="n">WRITE_OPTIONS</span><span class="p">:</span> <span class="n">utils</span><span class="o">.</span><span class="n">s_to_attr</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)),</span>
+        <span class="n">types_pb2</span><span class="o">.</span><span class="n">GRAPH_INFO_PATH</span><span class="p">:</span> <span class="n">utils</span><span class="o">.</span><span class="n">s_to_attr</span><span class="p">(</span><span class="n">path</span><span class="p">),</span>
     <span class="p">}</span>
-    <span class="n">config</span><span class="p">[</span><span class="n">types_pb2</span><span class="o">.</span><span class="n">GRAPH_INFO_PATH</span><span class="p">]</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">s_to_attr</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
     <span class="n">op</span> <span class="o">=</span> <span class="n">Operation</span><span class="p">(</span>
         <span class="n">graph</span><span class="o">.</span><span class="n">session_id</span><span class="p">,</span>
         <span class="n">types_pb2</span><span class="o">.</span><span class="n">ARCHIVE_GRAPH</span><span class="p">,</span>
@@ -1782,24 +1785,24 @@ MathJax = {
     <span class="k">return</span> <span class="n">op</span>
 
 
-<span class="k">def</span> <span class="nf">save_graph_to</span><span class="p">(</span>
-    <span class="n">graph</span><span class="p">,</span>
-    <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
-    <span class="n">vineyard_id</span><span class="p">,</span>
-    <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
-<span class="p">):</span>
+<span class="k">def</span> <span class="nf">serialize_graph</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Serialize graph to the specified location</span>
+<span class="sd">       The meta and data of graph is dumped to specified location,</span>
+<span class="sd">       and can be restored by `Graph.load_from` in other sessions.</span>
 
+<span class="sd">       Each worker will write a `path_{worker_id}.meta` file and</span>
+<span class="sd">       a `path_{worker_id}` file to storage.</span>
 <span class="sd">    Args:</span>
 <span class="sd">        graph (:class:`graphscope.framework.graph.GraphDAGNode`): Source graph.</span>
-<span class="sd">        path (str): The path to serialize the graph, on each worker.</span>
+<span class="sd">        path (str): The path to serialize the graph, on each worker, supported</span>
+<span class="sd">            storages are local, hdfs, oss, s3</span>
 
 <span class="sd">    Returns:</span>
 <span class="sd">        An op to serialize the graph to a path.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
         <span class="n">types_pb2</span><span class="o">.</span><span class="n">GRAPH_SERIALIZATION_PATH</span><span class="p">:</span> <span class="n">utils</span><span class="o">.</span><span class="n">s_to_attr</span><span class="p">(</span><span class="n">path</span><span class="p">),</span>
-        <span class="n">types_pb2</span><span class="o">.</span><span class="n">VINEYARD_ID</span><span class="p">:</span> <span class="n">utils</span><span class="o">.</span><span class="n">i_to_attr</span><span class="p">(</span><span class="n">vineyard_id</span><span class="p">),</span>
+        <span class="n">types_pb2</span><span class="o">.</span><span class="n">VINEYARD_ID</span><span class="p">:</span> <span class="n">utils</span><span class="o">.</span><span class="n">i_to_attr</span><span class="p">(</span><span class="n">graph</span><span class="o">.</span><span class="n">_vineyard_id</span><span class="p">),</span>
         <span class="n">types_pb2</span><span class="o">.</span><span class="n">STORAGE_OPTIONS</span><span class="p">:</span> <span class="n">utils</span><span class="o">.</span><span class="n">s_to_attr</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)),</span>
     <span class="p">}</span>
     <span class="n">op</span> <span class="o">=</span> <span class="n">Operation</span><span class="p">(</span>
@@ -1812,7 +1815,18 @@ MathJax = {
     <span class="k">return</span> <span class="n">op</span>
 
 
-<span class="k">def</span> <span class="nf">load_graph_from</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">sess</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">deserialize_graph</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">sess</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Deserialize graph from the specified location.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        path (str): The path contains the serialization files.</span>
+<span class="sd">        sess (`graphscope.Session`): The target session</span>
+<span class="sd">            that the graph will be construct in.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        `Graph`: A new graph object. Schema and data is supposed to be</span>
+<span class="sd">            identical with the one that called serialized method.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
         <span class="n">types_pb2</span><span class="o">.</span><span class="n">GRAPH_SERIALIZATION_PATH</span><span class="p">:</span> <span class="n">utils</span><span class="o">.</span><span class="n">s_to_attr</span><span class="p">(</span><span class="n">path</span><span class="p">),</span>
         <span class="n">types_pb2</span><span class="o">.</span><span class="n">STORAGE_OPTIONS</span><span class="p">:</span> <span class="n">utils</span><span class="o">.</span><span class="n">s_to_attr</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)),</span>
@@ -1862,7 +1876,7 @@ MathJax = {
 </div><script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=ccbe24c1"></script>
     <script src="../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
-    <script src="../../../_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="../../../_static/scripts/furo.js?v=4e2eecee"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../../_static/copybutton.js?v=f281be69"></script>
     </body>

@@ -11,10 +11,10 @@
 <meta name="description" content="Introduction: Welcome to the GraphScope Interactive Admin Service documentation. This guide is tailored for developers and administrators seeking to manage the Interactive service more efficiently...." />
 <link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" /><link rel="next" title="Glossary" href="../glossary.html" /><link rel="prev" title="Create c++ Stored Procedures on GraphScope Interactive" href="cpp_procedure.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.1.2 and Furo 2024.04.27 -->
         <title>GraphScope Interactive Admin Service Documentation - GraphScope documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=437aa6ec" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css?v=2a6c4383" />
     <link rel="stylesheet" type="text/css" href="../../../_static/panels-bootstrap.5fd3999ee7762ccc51105388f4a9d115.css?v=45cf7dbc" />
@@ -164,6 +164,8 @@ MathJax = {
 <label class="overlay toc-overlay" for="__toc">
   <div class="visually-hidden">Hide table of contents sidebar</div>
 </label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
 
 
 
@@ -582,6 +584,18 @@ MathJax = {
         
           
             
+              <dd><a href="../../../../v0.27.0/index.html">
+                
+                  v0.27.0
+                
+              </a></dd>
+            
+          
+        
+      
+        
+          
+            
               <dd><a href="../../../../v0.26.0/index.html">
                 
                   v0.26.0
@@ -609,18 +623,6 @@ MathJax = {
               <dd><a href="../../../../v0.24.0/index.html">
                 
                   v0.24.0
-                
-              </a></dd>
-            
-          
-        
-      
-        
-          
-            
-              <dd><a href="../../../../v0.23.0/index.html">
-                
-                  v0.23.0
                 
               </a></dd>
             
@@ -683,15 +685,15 @@ MathJax = {
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
-        <article role="main">
+        <article role="main" id="furo-main-content">
           <section class="tex2jax_ignore mathjax_ignore" id="graphscope-interactive-admin-service-documentation">
-<h1>GraphScope Interactive Admin Service Documentation<a class="headerlink" href="#graphscope-interactive-admin-service-documentation" title="Permalink to this heading">#</a></h1>
+<h1>GraphScope Interactive Admin Service Documentation<a class="headerlink" href="#graphscope-interactive-admin-service-documentation" title="Permalink to this heading">¶</a></h1>
 <section id="introduction">
-<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">#</a></h2>
+<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this heading">¶</a></h2>
 <p>Welcome to the GraphScope Interactive Admin Service documentation. This guide is tailored for developers and administrators seeking to manage the Interactive service more efficiently. Here, we delve into the intricate workings of the RESTful HTTP interfaces provided by the Interactive Admin service, offering a comprehensive toolkit for real-time service management. This document is crucial for those looking to customize or enhance their GraphScope Interactive experience.</p>
 </section>
 <section id="api-overview">
-<h2>API Overview<a class="headerlink" href="#api-overview" title="Permalink to this heading">#</a></h2>
+<h2>API Overview<a class="headerlink" href="#api-overview" title="Permalink to this heading">¶</a></h2>
 <p>The table below provides an overview of the available APIs:</p>
 <div class="table-wrapper colwidths-auto docutils container">
 <table class="docutils align-default">
@@ -746,6 +748,14 @@ MathJax = {
 <td><p>POST /v1/service/start</p></td>
 <td><p>Start the service on the graph specified in request body.</p></td>
 </tr>
+<tr class="row-odd"><td><p>RestartService</p></td>
+<td><p>POST /v1/service/restart</p></td>
+<td><p>Restart the service on the current running graph.</p></td>
+</tr>
+<tr class="row-even"><td><p>StopService</p></td>
+<td><p>GET /v1/service/stop</p></td>
+<td><p>Stop the query service</p></td>
+</tr>
 <tr class="row-odd"><td><p>ServiceStatus</p></td>
 <td><p>GET /v1/service/status</p></td>
 <td><p>Get current service status.</p></td>
@@ -754,21 +764,33 @@ MathJax = {
 <td><p>GET /v1/node/status</p></td>
 <td><p>Get the system metrics of current host/pod, i.e. CPU usage, memory usages.</p></td>
 </tr>
+<tr class="row-odd"><td><p>GetJobById</p></td>
+<td><p>GET /v1/job/{job_id}</p></td>
+<td><p>Get the metadata for the specified job.</p></td>
+</tr>
+<tr class="row-even"><td><p>GetAllJobs</p></td>
+<td><p>GET /v1/job/</p></td>
+<td><p>Get all jobs’s metadata.</p></td>
+</tr>
+<tr class="row-odd"><td><p>CancelJob</p></td>
+<td><p>DELETE /v1/job/{job_id}</p></td>
+<td><p>Cancel the job with the specified job_id.</p></td>
+</tr>
 </tbody>
 </table>
 </div>
 </section>
 <section id="detailed-api-documentation">
-<h2>Detailed API Documentation<a class="headerlink" href="#detailed-api-documentation" title="Permalink to this heading">#</a></h2>
+<h2>Detailed API Documentation<a class="headerlink" href="#detailed-api-documentation" title="Permalink to this heading">¶</a></h2>
 <p>For each API, the documentation will include a detailed description, request format, example curl command, expected response format and body, and status codes. Here’s an example for one of the APIs:</p>
 <section id="listgraphs-api-graphmanagement-category">
-<h3>ListGraphs API (GraphManagement Category)<a class="headerlink" href="#listgraphs-api-graphmanagement-category" title="Permalink to this heading">#</a></h3>
+<h3>ListGraphs API (GraphManagement Category)<a class="headerlink" href="#listgraphs-api-graphmanagement-category" title="Permalink to this heading">¶</a></h3>
 <section id="description">
-<h4>Description<a class="headerlink" href="#description" title="Permalink to this heading">#</a></h4>
+<h4>Description<a class="headerlink" href="#description" title="Permalink to this heading">¶</a></h4>
 <p>This API lists all graphs currently managed by the Interactive service, providing detailed schema information for each.</p>
 </section>
 <section id="http-request">
-<h4>HTTP Request<a class="headerlink" href="#http-request" title="Permalink to this heading">#</a></h4>
+<h4>HTTP Request<a class="headerlink" href="#http-request" title="Permalink to this heading">¶</a></h4>
 <ul class="simple">
 <li><p><strong>Method</strong>: GET</p></li>
 <li><p><strong>Endpoint</strong>: <code class="docutils literal notranslate"><span class="pre">/v1/graph</span></code></p></li>
@@ -776,13 +798,13 @@ MathJax = {
 </ul>
 </section>
 <section id="curl-command-example">
-<h4>Curl Command Example<a class="headerlink" href="#curl-command-example" title="Permalink to this heading">#</a></h4>
+<h4>Curl Command Example<a class="headerlink" href="#curl-command-example" title="Permalink to this heading">¶</a></h4>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>GET<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="s2">&quot;http://[host]/v1/graph&quot;</span>
 </pre></div>
 </div>
 </section>
 <section id="expected-response">
-<h4>Expected Response<a class="headerlink" href="#expected-response" title="Permalink to this heading">#</a></h4>
+<h4>Expected Response<a class="headerlink" href="#expected-response" title="Permalink to this heading">¶</a></h4>
 <ul class="simple">
 <li><p><strong>Format</strong>: <code class="docutils literal notranslate"><span class="pre">application/json</span></code></p></li>
 <li><p><strong>Body</strong>:</p></li>
@@ -807,14 +829,18 @@ MathJax = {
 <span class="w">              </span><span class="nt">&quot;property_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
 <span class="w">              </span><span class="nt">&quot;property_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;name&quot;</span><span class="p">,</span>
 <span class="w">              </span><span class="nt">&quot;property_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">                </span><span class="nt">&quot;primitive_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;DT_STRING&quot;</span>
+<span class="w">                </span><span class="nt">&quot;string&quot;</span><span class="p">:{</span>
+<span class="w">                  </span><span class="nt">&quot;long_text&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span>
+<span class="w">                </span><span class="p">}</span>
 <span class="w">              </span><span class="p">}</span>
 <span class="w">            </span><span class="p">},</span>
 <span class="w">            </span><span class="p">{</span>
 <span class="w">              </span><span class="nt">&quot;property_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2&quot;</span><span class="p">,</span>
 <span class="w">              </span><span class="nt">&quot;property_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;age&quot;</span><span class="p">,</span>
 <span class="w">              </span><span class="nt">&quot;property_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">                </span><span class="nt">&quot;primitive_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;DT_SIGNED_INT32&quot;</span>
+<span class="w">                </span><span class="nt">&quot;string&quot;</span><span class="p">:{</span>
+<span class="w">                  </span><span class="nt">&quot;long_text&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span>
+<span class="w">                </span><span class="p">}</span>
 <span class="w">              </span><span class="p">}</span>
 <span class="w">            </span><span class="p">}</span>
 <span class="w">          </span><span class="p">],</span>
@@ -837,14 +863,18 @@ MathJax = {
 <span class="w">              </span><span class="nt">&quot;property_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
 <span class="w">              </span><span class="nt">&quot;property_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;name&quot;</span><span class="p">,</span>
 <span class="w">              </span><span class="nt">&quot;property_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">                </span><span class="nt">&quot;primitive_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;DT_STRING&quot;</span>
+<span class="w">                </span><span class="nt">&quot;string&quot;</span><span class="p">:{</span>
+<span class="w">                  </span><span class="nt">&quot;long_text&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span>
+<span class="w">                </span><span class="p">}</span>
 <span class="w">              </span><span class="p">}</span>
 <span class="w">            </span><span class="p">},</span>
 <span class="w">            </span><span class="p">{</span>
 <span class="w">              </span><span class="nt">&quot;property_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2&quot;</span><span class="p">,</span>
 <span class="w">              </span><span class="nt">&quot;property_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;lang&quot;</span><span class="p">,</span>
 <span class="w">              </span><span class="nt">&quot;property_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">                </span><span class="nt">&quot;primitive_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;DT_STRING&quot;</span>
+<span class="w">                </span><span class="nt">&quot;string&quot;</span><span class="p">:{</span>
+<span class="w">                  </span><span class="nt">&quot;long_text&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span>
+<span class="w">                </span><span class="p">}</span>
 <span class="w">              </span><span class="p">}</span>
 <span class="w">            </span><span class="p">}</span>
 <span class="w">          </span><span class="p">],</span>
@@ -902,7 +932,7 @@ MathJax = {
 </div>
 </section>
 <section id="status-codes">
-<h4>Status Codes<a class="headerlink" href="#status-codes" title="Permalink to this heading">#</a></h4>
+<h4>Status Codes<a class="headerlink" href="#status-codes" title="Permalink to this heading">¶</a></h4>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">200</span> <span class="pre">OK</span></code>: Request successful.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">500</span> <span class="pre">Internal</span> <span class="pre">Error</span></code>: Server internal Error.</p></li>
@@ -910,13 +940,13 @@ MathJax = {
 </section>
 </section>
 <section id="creategraph-graphmanagement-category">
-<h3>CreateGraph (GraphManagement Category)<a class="headerlink" href="#creategraph-graphmanagement-category" title="Permalink to this heading">#</a></h3>
+<h3>CreateGraph (GraphManagement Category)<a class="headerlink" href="#creategraph-graphmanagement-category" title="Permalink to this heading">¶</a></h3>
 <section id="id1">
-<h4>Description<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h4>
+<h4>Description<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h4>
 <p>This API create a new graph according to the specified schema in request body.</p>
 </section>
 <section id="id2">
-<h4>HTTP Request<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h4>
+<h4>HTTP Request<a class="headerlink" href="#id2" title="Permalink to this heading">¶</a></h4>
 <ul class="simple">
 <li><p><strong>Method</strong>: POST</p></li>
 <li><p><strong>Endpoint</strong>: <code class="docutils literal notranslate"><span class="pre">/v1/graph</span></code></p></li>
@@ -942,14 +972,18 @@ MathJax = {
 <span class="w">                        </span><span class="nt">&quot;property_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
 <span class="w">                        </span><span class="nt">&quot;property_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;name&quot;</span><span class="p">,</span>
 <span class="w">                        </span><span class="nt">&quot;property_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">                            </span><span class="nt">&quot;primitive_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;DT_STRING&quot;</span>
+<span class="w">                            </span><span class="nt">&quot;string&quot;</span><span class="p">:{</span>
+<span class="w">                              </span><span class="nt">&quot;long_text&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span>
+<span class="w">                            </span><span class="p">}</span>
 <span class="w">                        </span><span class="p">}</span>
 <span class="w">                    </span><span class="p">},</span>
 <span class="w">                    </span><span class="p">{</span>
 <span class="w">                        </span><span class="nt">&quot;property_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
 <span class="w">                        </span><span class="nt">&quot;property_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;age&quot;</span><span class="p">,</span>
 <span class="w">                        </span><span class="nt">&quot;property_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">                            </span><span class="nt">&quot;primitive_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;DT_SIGNED_INT32&quot;</span>
+<span class="w">                            </span><span class="nt">&quot;string&quot;</span><span class="p">:{</span>
+<span class="w">                              </span><span class="nt">&quot;long_text&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span>
+<span class="w">                            </span><span class="p">}</span>
 <span class="w">                        </span><span class="p">}</span>
 <span class="w">                    </span><span class="p">}</span>
 <span class="w">                </span><span class="p">],</span>
@@ -972,14 +1006,18 @@ MathJax = {
 <span class="w">                        </span><span class="nt">&quot;property_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
 <span class="w">                        </span><span class="nt">&quot;property_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;name&quot;</span><span class="p">,</span>
 <span class="w">                        </span><span class="nt">&quot;property_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">                            </span><span class="nt">&quot;primitive_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;DT_STRING&quot;</span>
+<span class="w">                            </span><span class="nt">&quot;string&quot;</span><span class="p">:{</span>
+<span class="w">                              </span><span class="nt">&quot;long_text&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span>
+<span class="w">                            </span><span class="p">}</span>
 <span class="w">                        </span><span class="p">}</span>
 <span class="w">                    </span><span class="p">},</span>
 <span class="w">                    </span><span class="p">{</span>
 <span class="w">                        </span><span class="nt">&quot;property_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
 <span class="w">                        </span><span class="nt">&quot;property_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;lang&quot;</span><span class="p">,</span>
 <span class="w">                        </span><span class="nt">&quot;property_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">                            </span><span class="nt">&quot;primitive_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;DT_STRING&quot;</span>
+<span class="w">                            </span><span class="nt">&quot;string&quot;</span><span class="p">:{</span>
+<span class="w">                              </span><span class="nt">&quot;long_text&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span>
+<span class="w">                            </span><span class="p">}</span>
 <span class="w">                        </span><span class="p">}</span>
 <span class="w">                    </span><span class="p">}</span>
 <span class="w">                </span><span class="p">],</span>
@@ -1036,13 +1074,13 @@ MathJax = {
 </div>
 </section>
 <section id="id3">
-<h4>Curl Command Example<a class="headerlink" href="#id3" title="Permalink to this heading">#</a></h4>
+<h4>Curl Command Example<a class="headerlink" href="#id3" title="Permalink to this heading">¶</a></h4>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span>-d<span class="w"> </span>@path/to/yourfile.json<span class="w">  </span><span class="s2">&quot;http://[host]/v1/graph&quot;</span>
 </pre></div>
 </div>
 </section>
 <section id="id4">
-<h4>Expected Response<a class="headerlink" href="#id4" title="Permalink to this heading">#</a></h4>
+<h4>Expected Response<a class="headerlink" href="#id4" title="Permalink to this heading">¶</a></h4>
 <ul class="simple">
 <li><p><strong>Format</strong>: <code class="docutils literal notranslate"><span class="pre">application/json</span></code></p></li>
 <li><p><strong>Body</strong>:</p></li>
@@ -1054,7 +1092,7 @@ MathJax = {
 </div>
 </section>
 <section id="id5">
-<h4>Status Codes<a class="headerlink" href="#id5" title="Permalink to this heading">#</a></h4>
+<h4>Status Codes<a class="headerlink" href="#id5" title="Permalink to this heading">¶</a></h4>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">200</span> <span class="pre">OK</span></code>: Request successful.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">500</span> <span class="pre">Internal</span> <span class="pre">Error</span></code>: Server internal Error.</p></li>
@@ -1063,27 +1101,27 @@ MathJax = {
 </section>
 </section>
 <section id="deletegraph-graphmanagement-category">
-<h3>DeleteGraph  (GraphManagement Category)<a class="headerlink" href="#deletegraph-graphmanagement-category" title="Permalink to this heading">#</a></h3>
+<h3>DeleteGraph  (GraphManagement Category)<a class="headerlink" href="#deletegraph-graphmanagement-category" title="Permalink to this heading">¶</a></h3>
 <section id="id6">
-<h4>Description<a class="headerlink" href="#id6" title="Permalink to this heading">#</a></h4>
+<h4>Description<a class="headerlink" href="#id6" title="Permalink to this heading">¶</a></h4>
 <p>Delete a graph by name, including schema, indices and stored procedures.</p>
 </section>
 <section id="id7">
-<h4>HTTP Request<a class="headerlink" href="#id7" title="Permalink to this heading">#</a></h4>
+<h4>HTTP Request<a class="headerlink" href="#id7" title="Permalink to this heading">¶</a></h4>
 <ul class="simple">
 <li><p><strong>Method</strong>: DELETE</p></li>
-<li><p><strong>Endpoint</strong>: <code class="docutils literal notranslate"><span class="pre">/v1/graph/{graph_name}</span></code></p></li>
+<li><p><strong>Endpoint</strong>: <code class="docutils literal notranslate"><span class="pre">/v1/graph/{graph_id}</span></code></p></li>
 <li><p><strong>Content-type</strong>: <code class="docutils literal notranslate"><span class="pre">application/json</span></code></p></li>
 </ul>
 </section>
 <section id="id8">
-<h4>Curl Command Example<a class="headerlink" href="#id8" title="Permalink to this heading">#</a></h4>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>DELETE<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="s2">&quot;http://[host]/v1/graph/{graph_name}&quot;</span>
+<h4>Curl Command Example<a class="headerlink" href="#id8" title="Permalink to this heading">¶</a></h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>DELETE<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="s2">&quot;http://[host]/v1/graph/{graph_id}&quot;</span>
 </pre></div>
 </div>
 </section>
 <section id="id9">
-<h4>Expected Response<a class="headerlink" href="#id9" title="Permalink to this heading">#</a></h4>
+<h4>Expected Response<a class="headerlink" href="#id9" title="Permalink to this heading">¶</a></h4>
 <ul class="simple">
 <li><p><strong>Format</strong>: application/json</p></li>
 <li><p><strong>Body</strong>:</p></li>
@@ -1095,7 +1133,7 @@ MathJax = {
 </div>
 </section>
 <section id="id10">
-<h4>Status Codes<a class="headerlink" href="#id10" title="Permalink to this heading">#</a></h4>
+<h4>Status Codes<a class="headerlink" href="#id10" title="Permalink to this heading">¶</a></h4>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">200</span> <span class="pre">OK</span></code>: Request successful.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">500</span> <span class="pre">Internal</span> <span class="pre">Error</span></code>: Server internal Error.</p></li>
@@ -1103,145 +1141,150 @@ MathJax = {
 </section>
 </section>
 <section id="getgraphschema-graphmanagement-category">
-<h3>GetGraphSchema  (GraphManagement Category)<a class="headerlink" href="#getgraphschema-graphmanagement-category" title="Permalink to this heading">#</a></h3>
+<h3>GetGraphSchema  (GraphManagement Category)<a class="headerlink" href="#getgraphschema-graphmanagement-category" title="Permalink to this heading">¶</a></h3>
 <section id="id11">
-<h4>Description<a class="headerlink" href="#id11" title="Permalink to this heading">#</a></h4>
+<h4>Description<a class="headerlink" href="#id11" title="Permalink to this heading">¶</a></h4>
 <p>Get the schema for the specified graph.</p>
 </section>
 <section id="id12">
-<h4>HTTP Request<a class="headerlink" href="#id12" title="Permalink to this heading">#</a></h4>
+<h4>HTTP Request<a class="headerlink" href="#id12" title="Permalink to this heading">¶</a></h4>
 <ul class="simple">
 <li><p><strong>Method</strong>: GET</p></li>
-<li><p><strong>Endpoint</strong>: <code class="docutils literal notranslate"><span class="pre">/v1/graph/{graph_name}</span></code></p></li>
+<li><p><strong>Endpoint</strong>: <code class="docutils literal notranslate"><span class="pre">/v1/graph/{graph_id}</span></code></p></li>
 <li><p><strong>Content-type</strong>: <code class="docutils literal notranslate"><span class="pre">application/json</span></code></p></li>
 </ul>
 </section>
 <section id="id13">
-<h4>Curl Command Example<a class="headerlink" href="#id13" title="Permalink to this heading">#</a></h4>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>GET<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="s2">&quot;http://[host]/v1/graph/{graph_name}&quot;</span>
+<h4>Curl Command Example<a class="headerlink" href="#id13" title="Permalink to this heading">¶</a></h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>GET<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="s2">&quot;http://[host]/v1/graph/{graph_id}&quot;</span>
 </pre></div>
 </div>
 </section>
 <section id="id14">
-<h4>Expected Response<a class="headerlink" href="#id14" title="Permalink to this heading">#</a></h4>
+<h4>Expected Response<a class="headerlink" href="#id14" title="Permalink to this heading">¶</a></h4>
 <ul class="simple">
 <li><p><strong>Format</strong>: <code class="docutils literal notranslate"><span class="pre">application/json</span></code></p></li>
 <li><p><strong>Body</strong>:</p></li>
 </ul>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">    </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;modern&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="nt">&quot;schema&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;vertex_types&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">            </span><span class="p">{</span>
-<span class="w">                </span><span class="nt">&quot;type_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
-<span class="w">                </span><span class="nt">&quot;type_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;person&quot;</span><span class="p">,</span>
-<span class="w">                </span><span class="nt">&quot;properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">                    </span><span class="p">{</span>
-<span class="w">                        </span><span class="nt">&quot;property_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
-<span class="w">                        </span><span class="nt">&quot;property_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;id&quot;</span><span class="p">,</span>
-<span class="w">                        </span><span class="nt">&quot;property_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">                            </span><span class="nt">&quot;primitive_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;DT_SIGNED_INT64&quot;</span>
-<span class="w">                        </span><span class="p">}</span>
-<span class="w">                    </span><span class="p">},</span>
-<span class="w">                    </span><span class="p">{</span>
-<span class="w">                        </span><span class="nt">&quot;property_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
-<span class="w">                        </span><span class="nt">&quot;property_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;name&quot;</span><span class="p">,</span>
-<span class="w">                        </span><span class="nt">&quot;property_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">                            </span><span class="nt">&quot;primitive_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;DT_STRING&quot;</span>
-<span class="w">                        </span><span class="p">}</span>
-<span class="w">                    </span><span class="p">},</span>
-<span class="w">                    </span><span class="p">{</span>
-<span class="w">                        </span><span class="nt">&quot;property_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
-<span class="w">                        </span><span class="nt">&quot;property_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;age&quot;</span><span class="p">,</span>
-<span class="w">                        </span><span class="nt">&quot;property_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">                            </span><span class="nt">&quot;primitive_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;DT_SIGNED_INT32&quot;</span>
-<span class="w">                        </span><span class="p">}</span>
-<span class="w">                    </span><span class="p">}</span>
-<span class="w">                </span><span class="p">],</span>
-<span class="w">                </span><span class="nt">&quot;primary_keys&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">                    </span><span class="s2">&quot;id&quot;</span>
-<span class="w">                </span><span class="p">]</span>
-<span class="w">            </span><span class="p">},</span>
-<span class="w">            </span><span class="p">{</span>
-<span class="w">                </span><span class="nt">&quot;type_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
-<span class="w">                </span><span class="nt">&quot;type_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;software&quot;</span><span class="p">,</span>
-<span class="w">                </span><span class="nt">&quot;properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">                    </span><span class="p">{</span>
-<span class="w">                        </span><span class="nt">&quot;property_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
-<span class="w">                        </span><span class="nt">&quot;property_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;id&quot;</span><span class="p">,</span>
-<span class="w">                        </span><span class="nt">&quot;property_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">                            </span><span class="nt">&quot;primitive_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;DT_SIGNED_INT64&quot;</span>
-<span class="w">                        </span><span class="p">}</span>
-<span class="w">                    </span><span class="p">},</span>
-<span class="w">                    </span><span class="p">{</span>
-<span class="w">                        </span><span class="nt">&quot;property_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
-<span class="w">                        </span><span class="nt">&quot;property_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;name&quot;</span><span class="p">,</span>
-<span class="w">                        </span><span class="nt">&quot;property_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">                            </span><span class="nt">&quot;primitive_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;DT_STRING&quot;</span>
-<span class="w">                        </span><span class="p">}</span>
-<span class="w">                    </span><span class="p">},</span>
-<span class="w">                    </span><span class="p">{</span>
-<span class="w">                        </span><span class="nt">&quot;property_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
-<span class="w">                        </span><span class="nt">&quot;property_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;lang&quot;</span><span class="p">,</span>
-<span class="w">                        </span><span class="nt">&quot;property_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">                            </span><span class="nt">&quot;primitive_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;DT_STRING&quot;</span>
-<span class="w">                        </span><span class="p">}</span>
-<span class="w">                    </span><span class="p">}</span>
-<span class="w">                </span><span class="p">],</span>
-<span class="w">                </span><span class="nt">&quot;primary_keys&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">                    </span><span class="s2">&quot;id&quot;</span>
-<span class="w">                </span><span class="p">]</span>
-<span class="w">            </span><span class="p">}</span>
-<span class="w">        </span><span class="p">],</span>
-<span class="w">        </span><span class="nt">&quot;edge_types&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">            </span><span class="p">{</span>
-<span class="w">                </span><span class="nt">&quot;type_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
-<span class="w">                </span><span class="nt">&quot;type_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;knows&quot;</span><span class="p">,</span>
-<span class="w">                </span><span class="nt">&quot;vertex_type_pair_relations&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">                    </span><span class="p">{</span>
-<span class="w">                        </span><span class="nt">&quot;source_vertex&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;person&quot;</span><span class="p">,</span>
-<span class="w">                        </span><span class="nt">&quot;destination_vertex&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;person&quot;</span><span class="p">,</span>
-<span class="w">                        </span><span class="nt">&quot;relation&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MANY_TO_MANY&quot;</span><span class="p">,</span>
-<span class="w">                    </span><span class="p">}</span>
-<span class="w">                </span><span class="p">],</span>
-<span class="w">                </span><span class="nt">&quot;properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">                    </span><span class="p">{</span>
-<span class="w">                        </span><span class="nt">&quot;property_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
-<span class="w">                        </span><span class="nt">&quot;property_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;weight&quot;</span><span class="p">,</span>
-<span class="w">                        </span><span class="nt">&quot;property_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">                            </span><span class="nt">&quot;primitive_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;DT_DOUBLE&quot;</span>
-<span class="w">                        </span><span class="p">}</span>
-<span class="w">                    </span><span class="p">}</span>
-<span class="w">                </span><span class="p">]</span>
-<span class="w">            </span><span class="p">},</span>
-<span class="w">            </span><span class="p">{</span>
-<span class="w">                </span><span class="nt">&quot;type_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
-<span class="w">                </span><span class="nt">&quot;type_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;created&quot;</span><span class="p">,</span>
-<span class="w">                </span><span class="nt">&quot;vertex_type_pair_relations&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">                    </span><span class="p">{</span>
-<span class="w">                        </span><span class="nt">&quot;source_vertex&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;person&quot;</span><span class="p">,</span>
-<span class="w">                        </span><span class="nt">&quot;destination_vertex&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;software&quot;</span><span class="p">,</span>
-<span class="w">                        </span><span class="nt">&quot;relation&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ONE_TO_MANY&quot;</span><span class="p">,</span>
-<span class="w">                    </span><span class="p">}</span>
-<span class="w">                </span><span class="p">],</span>
-<span class="w">                </span><span class="nt">&quot;properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
-<span class="w">                    </span><span class="p">{</span>
-<span class="w">                        </span><span class="nt">&quot;property_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
-<span class="w">                        </span><span class="nt">&quot;property_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;weight&quot;</span><span class="p">,</span>
-<span class="w">                        </span><span class="nt">&quot;property_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
-<span class="w">                            </span><span class="nt">&quot;primitive_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;DT_DOUBLE&quot;</span>
-<span class="w">                        </span><span class="p">}</span>
-<span class="w">                    </span><span class="p">}</span>
-<span class="w">                </span><span class="p">]</span>
-<span class="w">            </span><span class="p">}</span>
-<span class="w">        </span><span class="p">]</span>
-<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="nt">&quot;vertex_types&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;type_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;type_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;person&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">              </span><span class="p">{</span>
+<span class="w">                  </span><span class="nt">&quot;property_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">                  </span><span class="nt">&quot;property_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;id&quot;</span><span class="p">,</span>
+<span class="w">                  </span><span class="nt">&quot;property_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                      </span><span class="nt">&quot;primitive_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;DT_SIGNED_INT64&quot;</span>
+<span class="w">                  </span><span class="p">}</span>
+<span class="w">              </span><span class="p">},</span>
+<span class="w">              </span><span class="p">{</span>
+<span class="w">                  </span><span class="nt">&quot;property_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">                  </span><span class="nt">&quot;property_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;name&quot;</span><span class="p">,</span>
+<span class="w">                  </span><span class="nt">&quot;property_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                      </span><span class="nt">&quot;string&quot;</span><span class="p">:{</span>
+<span class="w">                          </span><span class="nt">&quot;long_text&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span>
+<span class="w">                      </span><span class="p">}</span>
+<span class="w">                  </span><span class="p">}</span>
+<span class="w">              </span><span class="p">},</span>
+<span class="w">              </span><span class="p">{</span>
+<span class="w">                  </span><span class="nt">&quot;property_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">                  </span><span class="nt">&quot;property_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;age&quot;</span><span class="p">,</span>
+<span class="w">                  </span><span class="nt">&quot;property_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                      </span><span class="nt">&quot;string&quot;</span><span class="p">:{</span>
+<span class="w">                          </span><span class="nt">&quot;long_text&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span>
+<span class="w">                      </span><span class="p">}</span>
+<span class="w">                  </span><span class="p">}</span>
+<span class="w">              </span><span class="p">}</span>
+<span class="w">          </span><span class="p">],</span>
+<span class="w">          </span><span class="nt">&quot;primary_keys&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">              </span><span class="s2">&quot;id&quot;</span>
+<span class="w">          </span><span class="p">]</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;type_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;type_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;software&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">              </span><span class="p">{</span>
+<span class="w">                  </span><span class="nt">&quot;property_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">                  </span><span class="nt">&quot;property_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;id&quot;</span><span class="p">,</span>
+<span class="w">                  </span><span class="nt">&quot;property_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                      </span><span class="nt">&quot;primitive_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;DT_SIGNED_INT64&quot;</span>
+<span class="w">                  </span><span class="p">}</span>
+<span class="w">              </span><span class="p">},</span>
+<span class="w">              </span><span class="p">{</span>
+<span class="w">                  </span><span class="nt">&quot;property_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">                  </span><span class="nt">&quot;property_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;name&quot;</span><span class="p">,</span>
+<span class="w">                  </span><span class="nt">&quot;property_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                      </span><span class="nt">&quot;string&quot;</span><span class="p">:{</span>
+<span class="w">                          </span><span class="nt">&quot;long_text&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span>
+<span class="w">                      </span><span class="p">}</span>
+<span class="w">                  </span><span class="p">}</span>
+<span class="w">              </span><span class="p">},</span>
+<span class="w">              </span><span class="p">{</span>
+<span class="w">                  </span><span class="nt">&quot;property_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">                  </span><span class="nt">&quot;property_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;lang&quot;</span><span class="p">,</span>
+<span class="w">                  </span><span class="nt">&quot;property_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                      </span><span class="nt">&quot;string&quot;</span><span class="p">:{</span>
+<span class="w">                          </span><span class="nt">&quot;long_text&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{}</span>
+<span class="w">                      </span><span class="p">}</span>
+<span class="w">                  </span><span class="p">}</span>
+<span class="w">              </span><span class="p">}</span>
+<span class="w">          </span><span class="p">],</span>
+<span class="w">          </span><span class="nt">&quot;primary_keys&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">              </span><span class="s2">&quot;id&quot;</span>
+<span class="w">          </span><span class="p">]</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;edge_types&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;type_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;type_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;knows&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;vertex_type_pair_relations&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">              </span><span class="p">{</span>
+<span class="w">                  </span><span class="nt">&quot;source_vertex&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;person&quot;</span><span class="p">,</span>
+<span class="w">                  </span><span class="nt">&quot;destination_vertex&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;person&quot;</span><span class="p">,</span>
+<span class="w">                  </span><span class="nt">&quot;relation&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;MANY_TO_MANY&quot;</span><span class="p">,</span>
+<span class="w">              </span><span class="p">}</span>
+<span class="w">          </span><span class="p">],</span>
+<span class="w">          </span><span class="nt">&quot;properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">              </span><span class="p">{</span>
+<span class="w">                  </span><span class="nt">&quot;property_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">                  </span><span class="nt">&quot;property_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;weight&quot;</span><span class="p">,</span>
+<span class="w">                  </span><span class="nt">&quot;property_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                      </span><span class="nt">&quot;primitive_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;DT_DOUBLE&quot;</span>
+<span class="w">                  </span><span class="p">}</span>
+<span class="w">              </span><span class="p">}</span>
+<span class="w">          </span><span class="p">]</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;type_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;type_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;created&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="nt">&quot;vertex_type_pair_relations&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">              </span><span class="p">{</span>
+<span class="w">                  </span><span class="nt">&quot;source_vertex&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;person&quot;</span><span class="p">,</span>
+<span class="w">                  </span><span class="nt">&quot;destination_vertex&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;software&quot;</span><span class="p">,</span>
+<span class="w">                  </span><span class="nt">&quot;relation&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ONE_TO_MANY&quot;</span><span class="p">,</span>
+<span class="w">              </span><span class="p">}</span>
+<span class="w">          </span><span class="p">],</span>
+<span class="w">          </span><span class="nt">&quot;properties&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">              </span><span class="p">{</span>
+<span class="w">                  </span><span class="nt">&quot;property_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">                  </span><span class="nt">&quot;property_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;weight&quot;</span><span class="p">,</span>
+<span class="w">                  </span><span class="nt">&quot;property_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">                      </span><span class="nt">&quot;primitive_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;DT_DOUBLE&quot;</span>
+<span class="w">                  </span><span class="p">}</span>
+<span class="w">              </span><span class="p">}</span>
+<span class="w">          </span><span class="p">]</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 </section>
 <section id="id15">
-<h4>Status Codes<a class="headerlink" href="#id15" title="Permalink to this heading">#</a></h4>
+<h4>Status Codes<a class="headerlink" href="#id15" title="Permalink to this heading">¶</a></h4>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">200</span> <span class="pre">OK</span></code>: Request successful.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">500</span> <span class="pre">Internal</span> <span class="pre">Error</span></code>: Server internal Error.</p></li>
@@ -1250,206 +1293,207 @@ MathJax = {
 </section>
 </section>
 <section id="importgraph-graphmanagement-category">
-<h3>ImportGraph  (GraphManagement Category)<a class="headerlink" href="#importgraph-graphmanagement-category" title="Permalink to this heading">#</a></h3>
+<h3>ImportGraph  (GraphManagement Category)<a class="headerlink" href="#importgraph-graphmanagement-category" title="Permalink to this heading">¶</a></h3>
 <section id="id16">
-<h4>Description<a class="headerlink" href="#id16" title="Permalink to this heading">#</a></h4>
-<p>Import data to empty graph.</p>
+<h4>Description<a class="headerlink" href="#id16" title="Permalink to this heading">¶</a></h4>
+<p>Import data to empty graph. This is a non-blocking API as it will directly return the job id after the bulk loading job is created.
+Client can use the returned job_id to <a class="reference internal" href="#getjobbyid-jobmanagement-category"><span class="xref myst">query the status of job</span></a> or <a class="reference internal" href="#canceljobbyid-jobmanagement-category"><span class="xref myst">cancel a runing job</span></a>.</p>
 </section>
 <section id="id17">
-<h4>HTTP Request<a class="headerlink" href="#id17" title="Permalink to this heading">#</a></h4>
+<h4>HTTP Request<a class="headerlink" href="#id17" title="Permalink to this heading">¶</a></h4>
 <ul class="simple">
 <li><p><strong>Method</strong>: POST</p></li>
-<li><p><strong>Endpoint</strong>: <code class="docutils literal notranslate"><span class="pre">/v1/graph/{graph_name}/dataloading</span></code></p></li>
+<li><p><strong>Endpoint</strong>: <code class="docutils literal notranslate"><span class="pre">/v1/graph/{graph_id}/dataloading</span></code></p></li>
 <li><p><strong>Content-type</strong>: <code class="docutils literal notranslate"><span class="pre">application/json</span></code></p></li>
 <li><p><strong>Body</strong>:</p></li>
 </ul>
-<div class="highlight-json notranslate"><div class="highlight"><pre><span></span>{
-  &quot;graph&quot;: &quot;graph&quot;,
-  &quot;loading_config&quot;: {
-    &quot;data_source&quot;: {
-      &quot;scheme&quot;: &quot;file&quot;
-	  &quot;location&quot;: {path_to_file},
-    },
-    &quot;format&quot;: {
-      &quot;metadata&quot;: {
-        &quot;key&quot;: &quot;metadata&quot;
-      },
-      &quot;type&quot;: &quot;type&quot;
-    },
-    &quot;import_option&quot;: &quot;init&quot;
-  },
-  &quot;edge_mappings&quot;: [
-    {
-      &quot;column_mappings&quot;: [
-        {
-          &quot;column&quot;: {
-            &quot;index&quot;: 0,
-            &quot;name&quot;: &quot;name&quot;
-          },
-          &quot;property&quot;: &quot;property&quot;
-        },
-        {
-          &quot;column&quot;: {
-            &quot;index&quot;: 0,
-            &quot;name&quot;: &quot;name&quot;
-          },
-          &quot;property&quot;: &quot;property&quot;
-        }
-      ],
-      &quot;destination_vertex_mappings&quot;: [
-        {
-          &quot;column&quot;: {
-            &quot;index&quot;: 0,
-            &quot;name&quot;: &quot;name&quot;
-          }
-        },
-        {
-          &quot;column&quot;: {
-            &quot;index&quot;: 0,
-            &quot;name&quot;: &quot;name&quot;
-          }
-        }
-      ],
-      &quot;inputs&quot;: [
-        &quot;inputs&quot;,
-        &quot;inputs&quot;
-      ],
-      &quot;source_vertex_mappings&quot;: [
-        {
-          &quot;column&quot;: {
-            &quot;index&quot;: 0,
-            &quot;name&quot;: &quot;name&quot;
-          }
-        },
-        {
-          &quot;column&quot;: {
-            &quot;index&quot;: 0,
-            &quot;name&quot;: &quot;name&quot;
-          }
-        }
-      ],
-      &quot;type_triplet&quot;: {
-        &quot;destination_vertex&quot;: &quot;destination_vertex&quot;,
-        &quot;edge&quot;: &quot;edge&quot;,
-        &quot;source_vertex&quot;: &quot;source_vertex&quot;
-      }
-    },
-    {
-      &quot;column_mappings&quot;: [
-        {
-          &quot;column&quot;: {
-            &quot;index&quot;: 0,
-            &quot;name&quot;: &quot;name&quot;
-          },
-          &quot;property&quot;: &quot;property&quot;
-        },
-        {
-          &quot;column&quot;: {
-            &quot;index&quot;: 0,
-            &quot;name&quot;: &quot;name&quot;
-          },
-          &quot;property&quot;: &quot;property&quot;
-        }
-      ],
-      &quot;destination_vertex_mappings&quot;: [
-        {
-          &quot;column&quot;: {
-            &quot;index&quot;: 0,
-            &quot;name&quot;: &quot;name&quot;
-          }
-        },
-        {
-          &quot;column&quot;: {
-            &quot;index&quot;: 0,
-            &quot;name&quot;: &quot;name&quot;
-          }
-        }
-      ],
-      &quot;inputs&quot;: [
-        &quot;inputs&quot;,
-        &quot;inputs&quot;
-      ],
-      &quot;source_vertex_mappings&quot;: [
-        {
-          &quot;column&quot;: {
-            &quot;index&quot;: 0,
-            &quot;name&quot;: &quot;name&quot;
-          }
-        },
-        {
-          &quot;column&quot;: {
-            &quot;index&quot;: 0,
-            &quot;name&quot;: &quot;name&quot;
-          }
-        }
-      ],
-      &quot;type_triplet&quot;: {
-        &quot;destination_vertex&quot;: &quot;destination_vertex&quot;,
-        &quot;edge&quot;: &quot;edge&quot;,
-        &quot;source_vertex&quot;: &quot;source_vertex&quot;
-      }
-    }
-  ],
-  &quot;vertex_mappings&quot;: [
-    {
-      &quot;column_mappings&quot;: [
-        {
-          &quot;column&quot;: {
-            &quot;index&quot;: 0,
-            &quot;name&quot;: &quot;name&quot;
-          },
-          &quot;property&quot;: &quot;property&quot;
-        },
-        {
-          &quot;column&quot;: {
-            &quot;index&quot;: 0,
-            &quot;name&quot;: &quot;name&quot;
-          },
-          &quot;property&quot;: &quot;property&quot;
-        }
-      ],
-      &quot;inputs&quot;: [
-        &quot;inputs&quot;,
-        &quot;inputs&quot;
-      ],
-      &quot;type_name&quot;: &quot;type_name&quot;
-    },
-    {
-      &quot;column_mappings&quot;: [
-        {
-          &quot;column&quot;: {
-            &quot;index&quot;: 0,
-            &quot;name&quot;: &quot;name&quot;
-          },
-          &quot;property&quot;: &quot;property&quot;
-        },
-        {
-          &quot;column&quot;: {
-            &quot;index&quot;: 0,
-            &quot;name&quot;: &quot;name&quot;
-          },
-          &quot;property&quot;: &quot;property&quot;
-        }
-      ],
-      &quot;inputs&quot;: [
-        &quot;inputs&quot;,
-        &quot;inputs&quot;
-      ],
-      &quot;type_name&quot;: &quot;type_name&quot;
-    }
-  ]
-}
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;graph&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;graph&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;loading_config&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;data_source&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;scheme&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;file&quot;</span><span class="p">,</span>
+<span class="w">	    </span><span class="nt">&quot;location&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;path_to_file&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;format&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;metadata&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;key&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;metadata&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;type&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;import_option&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;init&quot;</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;edge_mappings&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;column_mappings&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;column&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;index&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;name&quot;</span>
+<span class="w">          </span><span class="p">},</span>
+<span class="w">          </span><span class="nt">&quot;property&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;property&quot;</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;column&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;index&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;name&quot;</span>
+<span class="w">          </span><span class="p">},</span>
+<span class="w">          </span><span class="nt">&quot;property&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;property&quot;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="nt">&quot;destination_vertex_mappings&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;column&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;index&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;name&quot;</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;column&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;index&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;name&quot;</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="nt">&quot;inputs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">&quot;inputs&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;inputs&quot;</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="nt">&quot;source_vertex_mappings&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;column&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;index&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;name&quot;</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;column&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;index&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;name&quot;</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="nt">&quot;type_triplet&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;destination_vertex&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;destination_vertex&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;edge&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;edge&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;source_vertex&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;source_vertex&quot;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;column_mappings&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;column&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;index&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;name&quot;</span>
+<span class="w">          </span><span class="p">},</span>
+<span class="w">          </span><span class="nt">&quot;property&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;property&quot;</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;column&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;index&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;name&quot;</span>
+<span class="w">          </span><span class="p">},</span>
+<span class="w">          </span><span class="nt">&quot;property&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;property&quot;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="nt">&quot;destination_vertex_mappings&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;column&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;index&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;name&quot;</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;column&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;index&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;name&quot;</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="nt">&quot;inputs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">&quot;inputs&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;inputs&quot;</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="nt">&quot;source_vertex_mappings&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;column&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;index&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;name&quot;</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;column&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;index&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;name&quot;</span>
+<span class="w">          </span><span class="p">}</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="nt">&quot;type_triplet&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;destination_vertex&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;destination_vertex&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;edge&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;edge&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;source_vertex&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;source_vertex&quot;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;vertex_mappings&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;column_mappings&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;column&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;index&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;name&quot;</span>
+<span class="w">          </span><span class="p">},</span>
+<span class="w">          </span><span class="nt">&quot;property&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;property&quot;</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;column&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;index&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;name&quot;</span>
+<span class="w">          </span><span class="p">},</span>
+<span class="w">          </span><span class="nt">&quot;property&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;property&quot;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="nt">&quot;inputs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">&quot;inputs&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;inputs&quot;</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="nt">&quot;type_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;type_name&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;column_mappings&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;column&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;index&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;name&quot;</span>
+<span class="w">          </span><span class="p">},</span>
+<span class="w">          </span><span class="nt">&quot;property&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;property&quot;</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">          </span><span class="nt">&quot;column&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;index&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">            </span><span class="nt">&quot;name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;name&quot;</span>
+<span class="w">          </span><span class="p">},</span>
+<span class="w">          </span><span class="nt">&quot;property&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;property&quot;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="nt">&quot;inputs&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">&quot;inputs&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;inputs&quot;</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="nt">&quot;type_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;type_name&quot;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 </section>
 <section id="id18">
-<h4>Curl Command Example<a class="headerlink" href="#id18" title="Permalink to this heading">#</a></h4>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span>-d<span class="w"> </span>@path/to/json<span class="w"> </span><span class="s2">&quot;http://[host]/v1/graph/{graph_name}/dataloading&quot;</span>
+<h4>Curl Command Example<a class="headerlink" href="#id18" title="Permalink to this heading">¶</a></h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span>-d<span class="w"> </span>@path/to/json<span class="w"> </span><span class="s2">&quot;http://[host]/v1/graph/{graph_id}/dataloading&quot;</span>
 </pre></div>
 </div>
 </section>
 <section id="id19">
-<h4>Expected Response<a class="headerlink" href="#id19" title="Permalink to this heading">#</a></h4>
+<h4>Expected Response<a class="headerlink" href="#id19" title="Permalink to this heading">¶</a></h4>
 <ul class="simple">
 <li><p><strong>Format</strong>: <code class="docutils literal notranslate"><span class="pre">application/json</span></code></p></li>
 <li><p><strong>Body</strong>:</p></li>
@@ -1461,7 +1505,7 @@ MathJax = {
 </div>
 </section>
 <section id="id20">
-<h4>Status Codes<a class="headerlink" href="#id20" title="Permalink to this heading">#</a></h4>
+<h4>Status Codes<a class="headerlink" href="#id20" title="Permalink to this heading">¶</a></h4>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">200</span> <span class="pre">OK</span></code>: Request successful.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">500</span> <span class="pre">Internal</span> <span class="pre">Error</span></code>: Server internal Error.</p></li>
@@ -1470,16 +1514,16 @@ MathJax = {
 </section>
 </section>
 <section id="createprocedure-proceduremanagement-category">
-<h3>CreateProcedure (ProcedureManagement Category)<a class="headerlink" href="#createprocedure-proceduremanagement-category" title="Permalink to this heading">#</a></h3>
+<h3>CreateProcedure (ProcedureManagement Category)<a class="headerlink" href="#createprocedure-proceduremanagement-category" title="Permalink to this heading">¶</a></h3>
 <section id="id21">
-<h4>Description<a class="headerlink" href="#id21" title="Permalink to this heading">#</a></h4>
+<h4>Description<a class="headerlink" href="#id21" title="Permalink to this heading">¶</a></h4>
 <p>Create a new stored procedure.</p>
 </section>
 <section id="id22">
-<h4>HTTP Request<a class="headerlink" href="#id22" title="Permalink to this heading">#</a></h4>
+<h4>HTTP Request<a class="headerlink" href="#id22" title="Permalink to this heading">¶</a></h4>
 <ul class="simple">
 <li><p><strong>Method</strong>: POST</p></li>
-<li><p><strong>Endpoint</strong>: <code class="docutils literal notranslate"><span class="pre">/v1/graph/{graph_name}/procedure</span></code></p></li>
+<li><p><strong>Endpoint</strong>: <code class="docutils literal notranslate"><span class="pre">/v1/graph/{graph_id}/procedure</span></code></p></li>
 <li><p><strong>Content-type</strong>: <code class="docutils literal notranslate"><span class="pre">application/json</span></code></p></li>
 <li><p><strong>Body</strong>:</p></li>
 </ul>
@@ -1495,13 +1539,13 @@ MathJax = {
 </div>
 </section>
 <section id="id23">
-<h4>Curl Command Example<a class="headerlink" href="#id23" title="Permalink to this heading">#</a></h4>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span>-d<span class="w"> </span>@/path/to/json<span class="w"> </span><span class="s2">&quot;http://[host]/v1/graph/{graph_name}/procedure&quot;</span>
+<h4>Curl Command Example<a class="headerlink" href="#id23" title="Permalink to this heading">¶</a></h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span>-d<span class="w"> </span>@/path/to/json<span class="w"> </span><span class="s2">&quot;http://[host]/v1/graph/{graph_id}/procedure&quot;</span>
 </pre></div>
 </div>
 </section>
 <section id="id24">
-<h4>Expected Response<a class="headerlink" href="#id24" title="Permalink to this heading">#</a></h4>
+<h4>Expected Response<a class="headerlink" href="#id24" title="Permalink to this heading">¶</a></h4>
 <ul class="simple">
 <li><p><strong>Format</strong>: application/json</p></li>
 <li><p><strong>Body</strong>:</p></li>
@@ -1513,7 +1557,7 @@ MathJax = {
 </div>
 </section>
 <section id="id25">
-<h4>Status Codes<a class="headerlink" href="#id25" title="Permalink to this heading">#</a></h4>
+<h4>Status Codes<a class="headerlink" href="#id25" title="Permalink to this heading">¶</a></h4>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">200</span> <span class="pre">OK</span></code>: Request successful.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">500</span> <span class="pre">Internal</span> <span class="pre">Error</span></code>: Server internal Error.</p></li>
@@ -1522,27 +1566,27 @@ MathJax = {
 </section>
 </section>
 <section id="listallprocedure-proceduremanagement-category">
-<h3>ListAllProcedure  (ProcedureManagement Category)<a class="headerlink" href="#listallprocedure-proceduremanagement-category" title="Permalink to this heading">#</a></h3>
+<h3>ListAllProcedure  (ProcedureManagement Category)<a class="headerlink" href="#listallprocedure-proceduremanagement-category" title="Permalink to this heading">¶</a></h3>
 <section id="id26">
-<h4>Description<a class="headerlink" href="#id26" title="Permalink to this heading">#</a></h4>
+<h4>Description<a class="headerlink" href="#id26" title="Permalink to this heading">¶</a></h4>
 <p>List all procedures bound to a graph.</p>
 </section>
 <section id="id27">
-<h4>HTTP Request<a class="headerlink" href="#id27" title="Permalink to this heading">#</a></h4>
+<h4>HTTP Request<a class="headerlink" href="#id27" title="Permalink to this heading">¶</a></h4>
 <ul class="simple">
 <li><p><strong>Method</strong>: GET</p></li>
-<li><p><strong>Endpoint</strong>: <code class="docutils literal notranslate"><span class="pre">/v1/graph/{graph_name}/procedure</span></code></p></li>
+<li><p><strong>Endpoint</strong>: <code class="docutils literal notranslate"><span class="pre">/v1/graph/{graph_id}/procedure</span></code></p></li>
 <li><p><strong>Content-type</strong>: <code class="docutils literal notranslate"><span class="pre">application/json</span></code></p></li>
 </ul>
 </section>
 <section id="id28">
-<h4>Curl Command Example<a class="headerlink" href="#id28" title="Permalink to this heading">#</a></h4>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>GET<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="s2">&quot;http://[host]/v1/graph/{graph_name}/procedure&quot;</span>
+<h4>Curl Command Example<a class="headerlink" href="#id28" title="Permalink to this heading">¶</a></h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>GET<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="s2">&quot;http://[host]/v1/graph/{graph_id}/procedure&quot;</span>
 </pre></div>
 </div>
 </section>
 <section id="id29">
-<h4>Expected Response<a class="headerlink" href="#id29" title="Permalink to this heading">#</a></h4>
+<h4>Expected Response<a class="headerlink" href="#id29" title="Permalink to this heading">¶</a></h4>
 <ul class="simple">
 <li><p><strong>Format</strong>: application/json</p></li>
 <li><p><strong>Body</strong>:</p></li>
@@ -1581,7 +1625,7 @@ MathJax = {
 </div>
 </section>
 <section id="id30">
-<h4>Status Codes<a class="headerlink" href="#id30" title="Permalink to this heading">#</a></h4>
+<h4>Status Codes<a class="headerlink" href="#id30" title="Permalink to this heading">¶</a></h4>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">200</span> <span class="pre">OK</span></code>: Request successful.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">500</span> <span class="pre">Internal</span> <span class="pre">Error</span></code>: Server internal Error.</p></li>
@@ -1590,27 +1634,27 @@ MathJax = {
 </section>
 </section>
 <section id="getprocedure-proceduremanagement-category">
-<h3>GetProcedure (ProcedureManagement Category)<a class="headerlink" href="#getprocedure-proceduremanagement-category" title="Permalink to this heading">#</a></h3>
+<h3>GetProcedure (ProcedureManagement Category)<a class="headerlink" href="#getprocedure-proceduremanagement-category" title="Permalink to this heading">¶</a></h3>
 <section id="id31">
-<h4>Description<a class="headerlink" href="#id31" title="Permalink to this heading">#</a></h4>
+<h4>Description<a class="headerlink" href="#id31" title="Permalink to this heading">¶</a></h4>
 <p>Get a single procedure’s metadata.</p>
 </section>
 <section id="id32">
-<h4>HTTP Request<a class="headerlink" href="#id32" title="Permalink to this heading">#</a></h4>
+<h4>HTTP Request<a class="headerlink" href="#id32" title="Permalink to this heading">¶</a></h4>
 <ul class="simple">
 <li><p><strong>Method</strong>: GET</p></li>
-<li><p><strong>Endpoint</strong>: <code class="docutils literal notranslate"><span class="pre">/v1/graph/{graph_name}/procedure/{procedure_name}</span></code></p></li>
+<li><p><strong>Endpoint</strong>: <code class="docutils literal notranslate"><span class="pre">/v1/graph/{graph_id}/procedure/{procedure_id}</span></code></p></li>
 <li><p><strong>Content-type</strong>: <code class="docutils literal notranslate"><span class="pre">application/json</span></code></p></li>
 </ul>
 </section>
 <section id="id33">
-<h4>Curl Command Example<a class="headerlink" href="#id33" title="Permalink to this heading">#</a></h4>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>GET<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="s2">&quot;http://[host]/v1/graph/{graph_name}/procedure/{procedure_name}&quot;</span>
+<h4>Curl Command Example<a class="headerlink" href="#id33" title="Permalink to this heading">¶</a></h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>GET<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="s2">&quot;http://[host]/v1/graph/{graph_id}/procedure/{procedure_id}&quot;</span>
 </pre></div>
 </div>
 </section>
 <section id="id34">
-<h4>Expected Response<a class="headerlink" href="#id34" title="Permalink to this heading">#</a></h4>
+<h4>Expected Response<a class="headerlink" href="#id34" title="Permalink to this heading">¶</a></h4>
 <ul class="simple">
 <li><p><strong>Format</strong>: application/json</p></li>
 <li><p><strong>Body</strong>:</p></li>
@@ -1647,7 +1691,7 @@ MathJax = {
 </div>
 </section>
 <section id="id35">
-<h4>Status Codes<a class="headerlink" href="#id35" title="Permalink to this heading">#</a></h4>
+<h4>Status Codes<a class="headerlink" href="#id35" title="Permalink to this heading">¶</a></h4>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">200</span> <span class="pre">OK</span></code>: Request successful.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">500</span> <span class="pre">Internal</span> <span class="pre">Error</span></code>: Server internal Error.</p></li>
@@ -1655,16 +1699,16 @@ MathJax = {
 </section>
 </section>
 <section id="updateprocedure-proceduremanagement-category">
-<h3>UpdateProcedure (ProcedureManagement Category)<a class="headerlink" href="#updateprocedure-proceduremanagement-category" title="Permalink to this heading">#</a></h3>
+<h3>UpdateProcedure (ProcedureManagement Category)<a class="headerlink" href="#updateprocedure-proceduremanagement-category" title="Permalink to this heading">¶</a></h3>
 <section id="id36">
-<h4>Description<a class="headerlink" href="#id36" title="Permalink to this heading">#</a></h4>
+<h4>Description<a class="headerlink" href="#id36" title="Permalink to this heading">¶</a></h4>
 <p>Update a procedure’s metadata, enable/disable status, description. The procedure’s name cannot be modified.</p>
 </section>
 <section id="id37">
-<h4>HTTP Request<a class="headerlink" href="#id37" title="Permalink to this heading">#</a></h4>
+<h4>HTTP Request<a class="headerlink" href="#id37" title="Permalink to this heading">¶</a></h4>
 <ul class="simple">
 <li><p><strong>Method</strong>: PUT</p></li>
-<li><p><strong>Endpoint</strong>: <code class="docutils literal notranslate"><span class="pre">/v1/graph/{graph_name}/procedure/{procedure_name}</span></code></p></li>
+<li><p><strong>Endpoint</strong>: <code class="docutils literal notranslate"><span class="pre">/v1/graph/{graph_id}/procedure/{procedure_id}</span></code></p></li>
 <li><p><strong>Content-type</strong>: <code class="docutils literal notranslate"><span class="pre">application/json</span></code></p></li>
 <li><p><strong>Body</strong>:</p></li>
 </ul>
@@ -1676,13 +1720,13 @@ MathJax = {
 </div>
 </section>
 <section id="id38">
-<h4>Curl Command Example<a class="headerlink" href="#id38" title="Permalink to this heading">#</a></h4>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>PUT<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span>-d<span class="w"> </span>@/path/to/json<span class="w"> </span><span class="s2">&quot;http://[host]//v1/graph/{graph_name}/procedure/{procedure_name}&quot;</span>
+<h4>Curl Command Example<a class="headerlink" href="#id38" title="Permalink to this heading">¶</a></h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>PUT<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span>-d<span class="w"> </span>@/path/to/json<span class="w"> </span><span class="s2">&quot;http://[host]//v1/graph/{graph_id}/procedure/{procedure_id}&quot;</span>
 </pre></div>
 </div>
 </section>
 <section id="id39">
-<h4>Expected Response<a class="headerlink" href="#id39" title="Permalink to this heading">#</a></h4>
+<h4>Expected Response<a class="headerlink" href="#id39" title="Permalink to this heading">¶</a></h4>
 <ul class="simple">
 <li><p><strong>Format</strong>: <code class="docutils literal notranslate"><span class="pre">application/json</span></code></p></li>
 <li><p><strong>Body</strong>:</p></li>
@@ -1719,7 +1763,7 @@ MathJax = {
 </div>
 </section>
 <section id="id40">
-<h4>Status Codes<a class="headerlink" href="#id40" title="Permalink to this heading">#</a></h4>
+<h4>Status Codes<a class="headerlink" href="#id40" title="Permalink to this heading">¶</a></h4>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">200</span> <span class="pre">OK</span></code>: Request successful.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">500</span> <span class="pre">Internal</span> <span class="pre">Error</span></code>: Server internal Error.</p></li>
@@ -1728,27 +1772,27 @@ MathJax = {
 </section>
 </section>
 <section id="deleteprocedure-proceduremanagement-category">
-<h3>DeleteProcedure (ProcedureManagement Category)<a class="headerlink" href="#deleteprocedure-proceduremanagement-category" title="Permalink to this heading">#</a></h3>
+<h3>DeleteProcedure (ProcedureManagement Category)<a class="headerlink" href="#deleteprocedure-proceduremanagement-category" title="Permalink to this heading">¶</a></h3>
 <section id="id41">
-<h4>Description<a class="headerlink" href="#id41" title="Permalink to this heading">#</a></h4>
+<h4>Description<a class="headerlink" href="#id41" title="Permalink to this heading">¶</a></h4>
 <p>Delete a procedure bound to the graph.</p>
 </section>
 <section id="id42">
-<h4>HTTP Request<a class="headerlink" href="#id42" title="Permalink to this heading">#</a></h4>
+<h4>HTTP Request<a class="headerlink" href="#id42" title="Permalink to this heading">¶</a></h4>
 <ul class="simple">
 <li><p><strong>Method</strong>: DELETE</p></li>
-<li><p><strong>Endpoint</strong>: <code class="docutils literal notranslate"><span class="pre">/v1/graph/{graph_name}/procedure/{procedure_name}</span></code></p></li>
+<li><p><strong>Endpoint</strong>: <code class="docutils literal notranslate"><span class="pre">/v1/graph/{graph_id}/procedure/{procedure_id}</span></code></p></li>
 <li><p><strong>Content-type</strong>: <code class="docutils literal notranslate"><span class="pre">application/json</span></code></p></li>
 </ul>
 </section>
 <section id="id43">
-<h4>Curl Command Example<a class="headerlink" href="#id43" title="Permalink to this heading">#</a></h4>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>DELETE<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="s2">&quot;http://[host]/v1/graph/{graph_name}/procedure/{procedure_name}&quot;</span>
+<h4>Curl Command Example<a class="headerlink" href="#id43" title="Permalink to this heading">¶</a></h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>DELETE<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="s2">&quot;http://[host]/v1/graph/{graph_id}/procedure/{procedure_id}&quot;</span>
 </pre></div>
 </div>
 </section>
 <section id="id44">
-<h4>Expected Response<a class="headerlink" href="#id44" title="Permalink to this heading">#</a></h4>
+<h4>Expected Response<a class="headerlink" href="#id44" title="Permalink to this heading">¶</a></h4>
 <ul class="simple">
 <li><p><strong>Format</strong>: application/json</p></li>
 <li><p><strong>Body</strong>:</p></li>
@@ -1760,7 +1804,7 @@ MathJax = {
 </div>
 </section>
 <section id="id45">
-<h4>Status Codes<a class="headerlink" href="#id45" title="Permalink to this heading">#</a></h4>
+<h4>Status Codes<a class="headerlink" href="#id45" title="Permalink to this heading">¶</a></h4>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">200</span> <span class="pre">OK</span></code>: Request successful.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">500</span> <span class="pre">Internal</span> <span class="pre">Error</span></code>: Server internal Error.</p></li>
@@ -1769,10 +1813,10 @@ MathJax = {
 </section>
 </section>
 <section id="startservice-servicemanagement-category">
-<h3>StartService (ServiceManagement Category)<a class="headerlink" href="#startservice-servicemanagement-category" title="Permalink to this heading">#</a></h3>
+<h3>StartService (ServiceManagement Category)<a class="headerlink" href="#startservice-servicemanagement-category" title="Permalink to this heading">¶</a></h3>
 <section id="id46">
-<h4>Description<a class="headerlink" href="#id46" title="Permalink to this heading">#</a></h4>
-<p>Start the query service on a graph. The <code class="docutils literal notranslate"><span class="pre">graph_name</span></code> param can be empty, indicating restarting on current running graph.</p>
+<h4>Description<a class="headerlink" href="#id46" title="Permalink to this heading">¶</a></h4>
+<p>Start the query service on a graph. The <code class="docutils literal notranslate"><span class="pre">graph_id</span></code> param can be empty, indicating restarting on current running graph.</p>
 <ol class="arabic simple">
 <li><p>After the AdminService receives this request, the current actor scope for query actors will be cancelled.</p></li>
 <li><p>During the scope cancellation process of the query actors or after scope cancellation is completed, all requests sent to the query_service will fail and be rejected.
@@ -1790,7 +1834,7 @@ The response of the http request will be like</p></li>
 </ol>
 </section>
 <section id="id47">
-<h4>HTTP Request<a class="headerlink" href="#id47" title="Permalink to this heading">#</a></h4>
+<h4>HTTP Request<a class="headerlink" href="#id47" title="Permalink to this heading">¶</a></h4>
 <ul class="simple">
 <li><p><strong>Method</strong>: POST</p></li>
 <li><p><strong>Endpoint</strong>: <code class="docutils literal notranslate"><span class="pre">/v1/service/start</span></code></p></li>
@@ -1798,19 +1842,19 @@ The response of the http request will be like</p></li>
 <li><p><strong>Body</strong>:</p></li>
 </ul>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">	</span><span class="nt">&quot;graph_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;modern_graph&quot;</span>
+<span class="w">	</span><span class="nt">&quot;graph_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;modern_graph&quot;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 </section>
 <section id="id48">
-<h4>Curl Command Example<a class="headerlink" href="#id48" title="Permalink to this heading">#</a></h4>
+<h4>Curl Command Example<a class="headerlink" href="#id48" title="Permalink to this heading">¶</a></h4>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="s2">&quot;http://[host]/v1/service/start&quot;</span>
 </pre></div>
 </div>
 </section>
 <section id="id49">
-<h4>Expected Response<a class="headerlink" href="#id49" title="Permalink to this heading">#</a></h4>
+<h4>Expected Response<a class="headerlink" href="#id49" title="Permalink to this heading">¶</a></h4>
 <ul class="simple">
 <li><p><strong>Format</strong>: application/json</p></li>
 <li><p><strong>Body</strong>:</p></li>
@@ -1822,7 +1866,92 @@ The response of the http request will be like</p></li>
 </div>
 </section>
 <section id="id50">
-<h4>Status Codes<a class="headerlink" href="#id50" title="Permalink to this heading">#</a></h4>
+<h4>Status Codes<a class="headerlink" href="#id50" title="Permalink to this heading">¶</a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">200</span> <span class="pre">OK</span></code>: Request successful.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">500</span> <span class="pre">Internal</span> <span class="pre">Error</span></code>: Server internal Error.</p></li>
+</ul>
+</section>
+</section>
+<section id="restartservice-servicemanagement-category">
+<h3>RestartService (ServiceManagement Category)<a class="headerlink" href="#restartservice-servicemanagement-category" title="Permalink to this heading">¶</a></h3>
+<section id="id51">
+<h4>Description<a class="headerlink" href="#id51" title="Permalink to this heading">¶</a></h4>
+<p>Restart the graph query service on current running graph.</p>
+</section>
+<section id="id52">
+<h4>HTTP Request<a class="headerlink" href="#id52" title="Permalink to this heading">¶</a></h4>
+<ul class="simple">
+<li><p><strong>Method</strong>: POST</p></li>
+<li><p><strong>Endpoint</strong>: <code class="docutils literal notranslate"><span class="pre">/v1/service/restart</span></code></p></li>
+<li><p><strong>Content-type</strong>: <code class="docutils literal notranslate"><span class="pre">application/json</span></code></p></li>
+<li><p><strong>Body</strong>: EmptyBody.</p></li>
+</ul>
+</section>
+<section id="id53">
+<h4>Curl Command Example<a class="headerlink" href="#id53" title="Permalink to this heading">¶</a></h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="s2">&quot;http://[host]/v1/service/restart&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="id54">
+<h4>Expected Response<a class="headerlink" href="#id54" title="Permalink to this heading">¶</a></h4>
+<ul class="simple">
+<li><p><strong>Format</strong>: application/json</p></li>
+<li><p><strong>Body</strong>:</p></li>
+</ul>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="s2">&quot;Successfully started service&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="id55">
+<h4>Status Codes<a class="headerlink" href="#id55" title="Permalink to this heading">¶</a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">200</span> <span class="pre">OK</span></code>: Request successful.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">500</span> <span class="pre">Internal</span> <span class="pre">Error</span></code>: Server internal Error.</p></li>
+</ul>
+</section>
+</section>
+<section id="stopservice-servicemanagement-category">
+<h3>StopService (ServiceManagement Category)<a class="headerlink" href="#stopservice-servicemanagement-category" title="Permalink to this heading">¶</a></h3>
+<section id="id56">
+<h4>Description<a class="headerlink" href="#id56" title="Permalink to this heading">¶</a></h4>
+<p>Stop the graph query service. Note that after service is stopped, the query server is still running, you still can submit queries to the endpoint,
+but you will receive the following error message to each request:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;code&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">500</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;message&quot;</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Unable to send message, the target actor has been canceled!&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="id57">
+<h4>HTTP Request<a class="headerlink" href="#id57" title="Permalink to this heading">¶</a></h4>
+<ul class="simple">
+<li><p><strong>Method</strong>: POST</p></li>
+<li><p><strong>Endpoint</strong>: <code class="docutils literal notranslate"><span class="pre">/v1/service/stop</span></code></p></li>
+<li><p><strong>Content-type</strong>: <code class="docutils literal notranslate"><span class="pre">application/json</span></code></p></li>
+<li><p><strong>Body</strong>: EmptyBody.</p></li>
+</ul>
+</section>
+<section id="id58">
+<h4>Curl Command Example<a class="headerlink" href="#id58" title="Permalink to this heading">¶</a></h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>POST<span class="w"> </span><span class="s2">&quot;http://[host]/v1/service/stop&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="id59">
+<h4>Expected Response<a class="headerlink" href="#id59" title="Permalink to this heading">¶</a></h4>
+<ul class="simple">
+<li><p><strong>Format</strong>: application/json</p></li>
+<li><p><strong>Body</strong>:</p></li>
+</ul>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Successfully stop service
+</pre></div>
+</div>
+</section>
+<section id="id60">
+<h4>Status Codes<a class="headerlink" href="#id60" title="Permalink to this heading">¶</a></h4>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">200</span> <span class="pre">OK</span></code>: Request successful.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">500</span> <span class="pre">Internal</span> <span class="pre">Error</span></code>: Server internal Error.</p></li>
@@ -1830,35 +1959,35 @@ The response of the http request will be like</p></li>
 </section>
 </section>
 <section id="servicestatus">
-<h3>ServiceStatus<a class="headerlink" href="#servicestatus" title="Permalink to this heading">#</a></h3>
-<section id="id51">
-<h4>Description<a class="headerlink" href="#id51" title="Permalink to this heading">#</a></h4>
+<h3>ServiceStatus<a class="headerlink" href="#servicestatus" title="Permalink to this heading">¶</a></h3>
+<section id="id61">
+<h4>Description<a class="headerlink" href="#id61" title="Permalink to this heading">¶</a></h4>
 <p>Get the status of current service.</p>
 </section>
-<section id="id52">
-<h4>HTTP Request<a class="headerlink" href="#id52" title="Permalink to this heading">#</a></h4>
+<section id="id62">
+<h4>HTTP Request<a class="headerlink" href="#id62" title="Permalink to this heading">¶</a></h4>
 <ul class="simple">
 <li><p><strong>Method</strong>: GET</p></li>
 <li><p><strong>Endpoint</strong>: <code class="docutils literal notranslate"><span class="pre">/v1/service/status</span></code></p></li>
 <li><p><strong>Content-type</strong>: <code class="docutils literal notranslate"><span class="pre">application/json</span></code></p></li>
 </ul>
 </section>
-<section id="id53">
-<h4>Expected Response<a class="headerlink" href="#id53" title="Permalink to this heading">#</a></h4>
+<section id="id63">
+<h4>Expected Response<a class="headerlink" href="#id63" title="Permalink to this heading">¶</a></h4>
 <ul class="simple">
 <li><p><strong>Format</strong>: application/json</p></li>
 <li><p><strong>Body</strong>:</p></li>
 </ul>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">  </span><span class="nt">&quot;graph_name&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;graph_name&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;graph_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;graph_id&quot;</span><span class="p">,</span>
 <span class="w">  </span><span class="nt">&quot;query_port&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span>
 <span class="w">  </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;running&quot;</span>
 <span class="p">}</span>
 </pre></div>
 </div>
 </section>
-<section id="id54">
-<h4>Status Codes<a class="headerlink" href="#id54" title="Permalink to this heading">#</a></h4>
+<section id="id64">
+<h4>Status Codes<a class="headerlink" href="#id64" title="Permalink to this heading">¶</a></h4>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">200</span> <span class="pre">OK</span></code>: Request successful.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">500</span> <span class="pre">Internal</span> <span class="pre">Error</span></code>: Server internal Error.</p></li>
@@ -1866,27 +1995,27 @@ The response of the http request will be like</p></li>
 </section>
 </section>
 <section id="systemmetrics-nodemetrics-category">
-<h3>SystemMetrics (NodeMetrics Category)<a class="headerlink" href="#systemmetrics-nodemetrics-category" title="Permalink to this heading">#</a></h3>
-<section id="id55">
-<h4>Description<a class="headerlink" href="#id55" title="Permalink to this heading">#</a></h4>
+<h3>SystemMetrics (NodeMetrics Category)<a class="headerlink" href="#systemmetrics-nodemetrics-category" title="Permalink to this heading">¶</a></h3>
+<section id="id65">
+<h4>Description<a class="headerlink" href="#id65" title="Permalink to this heading">¶</a></h4>
 <p>Get node status.</p>
 </section>
-<section id="id56">
-<h4>HTTP Request<a class="headerlink" href="#id56" title="Permalink to this heading">#</a></h4>
+<section id="id66">
+<h4>HTTP Request<a class="headerlink" href="#id66" title="Permalink to this heading">¶</a></h4>
 <ul class="simple">
 <li><p><strong>Method</strong>: GET</p></li>
 <li><p><strong>Endpoint</strong>: <code class="docutils literal notranslate"><span class="pre">/v1/node/status</span></code></p></li>
 <li><p><strong>Content-type</strong>: <code class="docutils literal notranslate"><span class="pre">application/json</span></code></p></li>
 </ul>
 </section>
-<section id="id57">
-<h4>Curl Command Example<a class="headerlink" href="#id57" title="Permalink to this heading">#</a></h4>
+<section id="id67">
+<h4>Curl Command Example<a class="headerlink" href="#id67" title="Permalink to this heading">¶</a></h4>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>GET<span class="w">  </span>-H<span class="w"> </span><span class="s2">&quot;Content-Type: application/json&quot;</span><span class="w"> </span><span class="s2">&quot;http://[host]/v1/node/status&quot;</span>
 </pre></div>
 </div>
 </section>
-<section id="id58">
-<h4>Expected Response<a class="headerlink" href="#id58" title="Permalink to this heading">#</a></h4>
+<section id="id68">
+<h4>Expected Response<a class="headerlink" href="#id68" title="Permalink to this heading">¶</a></h4>
 <ul class="simple">
 <li><p><strong>Format</strong>: application/json</p></li>
 <li><p><strong>Body</strong>:</p></li>
@@ -1898,14 +2027,236 @@ The response of the http request will be like</p></li>
 </pre></div>
 </div>
 </section>
-<section id="id59">
-<h4>Status Codes<a class="headerlink" href="#id59" title="Permalink to this heading">#</a></h4>
+<section id="id69">
+<h4>Status Codes<a class="headerlink" href="#id69" title="Permalink to this heading">¶</a></h4>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">200</span> <span class="pre">OK</span></code>: Request successful.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">500</span> <span class="pre">Internal</span> <span class="pre">Error</span></code>: Server internal Error.</p></li>
 </ul>
 </section>
 </section>
+<section id="getjobbyid-jobmanagement-category">
+<h3>GetJobById (JobManagement Category)<a class="headerlink" href="#getjobbyid-jobmanagement-category" title="Permalink to this heading">¶</a></h3>
+<section id="id70">
+<h4>Description<a class="headerlink" href="#id70" title="Permalink to this heading">¶</a></h4>
+<p>Get the metadata of a job with a unique job id.
+The job id is received when you <a class="reference internal" href="#importgraph-graphmanagement-category"><span class="xref myst">launch a bulk loading job</span></a></p>
+</section>
+<section id="id71">
+<h4>HTTP Request<a class="headerlink" href="#id71" title="Permalink to this heading">¶</a></h4>
+<ul class="simple">
+<li><p><strong>Method</strong>: GET</p></li>
+<li><p><strong>Endpoint</strong>: <code class="docutils literal notranslate"><span class="pre">/v1/job/{job_id}</span></code></p></li>
+<li><p><strong>Content-type</strong>: <code class="docutils literal notranslate"><span class="pre">application/json</span></code></p></li>
+<li><p><strong>Body</strong> : EmptyBody</p></li>
+</ul>
+</section>
+<section id="id72">
+<h4>Curl Command Example<a class="headerlink" href="#id72" title="Permalink to this heading">¶</a></h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>GET<span class="w"> </span><span class="s2">&quot;http://[host]/v1/job/{job_id}&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="id73">
+<h4>Expected Response<a class="headerlink" href="#id73" title="Permalink to this heading">¶</a></h4>
+<ul class="simple">
+<li><p><strong>Format</strong>: application/json</p></li>
+<li><p><strong>Body</strong>:</p></li>
+</ul>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;detail&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;graph_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;graph_id&quot;</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;job_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;job_{graph_id}_{create_timestamp}_{process_id}&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;log&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;line1\nlin2...\n&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;start_time&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1706786404768</span><span class="p">,</span><span class="w"> </span><span class="c1">// create_timestamp</span>
+<span class="w">  </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;CANCELLED/RUNNING/SUCCESS/FAILED&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;bulk_loading&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="id74">
+<h4>Status Codes<a class="headerlink" href="#id74" title="Permalink to this heading">¶</a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">200</span> <span class="pre">OK</span></code>: Request successful.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">500</span> <span class="pre">Internal</span> <span class="pre">Error</span></code>: Server internal Error.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">404</span> <span class="pre">Not</span> <span class="pre">Found</span></code>: Job not found</p></li>
+</ul>
+</section>
+</section>
+<section id="getalljobs-jobmanagement-category">
+<h3>GetAllJobs (JobManagement category)<a class="headerlink" href="#getalljobs-jobmanagement-category" title="Permalink to this heading">¶</a></h3>
+<section id="id75">
+<h4>Description<a class="headerlink" href="#id75" title="Permalink to this heading">¶</a></h4>
+<p>Get the metadata of all running/cancelled/success/failed jobs.</p>
+</section>
+<section id="id76">
+<h4>HTTP Request<a class="headerlink" href="#id76" title="Permalink to this heading">¶</a></h4>
+<ul class="simple">
+<li><p><strong>Method</strong>: GET</p></li>
+<li><p><strong>Endpoint</strong>: <code class="docutils literal notranslate"><span class="pre">/v1/job/</span></code></p></li>
+<li><p><strong>Content-type</strong>: <code class="docutils literal notranslate"><span class="pre">application/json</span></code></p></li>
+<li><p><strong>Body</strong> : EmptyBody</p></li>
+</ul>
+</section>
+<section id="id77">
+<h4>Curl Command Example<a class="headerlink" href="#id77" title="Permalink to this heading">¶</a></h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>GET<span class="w"> </span><span class="s2">&quot;http://[host]/v1/job/&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="id78">
+<h4>Expected Response<a class="headerlink" href="#id78" title="Permalink to this heading">¶</a></h4>
+<ul class="simple">
+<li><p><strong>Format</strong>: application/json</p></li>
+<li><p><strong>Body</strong>:</p></li>
+</ul>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">[</span>
+<span class="w">  </span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;detail&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;graph_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;graph_id&quot;</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;job_id&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;job_{graph_id}_{create_timestamp}_{process_id}&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;log&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;line1\nlin2...\n&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;start_time&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1706786404768</span><span class="p">,</span><span class="w"> </span><span class="c1">// create_timestamp</span>
+<span class="w">  </span><span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;CANCELLED/RUNNING/SUCCESS/FAILED&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;bulk_loading&quot;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="id79">
+<h4>Status Codes<a class="headerlink" href="#id79" title="Permalink to this heading">¶</a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">200</span> <span class="pre">OK</span></code>: Request successful.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">500</span> <span class="pre">Internal</span> <span class="pre">Error</span></code>: Server internal Error.</p></li>
+</ul>
+</section>
+</section>
+<section id="canceljobbyid-jobmanagement-category">
+<h3>CancelJobById (JobManagement category)<a class="headerlink" href="#canceljobbyid-jobmanagement-category" title="Permalink to this heading">¶</a></h3>
+<section id="id80">
+<h4>Description<a class="headerlink" href="#id80" title="Permalink to this heading">¶</a></h4>
+<p>Cancel a job according to the give job_id.</p>
+</section>
+<section id="id81">
+<h4>HTTP Request<a class="headerlink" href="#id81" title="Permalink to this heading">¶</a></h4>
+<ul class="simple">
+<li><p><strong>Method</strong>: DELETE</p></li>
+<li><p><strong>Endpoint</strong>: <code class="docutils literal notranslate"><span class="pre">/v1/job/{job_id}</span></code></p></li>
+<li><p><strong>Content-type</strong>: <code class="docutils literal notranslate"><span class="pre">application/json</span></code></p></li>
+<li><p><strong>Body</strong> : EmptyBody</p></li>
+</ul>
+</section>
+<section id="id82">
+<h4>Curl Command Example<a class="headerlink" href="#id82" title="Permalink to this heading">¶</a></h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>curl<span class="w"> </span>-X<span class="w"> </span>DELETE<span class="w"> </span><span class="s2">&quot;http://[host]/v1/job/{job_id}&quot;</span>
+</pre></div>
+</div>
+</section>
+<section id="id83">
+<h4>Expected Response<a class="headerlink" href="#id83" title="Permalink to this heading">¶</a></h4>
+<ul class="simple">
+<li><p><strong>Format</strong>: application/json</p></li>
+<li><p><strong>Body</strong>:</p></li>
+</ul>
+<p>Fail:</p>
+<div class="highlight-text notranslate"><div class="highlight"><pre><span></span>Job is not running, can not cancel: {job_id}
+</pre></div>
+</div>
+<p>Success</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Successfully</span> <span class="n">cancelled</span> <span class="n">job</span><span class="p">:</span> <span class="p">{</span><span class="n">job_id</span><span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="id84">
+<h4>Status Codes<a class="headerlink" href="#id84" title="Permalink to this heading">¶</a></h4>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">200</span> <span class="pre">OK</span></code>: Request successful.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">500</span> <span class="pre">Internal</span> <span class="pre">Error</span></code>: Server internal Error.</p></li>
+</ul>
+</section>
+</section>
+</section>
+<section id="enable-adminservice-in-development">
+<h2>Enable AdminService in development<a class="headerlink" href="#enable-adminservice-in-development" title="Permalink to this heading">¶</a></h2>
+<p>To start admin service in development, use the command line argument <code class="docutils literal notranslate"><span class="pre">--enable-admin-service</span> <span class="pre">true</span></code>. <code class="docutils literal notranslate"><span class="pre">${ENGINE_CONFIG}</span></code> specifies the configuration for interactive query engine, see <a class="reference external" href="https://graphscope.io/docs/flex/interactive/configuration">engine-configuration</a>. <code class="docutils literal notranslate"><span class="pre">${WORKSPACE}</span></code> points to the directory where interactive related data is maintaned.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./bin/interactive_server<span class="w"> </span>-c<span class="w"> </span><span class="si">${</span><span class="nv">ENGINE_CONFIG</span><span class="si">}</span><span class="w"> </span>-w<span class="w"> </span><span class="si">${</span><span class="nv">WORKSPACE</span><span class="si">}</span><span class="w"> </span>--enable-admin-service<span class="w"> </span><span class="nb">true</span>
+</pre></div>
+</div>
+<section id="start-compiler-service">
+<h3>Start Compiler Service<a class="headerlink" href="#start-compiler-service" title="Permalink to this heading">¶</a></h3>
+<p>The Compiler service could be started as a subprocess of the AdminService. This ensures that when switching graphs in the AdminService, the Compiler service also switches to the corresponding graph’s schema. This is the default behavior in the current Interactive.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./bin/interactive_server<span class="w"> </span>-c<span class="w"> </span><span class="si">${</span><span class="nv">ENGINE_CONFIG</span><span class="si">}</span><span class="w"> </span>-w<span class="w"> </span><span class="si">${</span><span class="nv">WORKSPACE</span><span class="si">}</span><span class="w"> </span>--enable-admin-service<span class="w"> </span><span class="nb">true</span><span class="w"> </span>--start-compiler<span class="w"> </span><span class="nb">true</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="http-error-code">
+<h2>Http error code<a class="headerlink" href="#http-error-code" title="Permalink to this heading">¶</a></h2>
+<p>Internally we use <a class="reference external" href="https://github.com/alibaba/GraphScope/blob/main/flex/utils/result.h"><code class="docutils literal notranslate"><span class="pre">StatusCode</span></code></a> to record the runtime errors.
+The mapping between statusCode and http code is shown in the following table.</p>
+<div class="table-wrapper colwidths-auto docutils container">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Code</p></th>
+<th class="head"><p>HTTP Code</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>gs::StatusCode::OK</p></td>
+<td><p>200</p></td>
+</tr>
+<tr class="row-odd"><td><p>gs::StatusCode::InValidArgument</p></td>
+<td><p>400</p></td>
+</tr>
+<tr class="row-even"><td><p>gs::StatusCode::UnsupportedOperator</p></td>
+<td><p>400</p></td>
+</tr>
+<tr class="row-odd"><td><p>gs::StatusCode::AlreadyExists</p></td>
+<td><p>409</p></td>
+</tr>
+<tr class="row-even"><td><p>gs::StatusCode::NotExists</p></td>
+<td><p>404</p></td>
+</tr>
+<tr class="row-odd"><td><p>gs::StatusCode::CodegenError</p></td>
+<td><p>500</p></td>
+</tr>
+<tr class="row-even"><td><p>gs::StatusCode::UninitializedStatus</p></td>
+<td><p>500</p></td>
+</tr>
+<tr class="row-odd"><td><p>gs::StatusCode::InvalidSchema</p></td>
+<td><p>400</p></td>
+</tr>
+<tr class="row-even"><td><p>gs::StatusCode::PermissionError</p></td>
+<td><p>403</p></td>
+</tr>
+<tr class="row-odd"><td><p>gs::StatusCode::IllegalOperation</p></td>
+<td><p>400</p></td>
+</tr>
+<tr class="row-even"><td><p>gs::StatusCode::InternalError</p></td>
+<td><p>500</p></td>
+</tr>
+<tr class="row-odd"><td><p>gs::StatusCode::InvalidImportFile</p></td>
+<td><p>400</p></td>
+</tr>
+<tr class="row-even"><td><p>gs::StatusCode::IOError</p></td>
+<td><p>500</p></td>
+</tr>
+<tr class="row-odd"><td><p>gs::StatusCode::NotFound</p></td>
+<td><p>404</p></td>
+</tr>
+<tr class="row-even"><td><p>gs::StatusCode::QueryFailed</p></td>
+<td><p>500</p></td>
+</tr>
+<tr class="row-odd"><td><p>default</p></td>
+<td><p>500</p></td>
+</tr>
+</tbody>
+</table>
+</div>
 </section>
 </section>
 
@@ -2059,23 +2410,68 @@ The response of the http request will be like</p></li>
 <li><a class="reference internal" href="#id50">Status Codes</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#servicestatus">ServiceStatus</a><ul>
+<li><a class="reference internal" href="#restartservice-servicemanagement-category">RestartService (ServiceManagement Category)</a><ul>
 <li><a class="reference internal" href="#id51">Description</a></li>
 <li><a class="reference internal" href="#id52">HTTP Request</a></li>
-<li><a class="reference internal" href="#id53">Expected Response</a></li>
-<li><a class="reference internal" href="#id54">Status Codes</a></li>
+<li><a class="reference internal" href="#id53">Curl Command Example</a></li>
+<li><a class="reference internal" href="#id54">Expected Response</a></li>
+<li><a class="reference internal" href="#id55">Status Codes</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#stopservice-servicemanagement-category">StopService (ServiceManagement Category)</a><ul>
+<li><a class="reference internal" href="#id56">Description</a></li>
+<li><a class="reference internal" href="#id57">HTTP Request</a></li>
+<li><a class="reference internal" href="#id58">Curl Command Example</a></li>
+<li><a class="reference internal" href="#id59">Expected Response</a></li>
+<li><a class="reference internal" href="#id60">Status Codes</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#servicestatus">ServiceStatus</a><ul>
+<li><a class="reference internal" href="#id61">Description</a></li>
+<li><a class="reference internal" href="#id62">HTTP Request</a></li>
+<li><a class="reference internal" href="#id63">Expected Response</a></li>
+<li><a class="reference internal" href="#id64">Status Codes</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#systemmetrics-nodemetrics-category">SystemMetrics (NodeMetrics Category)</a><ul>
-<li><a class="reference internal" href="#id55">Description</a></li>
-<li><a class="reference internal" href="#id56">HTTP Request</a></li>
-<li><a class="reference internal" href="#id57">Curl Command Example</a></li>
-<li><a class="reference internal" href="#id58">Expected Response</a></li>
-<li><a class="reference internal" href="#id59">Status Codes</a></li>
+<li><a class="reference internal" href="#id65">Description</a></li>
+<li><a class="reference internal" href="#id66">HTTP Request</a></li>
+<li><a class="reference internal" href="#id67">Curl Command Example</a></li>
+<li><a class="reference internal" href="#id68">Expected Response</a></li>
+<li><a class="reference internal" href="#id69">Status Codes</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#getjobbyid-jobmanagement-category">GetJobById (JobManagement Category)</a><ul>
+<li><a class="reference internal" href="#id70">Description</a></li>
+<li><a class="reference internal" href="#id71">HTTP Request</a></li>
+<li><a class="reference internal" href="#id72">Curl Command Example</a></li>
+<li><a class="reference internal" href="#id73">Expected Response</a></li>
+<li><a class="reference internal" href="#id74">Status Codes</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#getalljobs-jobmanagement-category">GetAllJobs (JobManagement category)</a><ul>
+<li><a class="reference internal" href="#id75">Description</a></li>
+<li><a class="reference internal" href="#id76">HTTP Request</a></li>
+<li><a class="reference internal" href="#id77">Curl Command Example</a></li>
+<li><a class="reference internal" href="#id78">Expected Response</a></li>
+<li><a class="reference internal" href="#id79">Status Codes</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#canceljobbyid-jobmanagement-category">CancelJobById (JobManagement category)</a><ul>
+<li><a class="reference internal" href="#id80">Description</a></li>
+<li><a class="reference internal" href="#id81">HTTP Request</a></li>
+<li><a class="reference internal" href="#id82">Curl Command Example</a></li>
+<li><a class="reference internal" href="#id83">Expected Response</a></li>
+<li><a class="reference internal" href="#id84">Status Codes</a></li>
 </ul>
 </li>
 </ul>
 </li>
+<li><a class="reference internal" href="#enable-adminservice-in-development">Enable AdminService in development</a><ul>
+<li><a class="reference internal" href="#start-compiler-service">Start Compiler Service</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#http-error-code">Http error code</a></li>
 </ul>
 </li>
 </ul>
@@ -2090,7 +2486,7 @@ The response of the http request will be like</p></li>
 </div><script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=ccbe24c1"></script>
     <script src="../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
-    <script src="../../../_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="../../../_static/scripts/furo.js?v=4e2eecee"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../../_static/copybutton.js?v=f281be69"></script>
     </body>

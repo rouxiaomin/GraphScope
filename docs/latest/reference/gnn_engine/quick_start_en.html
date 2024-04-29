@@ -11,10 +11,10 @@
 <meta name="description" content="This tutorial has three parts: - How to quickly try out a graph learning model using GL. - How to import data into GL, and use the graph data, graph sampling and negative sampling APIs. - How to de..." />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.1.2 and Furo 2024.04.27 -->
         <title>Quick Start - GraphScope documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=437aa6ec" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css?v=2a6c4383" />
     <link rel="stylesheet" type="text/css" href="../../_static/panels-bootstrap.5fd3999ee7762ccc51105388f4a9d115.css?v=45cf7dbc" />
@@ -164,6 +164,8 @@ MathJax = {
 <label class="overlay toc-overlay" for="__toc">
   <div class="visually-hidden">Hide table of contents sidebar</div>
 </label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
 
 
 
@@ -582,6 +584,18 @@ MathJax = {
         
           
             
+              <dd><a href="../../../v0.27.0/index.html">
+                
+                  v0.27.0
+                
+              </a></dd>
+            
+          
+        
+      
+        
+          
+            
               <dd><a href="../../../v0.26.0/index.html">
                 
                   v0.26.0
@@ -609,18 +623,6 @@ MathJax = {
               <dd><a href="../../../v0.24.0/index.html">
                 
                   v0.24.0
-                
-              </a></dd>
-            
-          
-        
-      
-        
-          
-            
-              <dd><a href="../../../v0.23.0/index.html">
-                
-                  v0.23.0
                 
               </a></dd>
             
@@ -683,9 +685,9 @@ MathJax = {
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
-        <article role="main">
+        <article role="main" id="furo-main-content">
           <section id="quick-start">
-<h1>Quick Start<a class="headerlink" href="#quick-start" title="Permalink to this heading">#</a></h1>
+<h1>Quick Start<a class="headerlink" href="#quick-start" title="Permalink to this heading">¶</a></h1>
 <p>This tutorial has three parts: - How to quickly try out a graph learning
 model using <strong>GL</strong>. - How to import data into <strong>GL</strong>, and use the graph
 data, graph sampling and negative sampling APIs. - How to develop your
@@ -693,7 +695,7 @@ own GNN models using <strong>GL</strong> and TensorFlow using <strong>GraphSAGE<
 example.</p>
 </section>
 <section id="trying-out-the-built-in-models">
-<h1>1 Trying out the built-in models<a class="headerlink" href="#trying-out-the-built-in-models" title="Permalink to this heading">#</a></h1>
+<h1>1 Trying out the built-in models<a class="headerlink" href="#trying-out-the-built-in-models" title="Permalink to this heading">¶</a></h1>
 <p>We have implemented in <strong>GL</strong> a set of popular GNN models, such as
 <strong>GCN</strong>, <strong>GraphSAGE</strong>, and some datasets, such as <strong>cora</strong>, <strong>ppi</strong>. To
 try out <strong>GL</strong>, we can start with the vertex-classification task in
@@ -709,7 +711,7 @@ python<span class="w"> </span>train_supervised.py
 </div>
 </section>
 <section id="how-to-use-the-gl-apis">
-<h1>2 How to use the <strong>GL</strong> APIs<a class="headerlink" href="#how-to-use-the-gl-apis" title="Permalink to this heading">#</a></h1>
+<h1>2 How to use the <strong>GL</strong> APIs<a class="headerlink" href="#how-to-use-the-gl-apis" title="Permalink to this heading">¶</a></h1>
 <p><strong>GL</strong> provides a large collection of basic APIs for developing GNN
 models. In this part, we will go through how to use them to (1)
 construct graphs, (2) to query graphs, and (3) to generate samples and
@@ -820,12 +822,12 @@ python<span class="w"> </span><span class="nv">$HERE</span>/test.py<span class="
 </div>
 </section>
 <section id="developing-a-gnn-model">
-<h1>3 Developing a GNN model<a class="headerlink" href="#developing-a-gnn-model" title="Permalink to this heading">#</a></h1>
+<h1>3 Developing a GNN model<a class="headerlink" href="#developing-a-gnn-model" title="Permalink to this heading">¶</a></h1>
 <p>Next we will go through how to develop a supervised <strong>GraphSAGE</strong> model
 using <strong>GL</strong> and <strong>TensorFlow</strong>, and train it on the Cora dataset.
 Please refer to <a class="reference external" href="algo_en.md">Developing Your Own Model</a> for details.</p>
 <section id="data-preparation">
-<h2>3.1 Data Preparation<a class="headerlink" href="#data-preparation" title="Permalink to this heading">#</a></h2>
+<h2>3.1 Data Preparation<a class="headerlink" href="#data-preparation" title="Permalink to this heading">¶</a></h2>
 <p>We use the open-source dataset Cora as an example. The Cora dataset
 contains papers from the machine learning field, and the citation
 relationship between these papers. Each paper has 1433 attributes. These
@@ -872,7 +874,7 @@ data format is described through <code class="docutils literal notranslate"><spa
 </div>
 </section>
 <section id="graph-construction">
-<h2>3.2 Graph Construction<a class="headerlink" href="#graph-construction" title="Permalink to this heading">#</a></h2>
+<h2>3.2 Graph Construction<a class="headerlink" href="#graph-construction" title="Permalink to this heading">¶</a></h2>
 <p>Graph construction is the process of loading the vertex and edge data
 into memory. After construction, the graph can be queries and sampled.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">graphlearn</span> <span class="k">as</span> <span class="nn">gl</span>
@@ -905,7 +907,7 @@ into memory. After construction, the graph can be queries and sampled.</p>
 </div>
 </section>
 <section id="graph-sampling">
-<h2>3.3 Graph Sampling<a class="headerlink" href="#graph-sampling" title="Permalink to this heading">#</a></h2>
+<h2>3.3 Graph Sampling<a class="headerlink" href="#graph-sampling" title="Permalink to this heading">¶</a></h2>
 <p>GraphSAGE requires graph sampling to generate input for the neural
 network. Here, we use the following sampling steps: (1) sample a batch
 of “item” vertices as the seed; (2) sample the 1-hop and 2-hop neighbors
@@ -932,7 +934,7 @@ through graph traversal.</p>
 </div>
 </section>
 <section id="gnn-model">
-<h2>3.4 GNN Model<a class="headerlink" href="#gnn-model" title="Permalink to this heading">#</a></h2>
+<h2>3.4 GNN Model<a class="headerlink" href="#gnn-model" title="Permalink to this heading">¶</a></h2>
 <p>In this part, we use the TensorFlow Estimator as an example to
 demonstrate developing a GNN model on <strong>GL</strong>.</p>
 <ul class="simple">
@@ -1070,7 +1072,7 @@ demonstrate developing a GNN model on <strong>GL</strong>.</p>
 </div><script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=ccbe24c1"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
     <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
-    <script src="../../_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="../../_static/scripts/furo.js?v=4e2eecee"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
     </body>

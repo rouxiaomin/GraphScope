@@ -11,10 +11,10 @@
 <meta name="description" content="GraphScope Interactive is a specialized construction of GraphScope Flex, designed to handle concurrent graph queries at an impressive speed. Its primary goal is to process as many queries as possib..." />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Overview" href="interactive/overview.html" /><link rel="prev" title="Install GraphScope in offline environment" href="../deployment/install_in_offline_env.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.1.2 and Furo 2024.04.27 -->
         <title>GraphScope Interactive - GraphScope documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=437aa6ec" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css?v=2a6c4383" />
     <link rel="stylesheet" type="text/css" href="../_static/panels-bootstrap.5fd3999ee7762ccc51105388f4a9d115.css?v=45cf7dbc" />
@@ -164,6 +164,8 @@ MathJax = {
 <label class="overlay toc-overlay" for="__toc">
   <div class="visually-hidden">Hide table of contents sidebar</div>
 </label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
 
 
 
@@ -582,6 +584,18 @@ MathJax = {
         
           
             
+              <dd><a href="../../v0.27.0/index.html">
+                
+                  v0.27.0
+                
+              </a></dd>
+            
+          
+        
+      
+        
+          
+            
               <dd><a href="../../v0.26.0/index.html">
                 
                   v0.26.0
@@ -609,18 +623,6 @@ MathJax = {
               <dd><a href="../../v0.24.0/index.html">
                 
                   v0.24.0
-                
-              </a></dd>
-            
-          
-        
-      
-        
-          
-            
-              <dd><a href="../../v0.23.0/index.html">
-                
-                  v0.23.0
                 
               </a></dd>
             
@@ -683,9 +685,9 @@ MathJax = {
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
-        <article role="main">
+        <article role="main" id="furo-main-content">
           <section class="tex2jax_ignore mathjax_ignore" id="graphscope-interactive">
-<h1>GraphScope Interactive<a class="headerlink" href="#graphscope-interactive" title="Permalink to this heading">#</a></h1>
+<h1>GraphScope Interactive<a class="headerlink" href="#graphscope-interactive" title="Permalink to this heading">¶</a></h1>
 <p><strong>GraphScope Interactive</strong> is a specialized construction of GraphScope Flex, designed to handle concurrent graph queries at an <a class="reference external" href="https://ldbcouncil.org/benchmarks/snb-interactive/">impressive speed</a>. Its primary goal is to process as many queries as possible within a given timeframe, emphasizing a high query throughput rate.</p>
 <p>Explore GraphScope Interactive with following documents:</p>
 <div class="toctree-wrapper compound">
@@ -695,6 +697,7 @@ MathJax = {
 <li class="toctree-l2"><a class="reference internal" href="interactive/overview.html#key-features">Key Features</a></li>
 <li class="toctree-l2"><a class="reference internal" href="interactive/overview.html#property-graph-model-and-graph-queries">Property Graph Model and Graph Queries</a></li>
 <li class="toctree-l2"><a class="reference internal" href="interactive/overview.html#the-cypher-query-language">The Cypher Query Language</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interactive/overview.html#the-gremlin-query-language">The Gremlin Query Language</a></li>
 <li class="toctree-l2"><a class="reference internal" href="interactive/overview.html#limitations">Limitations</a></li>
 </ul>
 </li>
@@ -706,7 +709,8 @@ MathJax = {
 <li class="toctree-l1"><a class="reference internal" href="interactive/getting_started.html">Getting Started</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="interactive/getting_started.html#preparation">Preparation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="interactive/getting_started.html#manage-interactive-service">Manage Interactive Service</a></li>
-<li class="toctree-l2"><a class="reference internal" href="interactive/getting_started.html#running-queries">Running Queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interactive/getting_started.html#running-cypher-queries">Running Cypher Queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interactive/getting_started.html#running-gremlin-queries">Running Gremlin Queries</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="interactive/custom_graph_data.html">Using Custom Graph</a><ul>
@@ -751,13 +755,13 @@ MathJax = {
 <li class="toctree-l1"><a class="reference internal" href="interactive/glossary.html">Glossary</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="interactive/glossary.html#stored-procedure">Stored Procedure.</a></li>
 <li class="toctree-l2"><a class="reference internal" href="interactive/glossary.html#cypher">Cypher.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interactive/glossary.html#gremlin">Gremlin</a></li>
 <li class="toctree-l2"><a class="reference internal" href="interactive/glossary.html#compile">Compile.</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="interactive/deployment.html">GraphScope Interactive Deployment</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="interactive/deployment.html#quickstart">QuickStart</a></li>
-<li class="toctree-l2"><a class="reference internal" href="interactive/deployment.html#customizing-configuration">Customizing Configuration</a></li>
-<li class="toctree-l2"><a class="reference internal" href="interactive/deployment.html#customize-graph-data">Customize Graph Data.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interactive/deployment.html#deploy-with-docker">Deploy with docker</a></li>
+<li class="toctree-l2"><a class="reference internal" href="interactive/deployment.html#deploy-with-helm">Deploy with helm</a></li>
 </ul>
 </li>
 </ul>
@@ -819,7 +823,7 @@ MathJax = {
 </div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=ccbe24c1"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
-    <script src="../_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="../_static/scripts/furo.js?v=4e2eecee"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=f281be69"></script>
     </body>

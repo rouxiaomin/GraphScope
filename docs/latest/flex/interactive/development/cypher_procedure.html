@@ -11,10 +11,10 @@
 <meta name="description" content="GraphScope Interactive offers a seamless way for users to transform Cypher queries into stored procedures, eliminating the need for intricate C++ programming. Drawing inspiration from Neo4j, we emp..." />
 <link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" /><link rel="next" title="Create c++ Stored Procedures on GraphScope Interactive" href="cpp_procedure.html" /><link rel="prev" title="GraphScope Interactive Development guide" href="../dev_guide.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.1.2 and Furo 2024.04.27 -->
         <title>Turning Cypher Queries into Stored Procedures with GraphScope Interactive - GraphScope documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=437aa6ec" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css?v=2a6c4383" />
     <link rel="stylesheet" type="text/css" href="../../../_static/panels-bootstrap.5fd3999ee7762ccc51105388f4a9d115.css?v=45cf7dbc" />
@@ -164,6 +164,8 @@ MathJax = {
 <label class="overlay toc-overlay" for="__toc">
   <div class="visually-hidden">Hide table of contents sidebar</div>
 </label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
 
 
 
@@ -582,6 +584,18 @@ MathJax = {
         
           
             
+              <dd><a href="../../../../v0.27.0/index.html">
+                
+                  v0.27.0
+                
+              </a></dd>
+            
+          
+        
+      
+        
+          
+            
               <dd><a href="../../../../v0.26.0/index.html">
                 
                   v0.26.0
@@ -609,18 +623,6 @@ MathJax = {
               <dd><a href="../../../../v0.24.0/index.html">
                 
                   v0.24.0
-                
-              </a></dd>
-            
-          
-        
-      
-        
-          
-            
-              <dd><a href="../../../../v0.23.0/index.html">
-                
-                  v0.23.0
                 
               </a></dd>
             
@@ -683,12 +685,12 @@ MathJax = {
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
-        <article role="main">
+        <article role="main" id="furo-main-content">
           <section class="tex2jax_ignore mathjax_ignore" id="turning-cypher-queries-into-stored-procedures-with-graphscope-interactive">
-<h1>Turning Cypher Queries into Stored Procedures with GraphScope Interactive<a class="headerlink" href="#turning-cypher-queries-into-stored-procedures-with-graphscope-interactive" title="Permalink to this heading">#</a></h1>
+<h1>Turning Cypher Queries into Stored Procedures with GraphScope Interactive<a class="headerlink" href="#turning-cypher-queries-into-stored-procedures-with-graphscope-interactive" title="Permalink to this heading">¶</a></h1>
 <p>GraphScope Interactive offers a seamless way for users to transform Cypher queries into stored procedures, eliminating the need for intricate C++ programming. Drawing inspiration from Neo4j, we empower users to craft a query skeleton, incorporating runtime parameters denoted by <code class="docutils literal notranslate"><span class="pre">$param_name</span></code>.</p>
 <section id="crafting-a-cypher-stored-procedure">
-<h2>Crafting a Cypher Stored Procedure<a class="headerlink" href="#crafting-a-cypher-stored-procedure" title="Permalink to this heading">#</a></h2>
+<h2>Crafting a Cypher Stored Procedure<a class="headerlink" href="#crafting-a-cypher-stored-procedure" title="Permalink to this heading">¶</a></h2>
 <p>For optimal organization and clarity, we mandate that each Cypher stored procedure be encapsulated within a distinct file. This file should exclusively house one Cypher query, although line breaks can be employed for readability.</p>
 <p>For instance, if you aim to retrieve the count of nodes labeled “person” with a personId that matches a runtime-specified value, you can draft the query as shown below and save it as <code class="docutils literal notranslate"><span class="pre">query1.cypher</span></code>:</p>
 <div class="highlight-cypher notranslate"><div class="highlight"><pre><span></span>MATCH (p :PERSON {id: $personId })
@@ -697,7 +699,7 @@ RETURN p.firstName, p.lastName
 </div>
 </section>
 <section id="compiling-and-enabling-the-stored-procedure">
-<h2>Compiling and Enabling the Stored Procedure<a class="headerlink" href="#compiling-and-enabling-the-stored-procedure" title="Permalink to this heading">#</a></h2>
+<h2>Compiling and Enabling the Stored Procedure<a class="headerlink" href="#compiling-and-enabling-the-stored-procedure" title="Permalink to this heading">¶</a></h2>
 <p>To compile the aforementioned Cypher query and activate it as a stored procedure, utilize the <code class="docutils literal notranslate"><span class="pre">gs_interactive</span> <span class="pre">procedure</span></code> command:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/gs_interactive<span class="w"> </span>procedure<span class="w"> </span>compile<span class="w"> </span>
 <span class="w">	</span>-g<span class="w"> </span>modern<span class="w">  </span>
@@ -709,7 +711,7 @@ RETURN p.firstName, p.lastName
 <p>It’s crucial to note that each stored procedure is intrinsically linked to a specific graph, as indicated by the <code class="docutils literal notranslate"><span class="pre">-g</span></code> option. This graph must pre-exist. In the absence of a specified graph, the system will prompt you to utilize the default graph.</p>
 </section>
 <section id="invoking-the-cypher-stored-procedure">
-<h2>Invoking the Cypher Stored Procedure<a class="headerlink" href="#invoking-the-cypher-stored-procedure" title="Permalink to this heading">#</a></h2>
+<h2>Invoking the Cypher Stored Procedure<a class="headerlink" href="#invoking-the-cypher-stored-procedure" title="Permalink to this heading">¶</a></h2>
 <p>Once the stored procedure is activated, a service restart is imperative:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./bin/gs_interactive<span class="w"> </span>service<span class="w"> </span>restart
 </pre></div>
@@ -798,7 +800,7 @@ RETURN p.firstName, p.lastName
 </div><script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=ccbe24c1"></script>
     <script src="../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
-    <script src="../../../_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="../../../_static/scripts/furo.js?v=4e2eecee"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../../_static/copybutton.js?v=f281be69"></script>
     </body>

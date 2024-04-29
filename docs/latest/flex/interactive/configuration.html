@@ -11,10 +11,10 @@
 <meta name="description" content="Starting your GraphScope Interactive service can be straightforward, as demonstrated in our getting_started guide. By default, executing the command: will initialize the service with its default se..." />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Data Model" href="data_model.html" /><link rel="prev" title="Stored Procedures" href="stored_procedures.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.1.2 and Furo 2024.04.27 -->
         <title>Engine Configuration - GraphScope documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=437aa6ec" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css?v=2a6c4383" />
     <link rel="stylesheet" type="text/css" href="../../_static/panels-bootstrap.5fd3999ee7762ccc51105388f4a9d115.css?v=45cf7dbc" />
@@ -164,6 +164,8 @@ MathJax = {
 <label class="overlay toc-overlay" for="__toc">
   <div class="visually-hidden">Hide table of contents sidebar</div>
 </label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
 
 
 
@@ -582,6 +584,18 @@ MathJax = {
         
           
             
+              <dd><a href="../../../v0.27.0/index.html">
+                
+                  v0.27.0
+                
+              </a></dd>
+            
+          
+        
+      
+        
+          
+            
               <dd><a href="../../../v0.26.0/index.html">
                 
                   v0.26.0
@@ -609,18 +623,6 @@ MathJax = {
               <dd><a href="../../../v0.24.0/index.html">
                 
                   v0.24.0
-                
-              </a></dd>
-            
-          
-        
-      
-        
-          
-            
-              <dd><a href="../../../v0.23.0/index.html">
-                
-                  v0.23.0
                 
               </a></dd>
             
@@ -683,16 +685,16 @@ MathJax = {
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
-        <article role="main">
+        <article role="main" id="furo-main-content">
           <section class="tex2jax_ignore mathjax_ignore" id="engine-configuration">
-<h1>Engine Configuration<a class="headerlink" href="#engine-configuration" title="Permalink to this heading">#</a></h1>
+<h1>Engine Configuration<a class="headerlink" href="#engine-configuration" title="Permalink to this heading">¶</a></h1>
 <p>Starting your GraphScope Interactive service can be straightforward, as demonstrated in our <a class="reference internal" href="getting_started.html"><span class="std std-doc">getting_started</span></a> guide. By default, executing the command:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/gs_interactive<span class="w"> </span>service<span class="w"> </span>start
 </pre></div>
 </div>
 <p>will initialize the service with its default settings. However, GraphScope is designed to be flexible and adaptable to your specific needs. This means you can tailor the service’s behavior using custom configurations.</p>
 <section id="customizing-your-service-configuration">
-<h2>Customizing Your Service Configuration<a class="headerlink" href="#customizing-your-service-configuration" title="Permalink to this heading">#</a></h2>
+<h2>Customizing Your Service Configuration<a class="headerlink" href="#customizing-your-service-configuration" title="Permalink to this heading">¶</a></h2>
 <p>To customize the service’s settings, you can provide a YAML configuration file. This file allows you to specify various parameters, from directory paths to log levels, ensuring the service aligns with your requirements. To use a custom configuration, simply pass the YAML file to the command as follows:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/gs_interactive<span class="w"> </span>service<span class="w"> </span>start<span class="w"> </span>-c<span class="w"> </span>./conf/engine_config.yaml
 </pre></div>
@@ -706,7 +708,7 @@ MathJax = {
 <p>Remember, any changes made in the configuration file will only take effect after the service has been restarted with the updated file.</p>
 </section>
 <section id="sample-configuration">
-<h2>Sample Configuration<a class="headerlink" href="#sample-configuration" title="Permalink to this heading">#</a></h2>
+<h2>Sample Configuration<a class="headerlink" href="#sample-configuration" title="Permalink to this heading">¶</a></h2>
 <p>Here’s a glimpse of what a typical YAML configuration file might look like:</p>
 <div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">log_level</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">INFO</span><span class="w"> </span><span class="c1"># default INFO</span>
 <span class="nt">compute_engine</span><span class="p">:</span>
@@ -720,6 +722,14 @@ MathJax = {
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">FilterIntoJoinRule</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">NotExistToAntiJoinRule</span>
 <span class="w">  </span><span class="nt">query_timeout</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">20000</span><span class="w">  </span><span class="c1"># query timeout in milliseconds, default 20000</span>
+<span class="w">  </span><span class="nt">endpoint</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">default_listen_address</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">localhost</span>
+<span class="w">    </span><span class="nt">bolt_connector</span><span class="p">:</span><span class="w"> </span><span class="c1"># cypher query endpoint </span>
+<span class="w">      </span><span class="nt">disabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w"> </span><span class="c1"># disable cypher endpoint or not.</span>
+<span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">7687</span>
+<span class="w">    </span><span class="nt">gremlin_connector</span><span class="p">:</span><span class="w"> </span><span class="c1"># gremlin query endpoint </span>
+<span class="w">      </span><span class="nt">disabled</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span><span class="w"> </span><span class="c1"># disable gremlin endpoint or not.</span>
+<span class="w">      </span><span class="nt">port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">8182</span>
 <span class="nt">http_service</span><span class="p">:</span>
 <span class="w">  </span><span class="nt">default_listen_address</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">localhost</span>
 <span class="w">  </span><span class="nt">admin_port</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">7777</span>
@@ -728,10 +738,10 @@ MathJax = {
 </div>
 </section>
 <section id="available-configurations">
-<h2>Available Configurations<a class="headerlink" href="#available-configurations" title="Permalink to this heading">#</a></h2>
+<h2>Available Configurations<a class="headerlink" href="#available-configurations" title="Permalink to this heading">¶</a></h2>
 <p>For configurations associated with the root directory, we do not accept relative paths to ensure consistency.</p>
 <section id="service-configurations">
-<h3>Service configurations<a class="headerlink" href="#service-configurations" title="Permalink to this heading">#</a></h3>
+<h3>Service configurations<a class="headerlink" href="#service-configurations" title="Permalink to this heading">¶</a></h3>
 <p>In this following table, we use the <code class="docutils literal notranslate"><span class="pre">.</span></code> notation to represent the hierarchy within the <code class="docutils literal notranslate"><span class="pre">YAML</span></code> structure.</p>
 <div class="table-wrapper colwidths-auto docutils container">
 <table class="docutils align-default">
@@ -783,17 +793,42 @@ MathJax = {
 <td><p>An optimization rule that transforms a “not exist” pattern into an anti-join operation</p></td>
 <td><p>0.0.1</p></td>
 </tr>
-<tr class="row-even"><td><p>http_service.default_listen_address</p></td>
+<tr class="row-even"><td><p>compiler.endpoint.default_listen_address</p></td>
+<td><p>localhost</p></td>
+<td><p>The address for compiler endpoint to bind</p></td>
+<td><p>0.0.3</p></td>
+</tr>
+<tr class="row-odd"><td><p>compiler.endpoint.bolt_connector.disabled</p></td>
+<td><p>false</p></td>
+<td><p>Whether to disable the cypher endpoint</p></td>
+<td><p>0.0.3</p></td>
+</tr>
+<tr class="row-even"><td><p>compiler.endpoint.bolt_connector.port</p></td>
+<td><p>7687</p></td>
+<td><p>The port for compiler’s cypher endpoint.</p></td>
+<td><p>0.0.3</p></td>
+</tr>
+<tr class="row-odd"><td><p>compiler.endpoint.gremlin_connector.disabled</p></td>
+<td><p>true</p></td>
+<td><p>Whether to disable the gremlin endpoint</p></td>
+<td><p>0.0.3</p></td>
+</tr>
+<tr class="row-even"><td><p>compiler.endpoint.gremlin_connector.port</p></td>
+<td><p>8182</p></td>
+<td><p>The port for compiler’s cypher endpoint.</p></td>
+<td><p>0.0.3</p></td>
+</tr>
+<tr class="row-odd"><td><p>http_service.default_listen_address</p></td>
 <td><p>localhost</p></td>
 <td><p>The address for http service to bind</p></td>
 <td><p>0.0.2</p></td>
 </tr>
-<tr class="row-odd"><td><p>http_service.admin_port</p></td>
+<tr class="row-even"><td><p>http_service.admin_port</p></td>
 <td><p>7777</p></td>
 <td><p>The port for admin service to listen on</p></td>
 <td><p>0.0.2</p></td>
 </tr>
-<tr class="row-even"><td><p>http_service.query_port</p></td>
+<tr class="row-odd"><td><p>http_service.query_port</p></td>
 <td><p>10000</p></td>
 <td><p>The port for query service to listen on, for stored procedure queries, user can directory submit queries to query_port without compiler involved</p></td>
 <td><p>0.0.2</p></td>
@@ -884,7 +919,7 @@ MathJax = {
 </div><script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=ccbe24c1"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
     <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
-    <script src="../../_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="../../_static/scripts/furo.js?v=4e2eecee"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
     </body>

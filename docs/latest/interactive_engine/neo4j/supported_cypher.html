@@ -11,10 +11,10 @@
 <meta name="description" content="This document outlines the current capabilities of GIE in supporting Neo4j’s Cypher queries and compares them to the syntax specified in Neo4j. While our goal is to comply with Neo4j’s syntax, GIE ..." />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Using LLM as an Assistant in GIE" href="llm_assistant.html" /><link rel="prev" title="GIE for Cypher" href="cypher_sdk.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.1.2 and Furo 2024.04.27 -->
         <title>Cypher Support - GraphScope documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=437aa6ec" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css?v=2a6c4383" />
     <link rel="stylesheet" type="text/css" href="../../_static/panels-bootstrap.5fd3999ee7762ccc51105388f4a9d115.css?v=45cf7dbc" />
@@ -164,6 +164,8 @@ MathJax = {
 <label class="overlay toc-overlay" for="__toc">
   <div class="visually-hidden">Hide table of contents sidebar</div>
 </label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
 
 
 
@@ -582,6 +584,18 @@ MathJax = {
         
           
             
+              <dd><a href="../../../v0.27.0/index.html">
+                
+                  v0.27.0
+                
+              </a></dd>
+            
+          
+        
+      
+        
+          
+            
               <dd><a href="../../../v0.26.0/index.html">
                 
                   v0.26.0
@@ -609,18 +623,6 @@ MathJax = {
               <dd><a href="../../../v0.24.0/index.html">
                 
                   v0.24.0
-                
-              </a></dd>
-            
-          
-        
-      
-        
-          
-            
-              <dd><a href="../../../v0.23.0/index.html">
-                
-                  v0.23.0
                 
               </a></dd>
             
@@ -683,9 +685,9 @@ MathJax = {
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
-        <article role="main">
+        <article role="main" id="furo-main-content">
           <section class="tex2jax_ignore mathjax_ignore" id="cypher-support">
-<h1>Cypher Support<a class="headerlink" href="#cypher-support" title="Permalink to this heading">#</a></h1>
+<h1>Cypher Support<a class="headerlink" href="#cypher-support" title="Permalink to this heading">¶</a></h1>
 <p>This document outlines the current capabilities of GIE in supporting Neo4j’s Cypher queries and
 compares them to the <a class="reference external" href="https://neo4j.com/docs/cypher-manual/current/syntax/">syntax</a> specified in Neo4j.
 While our goal is to comply with Neo4j’s syntax, GIE currently has some limitations.
@@ -695,12 +697,12 @@ Therefore, functionalities associated with writing, such as adding vertices/edge
 We further highlight planned features that we intend to offer in the near future.
 While all terminologies, including data types, operators, and keywords in clauses, are case-insensitive in this document, we use capital and lowercase letters for the terminologies of Neo4j and GIE, respectively, to ensure clarity.</p>
 <section id="data-types">
-<h2>Data Types<a class="headerlink" href="#data-types" title="Permalink to this heading">#</a></h2>
+<h2>Data Types<a class="headerlink" href="#data-types" title="Permalink to this heading">¶</a></h2>
 <p>As <a class="reference external" href="https://neo4j.com/docs/cypher-manual/current/values-and-types">Neo4j</a>, we have provided support for
 data value of types in the categories of <strong>property</strong>, <strong>structural</strong> and <strong>constructed</strong>.
 However, the specific data types that we support are slightly modified from those in Cypher to ensure compatibility with our storage system. Further details will be elaborated upon.</p>
 <section id="property-types">
-<h3>Property Types<a class="headerlink" href="#property-types" title="Permalink to this heading">#</a></h3>
+<h3>Property Types<a class="headerlink" href="#property-types" title="Permalink to this heading">¶</a></h3>
 <p>The available data types stored in the vertices (equivalent of nodes in Cypher) and edges (equivalent of relationships in Cypher), known as property types, are divided into several categories including Boolean, Integer, Float, String, Bytes, Placeholder and Temporal. These property types are extensively utilized and can be commonly utilized in queries and as parameters – making them the most commonly used data types.</p>
 <div class="table-wrapper colwidths-auto docutils container">
 <table class="docutils align-default">
@@ -772,7 +774,7 @@ However, the specific data types that we support are slightly modified from thos
 </div>
 </section>
 <section id="structural-types">
-<h3>Structural types<a class="headerlink" href="#structural-types" title="Permalink to this heading">#</a></h3>
+<h3>Structural types<a class="headerlink" href="#structural-types" title="Permalink to this heading">¶</a></h3>
 <p>In a graph, Structural Types are the first-class citizens and are comprised of the following:</p>
 <ul class="simple">
 <li><p>Vertex: It encodes the information of a particular vertex in the graph. The information includes the id, label, and a map of properties. However, it is essential to note that multiple labels in a vertex are currently unsupported in GIE.</p></li>
@@ -813,7 +815,7 @@ However, the specific data types that we support are slightly modified from thos
 </div>
 </section>
 <section id="constructed-types">
-<h3>Constructed Types<a class="headerlink" href="#constructed-types" title="Permalink to this heading">#</a></h3>
+<h3>Constructed Types<a class="headerlink" href="#constructed-types" title="Permalink to this heading">¶</a></h3>
 <p>Constructed types mainly include the categories of Array and Map.</p>
 <div class="table-wrapper colwidths-auto docutils container">
 <table class="docutils align-default">
@@ -844,7 +846,7 @@ However, the specific data types that we support are slightly modified from thos
 </section>
 </section>
 <section id="operators">
-<h2>Operators<a class="headerlink" href="#operators" title="Permalink to this heading">#</a></h2>
+<h2>Operators<a class="headerlink" href="#operators" title="Permalink to this heading">¶</a></h2>
 <p>We list GIE’s support of the operators in the categories of Aggregation, Property, Mathematical,
 Comparison, String and Boolean. Examples and functionalities of these operators are the same
 as in <a class="reference external" href="https://neo4j.com/docs/cypher-manual/current/syntax/operators/">Neo4j</a>.
@@ -963,224 +965,252 @@ Note that some Aggregator operators, such as <code class="docutils literal notra
 <tr class="row-even"><td class="text-left"><p>Mathematical</p></td>
 <td class="text-left"><p>Exponentiation</p></td>
 <td class="text-left"><p>^</p></td>
-<td class="text-left"><p>^^</p></td>
+<td class="text-left"><p>power(a, b)</p></td>
 <td class="text-center"><p><input type="checkbox" disabled checked /></p></td>
 <td class="text-left"><p></p></td>
 </tr>
-<tr class="row-odd"><td class="text-left"><p>Comparison</p></td>
+<tr class="row-odd"><td class="text-left"><p>Temporal Mathematical</p></td>
+<td class="text-left"><p>Add a duration to a temporal type</p></td>
+<td class="text-left"><p>&lt;temporal&gt; + &lt;duration&gt;</p></td>
+<td class="text-left"><p>&lt;temporal&gt; + &lt;duration&gt;</p></td>
+<td class="text-center"><p><input type="checkbox" disabled checked /></p></td>
+<td class="text-left"><p></p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Temporal Mathematical</p></td>
+<td class="text-left"><p>Subtract a duration from a temporal type</p></td>
+<td class="text-left"><p>&lt;temporal&gt; - &lt;duration&gt;</p></td>
+<td class="text-left"><p>&lt;temporal&gt; - &lt;duration&gt;</p></td>
+<td class="text-center"><p><input type="checkbox" disabled checked /></p></td>
+<td class="text-left"><p></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Temporal Mathematical</p></td>
+<td class="text-left"><p>Subtract two temporal types, returning a duration in milliseconds</p></td>
+<td class="text-left"><p>&lt;temporal&gt; - &lt;temporal&gt;</p></td>
+<td class="text-left"><p>&lt;temporal&gt; - &lt;temporal&gt;</p></td>
+<td class="text-center"><p><input type="checkbox" disabled checked /></p></td>
+<td class="text-left"><p></p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Temporal Mathematical</p></td>
+<td class="text-left"><p>Add two durations</p></td>
+<td class="text-left"><p>&lt;duration&gt; + &lt;duration&gt;</p></td>
+<td class="text-left"><p>&lt;duration&gt; + &lt;duration&gt;</p></td>
+<td class="text-center"><p><input type="checkbox" disabled checked /></p></td>
+<td class="text-left"><p></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Temporal Mathematical</p></td>
+<td class="text-left"><p>Subtract two durations</p></td>
+<td class="text-left"><p>&lt;duration&gt; - &lt;duration&gt;</p></td>
+<td class="text-left"><p>&lt;duration&gt; - &lt;duration&gt;</p></td>
+<td class="text-center"><p><input type="checkbox" disabled checked /></p></td>
+<td class="text-left"><p></p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Temporal Mathematical</p></td>
+<td class="text-left"><p>Multiply a duration by a numeric value</p></td>
+<td class="text-left"><p>&lt;duration&gt; * &lt;numeric&gt;</p></td>
+<td class="text-left"><p>&lt;duration&gt; * &lt;numeric&gt;</p></td>
+<td class="text-center"><p><input type="checkbox" disabled checked /></p></td>
+<td class="text-left"><p></p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>Temporal Mathematical</p></td>
+<td class="text-left"><p>Divide a duration by a numeric value</p></td>
+<td class="text-left"><p>&lt;duration&gt; / &lt;numeric&gt;</p></td>
+<td class="text-left"><p>&lt;duration&gt; / &lt;numeric&gt;</p></td>
+<td class="text-center"><p><input type="checkbox" disabled checked /></p></td>
+<td class="text-left"><p></p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Comparison</p></td>
 <td class="text-left"><p>Equality</p></td>
 <td class="text-left"><p>=</p></td>
 <td class="text-left"><p>=</p></td>
 <td class="text-center"><p><input type="checkbox" disabled checked /></p></td>
 <td class="text-left"><p></p></td>
 </tr>
-<tr class="row-even"><td class="text-left"><p>Comparison</p></td>
+<tr class="row-odd"><td class="text-left"><p>Comparison</p></td>
 <td class="text-left"><p>Inequality</p></td>
 <td class="text-left"><p>&lt;&gt;</p></td>
 <td class="text-left"><p>&lt;&gt;</p></td>
 <td class="text-center"><p><input type="checkbox" disabled checked /></p></td>
 <td class="text-left"><p></p></td>
 </tr>
-<tr class="row-odd"><td class="text-left"><p>Comparison</p></td>
+<tr class="row-even"><td class="text-left"><p>Comparison</p></td>
 <td class="text-left"><p>Less than</p></td>
 <td class="text-left"><p>&lt;</p></td>
 <td class="text-left"><p>&lt;</p></td>
 <td class="text-center"><p><input type="checkbox" disabled checked /></p></td>
 <td class="text-left"><p></p></td>
 </tr>
-<tr class="row-even"><td class="text-left"><p>Comparison</p></td>
+<tr class="row-odd"><td class="text-left"><p>Comparison</p></td>
 <td class="text-left"><p>Less than or equal</p></td>
 <td class="text-left"><p>&lt;=</p></td>
 <td class="text-left"><p>&lt;=</p></td>
 <td class="text-center"><p><input type="checkbox" disabled checked /></p></td>
 <td class="text-left"><p></p></td>
 </tr>
-<tr class="row-odd"><td class="text-left"><p>Comparison</p></td>
+<tr class="row-even"><td class="text-left"><p>Comparison</p></td>
 <td class="text-left"><p>Greater than</p></td>
 <td class="text-left"><p>&gt;</p></td>
 <td class="text-left"><p>&gt;</p></td>
 <td class="text-center"><p><input type="checkbox" disabled checked /></p></td>
 <td class="text-left"><p></p></td>
 </tr>
-<tr class="row-even"><td class="text-left"><p>Comparison</p></td>
+<tr class="row-odd"><td class="text-left"><p>Comparison</p></td>
 <td class="text-left"><p>Greater than or equal</p></td>
 <td class="text-left"><p>&gt;=</p></td>
 <td class="text-left"><p>&gt;=</p></td>
 <td class="text-center"><p><input type="checkbox" disabled checked /></p></td>
 <td class="text-left"><p></p></td>
 </tr>
-<tr class="row-odd"><td class="text-left"><p>Comparison</p></td>
+<tr class="row-even"><td class="text-left"><p>Comparison</p></td>
 <td class="text-left"><p>Verify as <code class="docutils literal notranslate"><span class="pre">NULL</span></code></p></td>
 <td class="text-left"><p>IS NULL</p></td>
 <td class="text-left"><p>is null</p></td>
 <td class="text-center"><p><input type="checkbox" disabled checked /></p></td>
 <td class="text-left"><p></p></td>
 </tr>
-<tr class="row-even"><td class="text-left"><p>Comparison</p></td>
+<tr class="row-odd"><td class="text-left"><p>Comparison</p></td>
 <td class="text-left"><p>Verify as <code class="docutils literal notranslate"><span class="pre">NOT</span> <span class="pre">NULL</span></code></p></td>
 <td class="text-left"><p>IS NOT NULL</p></td>
 <td class="text-left"><p>is not null</p></td>
 <td class="text-center"><p><input type="checkbox" disabled checked /></p></td>
 <td class="text-left"><p></p></td>
 </tr>
-<tr class="row-odd"><td class="text-left"><p>Comparison</p></td>
-<td class="text-left"><p>String starts with</p></td>
+<tr class="row-even"><td class="text-left"><p>Comparison</p></td>
+<td class="text-left"><p>Perform case-sensitive matching on the beginning of a string</p></td>
 <td class="text-left"><p>STARTS WITH</p></td>
 <td class="text-left"><p>starts with</p></td>
-<td class="text-center"><p><input type="checkbox" disabled  /></p></td>
-<td class="text-left"><p>planned</p></td>
-</tr>
-<tr class="row-even"><td class="text-left"><p>Comparison</p></td>
-<td class="text-left"><p>String ends with</p></td>
-<td class="text-left"><p>ENDS WITH</p></td>
-<td class="text-left"><p>ends with</p></td>
-<td class="text-center"><p><input type="checkbox" disabled  /></p></td>
-<td class="text-left"><p>planned</p></td>
+<td class="text-center"><p><input type="checkbox" disabled  checked /></p></td>
+<td class="text-left"><p></p></td>
 </tr>
 <tr class="row-odd"><td class="text-left"><p>Comparison</p></td>
-<td class="text-left"><p>String contains</p></td>
+<td class="text-left"><p>Perform case-sensitive matching on the ending of a string</p></td>
+<td class="text-left"><p>ENDS WITH</p></td>
+<td class="text-left"><p>ends with</p></td>
+<td class="text-center"><p><input type="checkbox" disabled  checked /></p></td>
+<td class="text-left"><p></p></td>
+</tr>
+<tr class="row-even"><td class="text-left"><p>Comparison</p></td>
+<td class="text-left"><p>Perform case-sensitive matching regardless of location within a string</p></td>
 <td class="text-left"><p>CONTAINS</p></td>
 <td class="text-left"><p>contains</p></td>
-<td class="text-center"><p><input type="checkbox" disabled  /></p></td>
-<td class="text-left"><p>planned</p></td>
+<td class="text-center"><p><input type="checkbox" disabled  checked /></p></td>
+<td class="text-left"><p></p></td>
 </tr>
-<tr class="row-even"><td class="text-left"><p>Boolean</p></td>
+<tr class="row-odd"><td class="text-left"><p>Boolean</p></td>
 <td class="text-left"><p>Conjunction</p></td>
 <td class="text-left"><p>AND</p></td>
 <td class="text-left"><p>and</p></td>
 <td class="text-center"><p><input type="checkbox" disabled checked /></p></td>
 <td class="text-left"><p></p></td>
 </tr>
-<tr class="row-odd"><td class="text-left"><p>Boolean</p></td>
+<tr class="row-even"><td class="text-left"><p>Boolean</p></td>
 <td class="text-left"><p>Disjunction</p></td>
 <td class="text-left"><p>OR</p></td>
 <td class="text-left"><p>or</p></td>
 <td class="text-center"><p><input type="checkbox" disabled checked /></p></td>
 <td class="text-left"><p></p></td>
 </tr>
-<tr class="row-even"><td class="text-left"><p>Boolean</p></td>
+<tr class="row-odd"><td class="text-left"><p>Boolean</p></td>
 <td class="text-left"><p>Exclusive Disjunction</p></td>
 <td class="text-left"><p>XOR</p></td>
 <td class="text-left"><p>xor</p></td>
 <td class="text-center"><p><input type="checkbox" disabled /></p></td>
 <td class="text-left"><p>planned</p></td>
 </tr>
-<tr class="row-odd"><td class="text-left"><p>Boolean</p></td>
+<tr class="row-even"><td class="text-left"><p>Boolean</p></td>
 <td class="text-left"><p>Negation</p></td>
 <td class="text-left"><p>NOT</p></td>
 <td class="text-left"><p>not</p></td>
-<td class="text-center"><p><input type="checkbox" disabled /></p></td>
-<td class="text-left"><p>planned</p></td>
+<td class="text-center"><p><input type="checkbox" disabled checked /></p></td>
+<td class="text-left"><p></p></td>
 </tr>
-<tr class="row-even"><td class="text-left"><p>BitOpr</p></td>
+<tr class="row-odd"><td class="text-left"><p>BitOpr</p></td>
 <td class="text-left"><p>Bit and</p></td>
 <td class="text-left"><p>via function</p></td>
 <td class="text-left"><p>&amp;</p></td>
 <td class="text-center"><p><input type="checkbox" disabled checked /></p></td>
 <td class="text-left"><p></p></td>
 </tr>
-<tr class="row-odd"><td class="text-left"><p>BitOpr</p></td>
+<tr class="row-even"><td class="text-left"><p>BitOpr</p></td>
 <td class="text-left"><p>Bit or</p></td>
 <td class="text-left"><p>via function</p></td>
 <td class="text-left"><p>|</p></td>
 <td class="text-center"><p><input type="checkbox" disabled checked /></p></td>
 <td class="text-left"><p></p></td>
 </tr>
-<tr class="row-even"><td class="text-left"><p>Boolean</p></td>
+<tr class="row-odd"><td class="text-left"><p>Boolean</p></td>
 <td class="text-left"><p>Bit xor</p></td>
 <td class="text-left"><p>via function</p></td>
 <td class="text-left"><p>^</p></td>
 <td class="text-center"><p><input type="checkbox" disabled checked /></p></td>
 <td class="text-left"><p></p></td>
 </tr>
-<tr class="row-odd"><td class="text-left"><p>BitOpr</p></td>
+<tr class="row-even"><td class="text-left"><p>BitOpr</p></td>
 <td class="text-left"><p>Bit reverse</p></td>
 <td class="text-left"><p>via function</p></td>
 <td class="text-left"><p>~</p></td>
+<td class="text-center"><p><input type="checkbox" disabled /></p></td>
+<td class="text-left"><p>planned</p></td>
+</tr>
+<tr class="row-odd"><td class="text-left"><p>BitOpr</p></td>
+<td class="text-left"><p>Bit left shift</p></td>
+<td class="text-left"><p>via function</p></td>
+<td class="text-left"><p>&lt;&lt;</p></td>
 <td class="text-center"><p><input type="checkbox" disabled checked /></p></td>
 <td class="text-left"><p></p></td>
 </tr>
 <tr class="row-even"><td class="text-left"><p>BitOpr</p></td>
-<td class="text-left"><p>Bit left shift</p></td>
-<td class="text-left"><p>via function</p></td>
-<td class="text-left"><p>&lt;&lt;</p></td>
-<td class="text-center"><p><input type="checkbox" disabled  /></p></td>
-<td class="text-left"><p>planned</p></td>
-</tr>
-<tr class="row-odd"><td class="text-left"><p>BitOpr</p></td>
 <td class="text-left"><p>Bit right shift</p></td>
 <td class="text-left"><p>via function</p></td>
 <td class="text-left"><p>&gt;&gt;</p></td>
-<td class="text-center"><p><input type="checkbox" disabled  /></p></td>
-<td class="text-left"><p>planned</p></td>
+<td class="text-center"><p><input type="checkbox" disabled checked /></p></td>
+<td class="text-left"><p></p></td>
 </tr>
-<tr class="row-even"><td class="text-left"><p>Branch</p></td>
+<tr class="row-odd"><td class="text-left"><p>Branch</p></td>
 <td class="text-left"><p>Use with <code class="docutils literal notranslate"><span class="pre">Project</span></code> and <code class="docutils literal notranslate"><span class="pre">Return</span></code></p></td>
 <td class="text-left"><p>CASE WHEN</p></td>
 <td class="text-left"><p>CASE WHEN</p></td>
 <td class="text-center"><p><input type="checkbox" disabled  /></p></td>
 <td class="text-left"><p>planned</p></td>
 </tr>
-<tr class="row-odd"><td class="text-left"><p>Scalar</p></td>
+<tr class="row-even"><td class="text-left"><p>Scalar</p></td>
 <td class="text-left"><p>Returns the length of a path</p></td>
 <td class="text-left"><p>length()</p></td>
 <td class="text-left"><p>length()</p></td>
 <td class="text-center"><p><input type="checkbox" disabled checked /></p></td>
 <td class="text-left"><p></p></td>
 </tr>
-<tr class="row-even"><td class="text-left"><p>ListLiteral</p></td>
+<tr class="row-odd"><td class="text-left"><p>ListLiteral</p></td>
 <td class="text-left"><p>Fold expressions into a single list</p></td>
 <td class="text-left"><p>[]</p></td>
 <td class="text-left"><p>[]</p></td>
 <td class="text-center"><p><input type="checkbox" disabled checked /></p></td>
 <td class="text-left"><p></p></td>
 </tr>
-<tr class="row-odd"><td class="text-left"><p>MapLiteral</p></td>
+<tr class="row-even"><td class="text-left"><p>MapLiteral</p></td>
 <td class="text-left"><p>Fold expressions with keys into a single map</p></td>
 <td class="text-left"><p>{}</p></td>
 <td class="text-left"><p>{}</p></td>
 <td class="text-center"><p><input type="checkbox" disabled checked /></p></td>
 <td class="text-left"><p></p></td>
 </tr>
-<tr class="row-even"><td class="text-left"><p>Labels</p></td>
+<tr class="row-odd"><td class="text-left"><p>Labels</p></td>
 <td class="text-left"><p>Get label name of a vertex type</p></td>
 <td class="text-left"><p>labels()</p></td>
 <td class="text-left"><p>labels()</p></td>
 <td class="text-center"><p><input type="checkbox" disabled checked /></p></td>
 <td class="text-left"><p></p></td>
 </tr>
-<tr class="row-odd"><td class="text-left"><p>Type</p></td>
+<tr class="row-even"><td class="text-left"><p>Type</p></td>
 <td class="text-left"><p>Get label name of an edge type</p></td>
 <td class="text-left"><p>type()</p></td>
 <td class="text-left"><p>type()</p></td>
 <td class="text-center"><p><input type="checkbox" disabled checked /></p></td>
 <td class="text-left"><p></p></td>
 </tr>
-<tr class="row-even"><td class="text-left"><p>Extract</p></td>
+<tr class="row-odd"><td class="text-left"><p>Extract</p></td>
 <td class="text-left"><p>Get interval value from a temporal type</p></td>
 <td class="text-left"><p>&lt;temporal&gt;.&lt;interval&gt;</p></td>
 <td class="text-left"><p>&lt;temporal&gt;.&lt;interval&gt;</p></td>
-<td class="text-center"><p><input type="checkbox" disabled checked /></p></td>
-<td class="text-left"><p></p></td>
-</tr>
-<tr class="row-odd"><td class="text-left"><p>Starts With</p></td>
-<td class="text-left"><p>Perform case-sensitive matching on the beginning of a string</p></td>
-<td class="text-left"><p>STARTS WITH</p></td>
-<td class="text-left"><p>STARTS WITH</p></td>
-<td class="text-center"><p><input type="checkbox" disabled checked /></p></td>
-<td class="text-left"><p></p></td>
-</tr>
-<tr class="row-even"><td class="text-left"><p>Ends With</p></td>
-<td class="text-left"><p>Perform case-sensitive matching on the ending of a string</p></td>
-<td class="text-left"><p>ENDS WITH</p></td>
-<td class="text-left"><p>ENDS WITH</p></td>
-<td class="text-center"><p><input type="checkbox" disabled checked /></p></td>
-<td class="text-left"><p></p></td>
-</tr>
-<tr class="row-odd"><td class="text-left"><p>Contains</p></td>
-<td class="text-left"><p>Perform case-sensitive matching regardless of location within a string</p></td>
-<td class="text-left"><p>CONTAINS</p></td>
-<td class="text-left"><p>CONTAINS</p></td>
 <td class="text-center"><p><input type="checkbox" disabled checked /></p></td>
 <td class="text-left"><p></p></td>
 </tr>
@@ -1189,7 +1219,7 @@ Note that some Aggregator operators, such as <code class="docutils literal notra
 </div>
 </section>
 <section id="clause">
-<h2>Clause<a class="headerlink" href="#clause" title="Permalink to this heading">#</a></h2>
+<h2>Clause<a class="headerlink" href="#clause" title="Permalink to this heading">¶</a></h2>
 <p>A notable limitation for now is that we do not
 allow specifying multiple <code class="docutils literal notranslate"><span class="pre">MATCH</span></code> clauses in <strong>one</strong> query. For example,
 the following code will not compile:</p>
@@ -1336,7 +1366,7 @@ RETURN a, b;
 </div><script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=ccbe24c1"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
     <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
-    <script src="../../_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="../../_static/scripts/furo.js?v=4e2eecee"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
     </body>

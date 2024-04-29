@@ -11,10 +11,10 @@
 <meta name="description" content="This tutorial provides a quick overview of GraphScope’s features. To begin, we will install GraphScope on your local machine using Python. Although most examples in this guide are based on local Py..." />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Loading Graphs" href="../loading_graphs.html" /><link rel="prev" title="Introducing GraphScope" href="intro.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.1.2 and Furo 2024.04.27 -->
         <title>Getting Started - GraphScope documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=437aa6ec" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css?v=2a6c4383" />
     <link rel="stylesheet" type="text/css" href="../_static/panels-bootstrap.5fd3999ee7762ccc51105388f4a9d115.css?v=45cf7dbc" />
@@ -164,6 +164,8 @@ MathJax = {
 <label class="overlay toc-overlay" for="__toc">
   <div class="visually-hidden">Hide table of contents sidebar</div>
 </label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
 
 
 
@@ -582,6 +584,18 @@ MathJax = {
         
           
             
+              <dd><a href="../../v0.27.0/index.html">
+                
+                  v0.27.0
+                
+              </a></dd>
+            
+          
+        
+      
+        
+          
+            
               <dd><a href="../../v0.26.0/index.html">
                 
                   v0.26.0
@@ -609,18 +623,6 @@ MathJax = {
               <dd><a href="../../v0.24.0/index.html">
                 
                   v0.24.0
-                
-              </a></dd>
-            
-          
-        
-      
-        
-          
-            
-              <dd><a href="../../v0.23.0/index.html">
-                
-                  v0.23.0
                 
               </a></dd>
             
@@ -683,9 +685,9 @@ MathJax = {
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
-        <article role="main">
+        <article role="main" id="furo-main-content">
           <section class="tex2jax_ignore mathjax_ignore" id="getting-started">
-<h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this heading">#</a></h1>
+<h1>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this heading">¶</a></h1>
 <p>This tutorial provides a quick overview of GraphScope’s features.
 To begin, we will install GraphScope on your local machine using Python.
 Although most examples in this guide are based on local Python installation,
@@ -715,7 +717,7 @@ python3.9
 </div>
 </div>
 <section id="one-stop-graph-processing">
-<h2>One-stop Graph Processing<a class="headerlink" href="#one-stop-graph-processing" title="Permalink to this heading">#</a></h2>
+<h2>One-stop Graph Processing<a class="headerlink" href="#one-stop-graph-processing" title="Permalink to this heading">¶</a></h2>
 <p>We will use a walking-through example to demonstrate how to use GraphScope to
 process various graph computation tasks in a one-stop manner.</p>
 <p>The example targets node classification on a citation network.</p>
@@ -725,7 +727,7 @@ process various graph computation tasks in a one-stop manner.</p>
 <figure class="align-default" id="id1">
 <a class="reference internal image-reference" href="../_images/sample_pg.png"><img alt="Sample of property graph." src="../_images/sample_pg.png" style="width: 80%;" /></a>
 <figcaption>
-<p><span class="caption-text">Sample of property graph</span><a class="headerlink" href="#id1" title="Permalink to this image">#</a></p>
+<p><span class="caption-text">Sample of property graph</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>This graph has four kinds of vertices, labeled as paper, author, institution, and field_of_study. There are four kinds of edges connecting them, each kind of edge has a label and specifies the vertex labels for its two ends. For example, cites edges connect two vertices labeled paper. Another example is writes, it requires the source vertex is labeled author and the destination is a paper vertex. All the vertices and edges may have properties. e.g., paper vertices have properties like features, publish year, subject label, etc.</p>
@@ -891,7 +893,7 @@ Define the training process and run it<div class="summary-down docutils">
 </div>
 </details></section>
 <section id="graph-analytical-task-quick-start">
-<h2>Graph Analytical Task Quick Start<a class="headerlink" href="#graph-analytical-task-quick-start" title="Permalink to this heading">#</a></h2>
+<h2>Graph Analytical Task Quick Start<a class="headerlink" href="#graph-analytical-task-quick-start" title="Permalink to this heading">¶</a></h2>
 <p>The installed <code class="docutils literal notranslate"><span class="pre">graphscope</span></code> package includes everything you need to analyze a graph on your local machine. If you have a graph analytical job that needs to run iterative algorithms, it works well with <code class="docutils literal notranslate"><span class="pre">graphscope</span></code>.</p>
 <details class="sphinx-bs dropdown card mb-3">
 <summary class="summary-title card-header">
@@ -927,7 +929,7 @@ Example: Running iterative algorithm (SSSP) in GraphScope<div class="summary-dow
 </div>
 </details></section>
 <section id="graph-interactive-query-quick-start">
-<h2>Graph Interactive Query Quick Start<a class="headerlink" href="#graph-interactive-query-quick-start" title="Permalink to this heading">#</a></h2>
+<h2>Graph Interactive Query Quick Start<a class="headerlink" href="#graph-interactive-query-quick-start" title="Permalink to this heading">¶</a></h2>
 <p>With the <code class="docutils literal notranslate"><span class="pre">graphscope</span></code> package already installed, you can effortlessly engage with a graph on your local machine.
 You simply need to create the <code class="docutils literal notranslate"><span class="pre">interactive</span></code> instance to serve as the conduit for submitting Gremlin or Cypher queries.</p>
 <details class="sphinx-bs dropdown card mb-3">
@@ -964,7 +966,7 @@ Example: Run Interactive Queries in GraphScope<div class="summary-down docutils"
 </div>
 </details></section>
 <section id="graph-learning-quick-start">
-<h2>Graph Learning Quick Start<a class="headerlink" href="#graph-learning-quick-start" title="Permalink to this heading">#</a></h2>
+<h2>Graph Learning Quick Start<a class="headerlink" href="#graph-learning-quick-start" title="Permalink to this heading">¶</a></h2>
 <p>GNN model training with GraphScope is easy and straightforward. You can use the <code class="docutils literal notranslate"><span class="pre">graphscope</span></code> package to train a GNN model on your local machine. Note that
 <code class="docutils literal notranslate"><span class="pre">tensorflow</span></code> is required to run the following example.</p>
 <details class="sphinx-bs dropdown card mb-3">
@@ -1134,7 +1136,7 @@ Example: Training GraphSAGE Model in GraphScope<div class="summary-down docutils
 </div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=ccbe24c1"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
-    <script src="../_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="../_static/scripts/furo.js?v=4e2eecee"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=f281be69"></script>
     </body>

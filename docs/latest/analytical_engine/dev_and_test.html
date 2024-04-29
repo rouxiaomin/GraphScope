@@ -11,10 +11,10 @@
 <meta name="description" content="This guide will walk you through the process of understanding how the code is organized, identifying key functions and important code, and building and testing the analytical engine. Setup: For sim..." />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Getting Started" href="../interactive_engine/getting_started.html" /><link rel="prev" title="Tutorial: Run GraphX Applications on GraphScope" href="tutorial_run_graphx_apps.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.1.2 and Furo 2024.04.27 -->
         <title>Dev and Test - GraphScope documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=437aa6ec" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css?v=2a6c4383" />
     <link rel="stylesheet" type="text/css" href="../_static/panels-bootstrap.5fd3999ee7762ccc51105388f4a9d115.css?v=45cf7dbc" />
@@ -164,6 +164,8 @@ MathJax = {
 <label class="overlay toc-overlay" for="__toc">
   <div class="visually-hidden">Hide table of contents sidebar</div>
 </label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
 
 
 
@@ -582,6 +584,18 @@ MathJax = {
         
           
             
+              <dd><a href="../../v0.27.0/index.html">
+                
+                  v0.27.0
+                
+              </a></dd>
+            
+          
+        
+      
+        
+          
+            
               <dd><a href="../../v0.26.0/index.html">
                 
                   v0.26.0
@@ -609,18 +623,6 @@ MathJax = {
               <dd><a href="../../v0.24.0/index.html">
                 
                   v0.24.0
-                
-              </a></dd>
-            
-          
-        
-      
-        
-          
-            
-              <dd><a href="../../v0.23.0/index.html">
-                
-                  v0.23.0
                 
               </a></dd>
             
@@ -683,13 +685,13 @@ MathJax = {
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
-        <article role="main">
+        <article role="main" id="furo-main-content">
           <section class="tex2jax_ignore mathjax_ignore" id="dev-and-test">
-<h1>Dev and Test<a class="headerlink" href="#dev-and-test" title="Permalink to this heading">#</a></h1>
+<h1>Dev and Test<a class="headerlink" href="#dev-and-test" title="Permalink to this heading">¶</a></h1>
 <p>This guide will walk you through the process of understanding how the code is organized,
 identifying key functions and important code, and building and testing the analytical engine.</p>
 <section id="setup">
-<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this heading">#</a></h2>
+<h2>Setup<a class="headerlink" href="#setup" title="Permalink to this heading">¶</a></h2>
 <p>For simplicity, we suggest you use a prebuilt docker image with necessary dependencies installed.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>docker<span class="w"> </span>run<span class="w"> </span>--name<span class="w"> </span>dev<span class="w"> </span>-it<span class="w"> </span>--shm-size<span class="o">=</span>4096m<span class="w"> </span>registry.cn-hongkong.aliyuncs.com/graphscope/graphscope-dev:latest
 </pre></div>
@@ -703,7 +705,7 @@ Please refer to <a class="reference internal" href="../development/dev_guide.htm
 </div>
 </section>
 <section id="understanding-the-codebase">
-<h2>Understanding the Codebase<a class="headerlink" href="#understanding-the-codebase" title="Permalink to this heading">#</a></h2>
+<h2>Understanding the Codebase<a class="headerlink" href="#understanding-the-codebase" title="Permalink to this heading">¶</a></h2>
 <p>Since the analytical engine inherits from GRAPE, it requires libgrape-lite as a dependency.
 Please note that the core functionalities of libgrape-lite, such as graph structures, graph partitioners, workers,
 communication between workers, and applications, are heavily reused in the analytical engine of GraphScope.</p>
@@ -741,7 +743,7 @@ communication between workers, and applications, are heavily reused in the analy
 <figure class="align-default" id="id1">
 <a class="reference internal image-reference" href="../_images/fig-grape.jpg"><img alt="Key components of libgrape-lite" src="../_images/fig-grape.jpg" style="width: 80%;" /></a>
 <figcaption>
-<p><span class="caption-text">Key components of libgrape-lite</span><a class="headerlink" href="#id1" title="Permalink to this image">#</a></p>
+<p><span class="caption-text">Key components of libgrape-lite</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>The figure above illustrates the key components of libgrape-lite, (as well as analytical engine in GraphScope), and how they work. More specifically,</p>
@@ -753,7 +755,7 @@ communication between workers, and applications, are heavily reused in the analy
 </ul>
 </section>
 <section id="making-modifications">
-<h2>Making Modifications<a class="headerlink" href="#making-modifications" title="Permalink to this heading">#</a></h2>
+<h2>Making Modifications<a class="headerlink" href="#making-modifications" title="Permalink to this heading">¶</a></h2>
 <ul class="simple">
 <li><p>You are encouraged to fork the repo and make modifications on your own fork.</p></li>
 <li><p>It is much easier to begin with a small change, such as revising a specific algorithm, adding a new algorithm, and then gradually move on to more complex changes. You are suggested to avoid large changes in a single commit.</p></li>
@@ -761,7 +763,7 @@ communication between workers, and applications, are heavily reused in the analy
 </ul>
 </section>
 <section id="building-analytical-engine">
-<h2>Building Analytical Engine<a class="headerlink" href="#building-analytical-engine" title="Permalink to this heading">#</a></h2>
+<h2>Building Analytical Engine<a class="headerlink" href="#building-analytical-engine" title="Permalink to this heading">¶</a></h2>
 <p>With <code class="docutils literal notranslate"><span class="pre">gs</span></code> command-line utility, you can build analytical engine of GraphScope with a single command.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Clone a repo if needed</span>
 <span class="c1"># git clone https://github.com/alibaba/graphscope</span>
@@ -782,7 +784,7 @@ python3<span class="w"> </span>gsctl.py<span class="w"> </span>make<span class="
 </div>
 </section>
 <section id="testing">
-<h2>Testing<a class="headerlink" href="#testing" title="Permalink to this heading">#</a></h2>
+<h2>Testing<a class="headerlink" href="#testing" title="Permalink to this heading">¶</a></h2>
 <p>The analytical engine has a suite of tests to ensure the correctness of the code, from unit tests to graph algorithm correctness tests. You could easily test with the new artifacts with a single command:</p>
 <p>Here we set the working directory to local repo.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">export</span><span class="w"> </span><span class="nv">GRAPHSCOPE_HOME</span><span class="o">=</span><span class="sb">`</span><span class="nb">pwd</span><span class="sb">`</span>
@@ -875,7 +877,7 @@ python3<span class="w"> </span>gsctl.py<span class="w"> </span>make<span class="
 </div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=ccbe24c1"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
-    <script src="../_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="../_static/scripts/furo.js?v=4e2eecee"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=f281be69"></script>
     </body>

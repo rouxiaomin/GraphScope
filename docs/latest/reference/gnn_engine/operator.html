@@ -11,10 +11,10 @@
 <meta name="description" content="In GL, an operator is a basic executable unit. The system function is represented by the operators. For example, a graph sampler is a kind of operator. Operators can be extended according to requir..." />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.1.2 and Furo 2024.04.27 -->
         <title>Defining Your Own Operator - GraphScope documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=437aa6ec" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css?v=2a6c4383" />
     <link rel="stylesheet" type="text/css" href="../../_static/panels-bootstrap.5fd3999ee7762ccc51105388f4a9d115.css?v=45cf7dbc" />
@@ -164,6 +164,8 @@ MathJax = {
 <label class="overlay toc-overlay" for="__toc">
   <div class="visually-hidden">Hide table of contents sidebar</div>
 </label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
 
 
 
@@ -582,6 +584,18 @@ MathJax = {
         
           
             
+              <dd><a href="../../../v0.27.0/index.html">
+                
+                  v0.27.0
+                
+              </a></dd>
+            
+          
+        
+      
+        
+          
+            
               <dd><a href="../../../v0.26.0/index.html">
                 
                   v0.26.0
@@ -609,18 +623,6 @@ MathJax = {
               <dd><a href="../../../v0.24.0/index.html">
                 
                   v0.24.0
-                
-              </a></dd>
-            
-          
-        
-      
-        
-          
-            
-              <dd><a href="../../../v0.23.0/index.html">
-                
-                  v0.23.0
                 
               </a></dd>
             
@@ -683,9 +685,9 @@ MathJax = {
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
-        <article role="main">
+        <article role="main" id="furo-main-content">
           <section id="defining-your-own-operator">
-<h1>Defining Your Own Operator<a class="headerlink" href="#defining-your-own-operator" title="Permalink to this heading">#</a></h1>
+<h1>Defining Your Own Operator<a class="headerlink" href="#defining-your-own-operator" title="Permalink to this heading">¶</a></h1>
 <p>In <strong>GL</strong>, an <strong>operator</strong> is a basic executable unit. The system
 function is represented by the operators. For example, a graph sampler
 is a kind of operator. Operators can be <strong>extended</strong> according to
@@ -694,7 +696,7 @@ customizing an operator. The system framework will help run it
 distributedly.</p>
 </section>
 <section id="programming-interface">
-<h1>Programming Interface<a class="headerlink" href="#programming-interface" title="Permalink to this heading">#</a></h1>
+<h1>Programming Interface<a class="headerlink" href="#programming-interface" title="Permalink to this heading">¶</a></h1>
 <p>To customize an <strong>operator</strong>, class
 <a class="reference external" href="../graphlearn/core/operator/operator.h">Operator</a> should be
 inherited. And then override the following virtual function.</p>
@@ -725,7 +727,7 @@ operators. You can just use the
 cases.</p>
 </section>
 <section id="distributed-runtime-design">
-<h1>Distributed Runtime Design<a class="headerlink" href="#distributed-runtime-design" title="Permalink to this heading">#</a></h1>
+<h1>Distributed Runtime Design<a class="headerlink" href="#distributed-runtime-design" title="Permalink to this heading">¶</a></h1>
 <p><strong>GL</strong> follows the principle that the <strong>computation happens where the
 data is placed</strong>. In distributed mode, all severs can communicate with
 each other and know the distribution of the partitioned data. When an
@@ -739,14 +741,14 @@ operators. Developers just need care about the next three functions
 <figure class="align-default" id="id1">
 <img alt="op" src="reference/gnn_engine/images/operator_runtime.png" />
 <figcaption>
-<p><span class="caption-text">op</span><a class="headerlink" href="#id1" title="Permalink to this image">#</a></p>
+<p><span class="caption-text">op</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
 </section>
 <section id="implement-a-new-operator">
-<h1>Implement a New Operator<a class="headerlink" href="#implement-a-new-operator" title="Permalink to this heading">#</a></h1>
+<h1>Implement a New Operator<a class="headerlink" href="#implement-a-new-operator" title="Permalink to this heading">¶</a></h1>
 <section id="clone-source-code">
-<h2>Clone source code<a class="headerlink" href="#clone-source-code" title="Permalink to this heading">#</a></h2>
+<h2>Clone source code<a class="headerlink" href="#clone-source-code" title="Permalink to this heading">¶</a></h2>
 <p>To <strong>implement</strong> an operator, you should clone the source code first.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/alibaba/graph-learn.git
 git<span class="w"> </span>submodule<span class="w"> </span>update<span class="w"> </span>--init
@@ -756,7 +758,7 @@ git<span class="w"> </span>submodule<span class="w"> </span>update<span class="w
 build pass.</p>
 </section>
 <section id="implement-your-operator-class">
-<h2>Implement your operator class<a class="headerlink" href="#implement-your-operator-class" title="Permalink to this heading">#</a></h2>
+<h2>Implement your operator class<a class="headerlink" href="#implement-your-operator-class" title="Permalink to this heading">¶</a></h2>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">MyOperator</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="k">public</span><span class="w"> </span><span class="n">Operator</span><span class="w"> </span><span class="p">{</span>
 <span class="k">public</span><span class="o">:</span>
 <span class="w">  </span><span class="n">Status</span><span class="w"> </span><span class="n">Process</span><span class="p">(</span><span class="k">const</span><span class="w"> </span><span class="n">OpRequest</span><span class="o">*</span><span class="w"> </span><span class="n">req</span><span class="p">,</span><span class="w"> </span><span class="n">OpResponse</span><span class="o">*</span><span class="w"> </span><span class="n">res</span><span class="p">)</span><span class="w"> </span><span class="k">override</span><span class="w"> </span><span class="p">{</span>
@@ -770,7 +772,7 @@ customize request and response class, which inherits from <strong>OpRequest</str
 and <strong>OpResponse</strong>.</p>
 </section>
 <section id="register-operator">
-<h2>Register Operator<a class="headerlink" href="#register-operator" title="Permalink to this heading">#</a></h2>
+<h2>Register Operator<a class="headerlink" href="#register-operator" title="Permalink to this heading">¶</a></h2>
 <p>Each operator has a <strong>unique name</strong>. Register the operator with its name
 and class name.</p>
 <div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="n">REGISTER_OPERATOR</span><span class="p">(</span><span class="s">&quot;OpName&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">MyOperator</span><span class="p">);</span>
@@ -782,7 +784,7 @@ and class name.</p>
 for details.</p>
 </section>
 <section id="compile">
-<h2>Compile<a class="headerlink" href="#compile" title="Permalink to this heading">#</a></h2>
+<h2>Compile<a class="headerlink" href="#compile" title="Permalink to this heading">¶</a></h2>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">graph</span><span class="o">-</span><span class="n">learn</span>
 <span class="n">make</span> <span class="n">clean</span>
 <span class="n">make</span> <span class="n">test</span>
@@ -797,7 +799,7 @@ that, you can make the python package and install it.</p>
 </section>
 </section>
 <section id="how-to-use-an-operator">
-<h1>How to Use an Operator<a class="headerlink" href="#how-to-use-an-operator" title="Permalink to this heading">#</a></h1>
+<h1>How to Use an Operator<a class="headerlink" href="#how-to-use-an-operator" title="Permalink to this heading">¶</a></h1>
 <p>For example, if a new sampler named <strong>xxxSampler</strong>, you can call it like
 this:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">g</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">count</span><span class="p">)</span><span class="o">.</span><span class="n">by</span><span class="p">(</span><span class="s2">&quot;xxx&quot;</span><span class="p">)</span><span class="o">...</span>
@@ -844,7 +846,7 @@ this:</p>
 </div><script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=ccbe24c1"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
     <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
-    <script src="../../_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="../../_static/scripts/furo.js?v=4e2eecee"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
     </body>

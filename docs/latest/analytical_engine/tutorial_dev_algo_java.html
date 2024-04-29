@@ -11,10 +11,10 @@
 <meta name="description" content="GraphScope provides sufficient support for java programmers to implement graph algorithms and run it on GraphScope Analytical Engine. In this tutorial, you will first try to explore GraphScope Java..." />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Tutorial: Run Giraph Applications on GraphScope" href="tutorial_run_giraph_apps.html" /><link rel="prev" title="Tutorial: Develop algorithms in Python" href="tutorial_dev_algo_python.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.1.2 and Furo 2024.04.27 -->
         <title>Tutorial: Develop your Algorithm in Java with PIE Model - GraphScope documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=437aa6ec" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css?v=2a6c4383" />
     <link rel="stylesheet" type="text/css" href="../_static/panels-bootstrap.5fd3999ee7762ccc51105388f4a9d115.css?v=45cf7dbc" />
@@ -164,6 +164,8 @@ MathJax = {
 <label class="overlay toc-overlay" for="__toc">
   <div class="visually-hidden">Hide table of contents sidebar</div>
 </label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
 
 
 
@@ -582,6 +584,18 @@ MathJax = {
         
           
             
+              <dd><a href="../../v0.27.0/index.html">
+                
+                  v0.27.0
+                
+              </a></dd>
+            
+          
+        
+      
+        
+          
+            
               <dd><a href="../../v0.26.0/index.html">
                 
                   v0.26.0
@@ -609,18 +623,6 @@ MathJax = {
               <dd><a href="../../v0.24.0/index.html">
                 
                   v0.24.0
-                
-              </a></dd>
-            
-          
-        
-      
-        
-          
-            
-              <dd><a href="../../v0.23.0/index.html">
-                
-                  v0.23.0
                 
               </a></dd>
             
@@ -683,13 +685,13 @@ MathJax = {
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
-        <article role="main">
+        <article role="main" id="furo-main-content">
           <section class="tex2jax_ignore mathjax_ignore" id="tutorial-develop-your-algorithm-in-java-with-pie-model">
-<h1>Tutorial: Develop your Algorithm in Java with PIE Model<a class="headerlink" href="#tutorial-develop-your-algorithm-in-java-with-pie-model" title="Permalink to this heading">#</a></h1>
+<h1>Tutorial: Develop your Algorithm in Java with PIE Model<a class="headerlink" href="#tutorial-develop-your-algorithm-in-java-with-pie-model" title="Permalink to this heading">¶</a></h1>
 <p>GraphScope provides sufficient support for <code class="docutils literal notranslate"><span class="pre">java</span> <span class="pre">programmers</span></code> to implement graph algorithms and run it on GraphScope Analytical Engine.
 In this tutorial, you will first try to explore GraphScope JavaSDK with some example algorithms, then implement your own algorithm, finally submit to GraphScope.</p>
 <section id="run-example-algorithms-with-example-jar">
-<h2>Run example algorithms with example jar<a class="headerlink" href="#run-example-algorithms-with-example-jar" title="Permalink to this heading">#</a></h2>
+<h2>Run example algorithms with example jar<a class="headerlink" href="#run-example-algorithms-with-example-jar" title="Permalink to this heading">¶</a></h2>
 <p>An example jar which contains implementation of several graph algorithms(i.e. PageRank, SSSP, BFS) is provided in
 <a class="reference external" href="https://graphscope.oss-cn-beijing.aliyuncs.com/jar/grape-demo-0.19.0-shaded.jar">grape-demo.jar</a>. You can run the graph algorithms provided in this jar by submitting the downloaded jar to GraphScope.</p>
 <p>Here we provide an example to run <code class="docutils literal notranslate"><span class="pre">SSSP</span></code> on p2p dataset.</p>
@@ -719,15 +721,26 @@ In this tutorial, you will first try to explore GraphScope JavaSDK with some exa
 <p>For more info about GraphScope Python client, please refer to <a class="reference external" href="https://graphscope.io/docs/latest/reference/python_index.html">GraphScope Python Doc</a>.</p>
 </section>
 <section id="implement-your-own-algorithms-in-java">
-<h2>Implement your own algorithms in Java.<a class="headerlink" href="#implement-your-own-algorithms-in-java" title="Permalink to this heading">#</a></h2>
+<h2>Implement your own algorithms in Java.<a class="headerlink" href="#implement-your-own-algorithms-in-java" title="Permalink to this heading">¶</a></h2>
 <p>To implement java graph algorithms runnable on GraphScope, all you need is <code class="docutils literal notranslate"><span class="pre">GRAPE-jdk</span></code>, which provide a PIE programming interface.</p>
 <section id="prepare-grape-jdk">
-<h3>Prepare <strong>GRAPE-jdk</strong><a class="headerlink" href="#prepare-grape-jdk" title="Permalink to this heading">#</a></h3>
+<h3>Prepare <strong>GRAPE-jdk</strong><a class="headerlink" href="#prepare-grape-jdk" title="Permalink to this heading">¶</a></h3>
 <p>You can include <code class="docutils literal notranslate"><span class="pre">GRAPE-jdk</span></code> as a dependency in your maven project by adding following configuration.</p>
+<section id="get-from-maven-central-repository">
+<h4>Get from Maven Central Repository<a class="headerlink" href="#get-from-maven-central-repository" title="Permalink to this heading">¶</a></h4>
+<p>Find the latest version available on <a class="reference external" href="https://mvnrepository.com/artifact/com.alibaba.graphscope/grape-jdk">Maven-Central-Repository</a></p>
+</section>
+<section id="build-from-source">
+<h4>Build from source<a class="headerlink" href="#build-from-source" title="Permalink to this heading">¶</a></h4>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/alibaba/GraphScope
+<span class="nb">cd</span><span class="w"> </span>GraphScope/analytical_engine/java
+mvn<span class="w"> </span>clean<span class="w"> </span>install<span class="w"> </span>-DskipTests<span class="w"> </span><span class="c1"># the version is specified in pom.xml&#39;s revision property</span>
+</pre></div>
+</div>
 <div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;dependency&gt;</span>
 <span class="w">  </span><span class="nt">&lt;groupId&gt;</span>com.alibaba.graphscope<span class="nt">&lt;/groupId&gt;</span>
 <span class="w">  </span><span class="nt">&lt;artifactId&gt;</span>grape-jdk<span class="nt">&lt;/artifactId&gt;</span>
-<span class="w">  </span><span class="nt">&lt;version&gt;</span>0.19.0<span class="nt">&lt;/version&gt;</span>
+<span class="w">  </span><span class="nt">&lt;version&gt;</span>${grape-jdk-version}<span class="nt">&lt;/version&gt;</span>
 <span class="nt">&lt;/dependency&gt;</span>
 </pre></div>
 </div>
@@ -742,8 +755,9 @@ include runtime jars in your fat-jar.</p>
 </pre></div>
 </div>
 </section>
+</section>
 <section id="implement-your-algorithm">
-<h3>Implement your algorithm<a class="headerlink" href="#implement-your-algorithm" title="Permalink to this heading">#</a></h3>
+<h3>Implement your algorithm<a class="headerlink" href="#implement-your-algorithm" title="Permalink to this heading">¶</a></h3>
 <p>Different from the <em>pregel</em> interface provided by <strong>Apache Giraph</strong> and <strong>Spark GraphX</strong>, <code class="docutils literal notranslate"><span class="pre">GRAPE-jdk</span></code> provides user with <strong>PIE</strong> programming interface. Unlike <em>pregel</em>’s <code class="docutils literal notranslate"><span class="pre">vertex-centric</span></code> interface, <strong>PIE</strong>
 models graph computing in a <code class="docutils literal notranslate"><span class="pre">subgraph-centric</span></code> manner.
 In <code class="docutils literal notranslate"><span class="pre">PIE</span></code> model, the program requires less supersteps and the size of generated message has been drastically reduced, which lead to great performance improvement.</p>
@@ -751,12 +765,12 @@ In <code class="docutils literal notranslate"><span class="pre">PIE</span></code
 results, init configuration in this class. The <code class="docutils literal notranslate"><span class="pre">init</span></code> method will be called before
 <code class="docutils literal notranslate"><span class="pre">PEval</span></code>.</p>
 <p>Here we provide a simple PIE algorithm which simply traverse the graph.</p>
-<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Traverse</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">ParallelAppBase</span><span class="o">&lt;</span><span class="n">Long</span><span class="p">,</span><span class="w"> </span><span class="n">Long</span><span class="p">,</span><span class="w"> </span><span class="n">Double</span><span class="p">,</span><span class="w"> </span><span class="n">Long</span><span class="p">,</span><span class="w"> </span><span class="n">TraverseContext</span><span class="o">&gt;</span><span class="p">,</span>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">Traverse</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">ParallelAppBase</span><span class="o">&lt;</span><span class="n">Long</span><span class="p">,</span><span class="w"> </span><span class="n">Long</span><span class="p">,</span><span class="w"> </span><span class="n">Long</span><span class="p">,</span><span class="w"> </span><span class="n">Long</span><span class="p">,</span><span class="w"> </span><span class="n">TraverseContext</span><span class="o">&gt;</span><span class="p">,</span>
 <span class="w">    </span><span class="n">ParallelEngine</span><span class="w"> </span><span class="p">{</span>
 
 <span class="w">    </span><span class="nd">@Override</span>
-<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">PEval</span><span class="p">(</span><span class="n">IFragment</span><span class="o">&lt;</span><span class="n">Long</span><span class="p">,</span><span class="w"> </span><span class="n">Long</span><span class="p">,</span><span class="w"> </span><span class="n">Double</span><span class="p">,</span><span class="w"> </span><span class="n">Long</span><span class="o">&gt;</span><span class="w"> </span><span class="n">fragment</span><span class="p">,</span>
-<span class="w">        </span><span class="n">ParallelContextBase</span><span class="o">&lt;</span><span class="n">Long</span><span class="p">,</span><span class="w"> </span><span class="n">Long</span><span class="p">,</span><span class="w"> </span><span class="n">Double</span><span class="p">,</span><span class="w"> </span><span class="n">Long</span><span class="o">&gt;</span><span class="w"> </span><span class="n">context</span><span class="p">,</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">PEval</span><span class="p">(</span><span class="n">IFragment</span><span class="o">&lt;</span><span class="n">Long</span><span class="p">,</span><span class="w"> </span><span class="n">Long</span><span class="p">,</span><span class="w"> </span><span class="n">Long</span><span class="p">,</span><span class="w"> </span><span class="n">Long</span><span class="o">&gt;</span><span class="w"> </span><span class="n">fragment</span><span class="p">,</span>
+<span class="w">        </span><span class="n">ParallelContextBase</span><span class="o">&lt;</span><span class="n">Long</span><span class="p">,</span><span class="w"> </span><span class="n">Long</span><span class="p">,</span><span class="w"> </span><span class="n">Long</span><span class="p">,</span><span class="w"> </span><span class="n">Long</span><span class="o">&gt;</span><span class="w"> </span><span class="n">context</span><span class="p">,</span>
 <span class="w">        </span><span class="n">ParallelMessageManager</span><span class="w"> </span><span class="n">messageManager</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="n">TraverseContext</span><span class="w"> </span><span class="n">ctx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">TraverseContext</span><span class="p">)</span><span class="w"> </span><span class="n">context</span><span class="p">;</span>
 <span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">Vertex</span><span class="o">&lt;</span><span class="n">Long</span><span class="o">&gt;</span><span class="w"> </span><span class="n">vertex</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">fragment</span><span class="p">.</span><span class="na">innerVertices</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
@@ -767,13 +781,13 @@ results, init configuration in this class. The <code class="docutils literal not
 <span class="w">                </span><span class="n">ctx</span><span class="p">.</span><span class="na">vertexArray</span><span class="p">.</span><span class="na">setValue</span><span class="p">(</span><span class="n">vertex</span><span class="p">,</span><span class="w"> </span><span class="n">Math</span><span class="p">.</span><span class="na">max</span><span class="p">(</span><span class="n">nbr</span><span class="p">.</span><span class="na">data</span><span class="p">(),</span><span class="w"> </span><span class="n">ctx</span><span class="p">.</span><span class="na">vertexArray</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="n">vertex</span><span class="p">)));</span>
 <span class="w">            </span><span class="p">}</span>
 <span class="w">        </span><span class="p">}</span>
-<span class="w">        </span><span class="n">messageManager</span><span class="p">.</span><span class="na">ForceContinue</span><span class="p">();</span>
+<span class="w">        </span><span class="n">messageManager</span><span class="p">.</span><span class="na">forceContinue</span><span class="p">();</span>
 <span class="w">    </span><span class="p">}</span>
 
 
 <span class="w">    </span><span class="nd">@Override</span>
-<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">IncEval</span><span class="p">(</span><span class="n">IFragment</span><span class="o">&lt;</span><span class="n">Long</span><span class="p">,</span><span class="w"> </span><span class="n">Long</span><span class="p">,</span><span class="w"> </span><span class="n">Double</span><span class="p">,</span><span class="w"> </span><span class="n">Long</span><span class="o">&gt;</span><span class="w"> </span><span class="n">fragment</span><span class="p">,</span>
-<span class="w">        </span><span class="n">ParallelContextBase</span><span class="o">&lt;</span><span class="n">Long</span><span class="p">,</span><span class="w"> </span><span class="n">Long</span><span class="p">,</span><span class="w"> </span><span class="n">Double</span><span class="p">,</span><span class="w"> </span><span class="n">Long</span><span class="o">&gt;</span><span class="w"> </span><span class="n">context</span><span class="p">,</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">IncEval</span><span class="p">(</span><span class="n">IFragment</span><span class="o">&lt;</span><span class="n">Long</span><span class="p">,</span><span class="w"> </span><span class="n">Long</span><span class="p">,</span><span class="w"> </span><span class="n">Long</span><span class="p">,</span><span class="w"> </span><span class="n">Long</span><span class="o">&gt;</span><span class="w"> </span><span class="n">fragment</span><span class="p">,</span>
+<span class="w">        </span><span class="n">ParallelContextBase</span><span class="o">&lt;</span><span class="n">Long</span><span class="p">,</span><span class="w"> </span><span class="n">Long</span><span class="p">,</span><span class="w"> </span><span class="n">Long</span><span class="p">,</span><span class="w"> </span><span class="n">Long</span><span class="o">&gt;</span><span class="w"> </span><span class="n">context</span><span class="p">,</span>
 <span class="w">        </span><span class="n">ParallelMessageManager</span><span class="w"> </span><span class="n">messageManager</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="n">TraverseContext</span><span class="w"> </span><span class="n">ctx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="n">TraverseContext</span><span class="p">)</span><span class="w"> </span><span class="n">context</span><span class="p">;</span>
 <span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">Vertex</span><span class="o">&lt;</span><span class="n">Long</span><span class="o">&gt;</span><span class="w"> </span><span class="n">vertex</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="n">fragment</span><span class="p">.</span><span class="na">innerVertices</span><span class="p">())</span><span class="w"> </span><span class="p">{</span>
@@ -790,7 +804,7 @@ results, init configuration in this class. The <code class="docutils literal not
 </div>
 <p>The corresponding context class parse the input parameter <code class="docutils literal notranslate"><span class="pre">maxIteration</span></code> from a JSONObject.</p>
 <div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span><span class="w"> </span><span class="kd">class</span> <span class="nc">TraverseContext</span><span class="w"> </span><span class="kd">extends</span>
-<span class="w">    </span><span class="n">VertexDataContext</span><span class="o">&lt;</span><span class="n">IFragment</span><span class="o">&lt;</span><span class="n">Long</span><span class="p">,</span><span class="w"> </span><span class="n">Long</span><span class="p">,</span><span class="w"> </span><span class="n">Double</span><span class="p">,</span><span class="w"> </span><span class="n">Long</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">Long</span><span class="o">&gt;</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">ParallelContextBase</span><span class="o">&lt;</span><span class="n">Long</span><span class="p">,</span><span class="n">Long</span><span class="p">,</span><span class="n">Double</span><span class="p">,</span><span class="n">Long</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="n">VertexDataContext</span><span class="o">&lt;</span><span class="n">IFragment</span><span class="o">&lt;</span><span class="n">Long</span><span class="p">,</span><span class="w"> </span><span class="n">Long</span><span class="p">,</span><span class="w"> </span><span class="n">Long</span><span class="p">,</span><span class="w"> </span><span class="n">Long</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="n">Long</span><span class="o">&gt;</span><span class="w"> </span><span class="kd">implements</span><span class="w"> </span><span class="n">ParallelContextBase</span><span class="o">&lt;</span><span class="n">Long</span><span class="p">,</span><span class="n">Long</span><span class="p">,</span><span class="n">Long</span><span class="p">,</span><span class="n">Long</span><span class="o">&gt;</span><span class="w"> </span><span class="p">{</span>
 
 
 <span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="n">GSVertexArray</span><span class="o">&lt;</span><span class="n">Long</span><span class="o">&gt;</span><span class="w"> </span><span class="n">vertexArray</span><span class="p">;</span>
@@ -798,7 +812,7 @@ results, init configuration in this class. The <code class="docutils literal not
 
 
 <span class="w">    </span><span class="nd">@Override</span>
-<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">Init</span><span class="p">(</span><span class="n">IFragment</span><span class="o">&lt;</span><span class="n">Long</span><span class="p">,</span><span class="w"> </span><span class="n">Long</span><span class="p">,</span><span class="w"> </span><span class="n">Double</span><span class="p">,</span><span class="w"> </span><span class="n">Long</span><span class="o">&gt;</span><span class="w"> </span><span class="n">frag</span><span class="p">,</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">Init</span><span class="p">(</span><span class="n">IFragment</span><span class="o">&lt;</span><span class="n">Long</span><span class="p">,</span><span class="w"> </span><span class="n">Long</span><span class="p">,</span><span class="w"> </span><span class="n">Long</span><span class="p">,</span><span class="w"> </span><span class="n">Long</span><span class="o">&gt;</span><span class="w"> </span><span class="n">frag</span><span class="p">,</span>
 <span class="w">        </span><span class="n">ParallelMessageManager</span><span class="w"> </span><span class="n">messageManager</span><span class="p">,</span><span class="w"> </span><span class="n">JSONObject</span><span class="w"> </span><span class="n">jsonObject</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="n">createFFIContext</span><span class="p">(</span><span class="n">frag</span><span class="p">,</span><span class="w"> </span><span class="n">Long</span><span class="p">.</span><span class="na">class</span><span class="p">,</span><span class="w"> </span><span class="kc">false</span><span class="p">);</span>
 <span class="w">        </span><span class="c1">//This vertex Array is created by our framework. Data stored in this array will be available</span>
@@ -812,7 +826,7 @@ results, init configuration in this class. The <code class="docutils literal not
 
 
 <span class="w">    </span><span class="nd">@Override</span>
-<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">Output</span><span class="p">(</span><span class="n">IFragment</span><span class="o">&lt;</span><span class="n">Long</span><span class="p">,</span><span class="w"> </span><span class="n">Long</span><span class="p">,</span><span class="w"> </span><span class="n">Double</span><span class="p">,</span><span class="w"> </span><span class="n">Long</span><span class="o">&gt;</span><span class="w"> </span><span class="n">frag</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="kd">public</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">Output</span><span class="p">(</span><span class="n">IFragment</span><span class="o">&lt;</span><span class="n">Long</span><span class="p">,</span><span class="w"> </span><span class="n">Long</span><span class="p">,</span><span class="w"> </span><span class="n">Long</span><span class="p">,</span><span class="w"> </span><span class="n">Long</span><span class="o">&gt;</span><span class="w"> </span><span class="n">frag</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="c1">//You can also write output logic in this function.</span>
 <span class="w">    </span><span class="p">}</span>
 <span class="p">}</span>
@@ -821,7 +835,7 @@ results, init configuration in this class. The <code class="docutils literal not
 <p>For more detail usages of <code class="docutils literal notranslate"><span class="pre">GRAPE-jdk</span></code>, you can check <a class="reference external" href="https://graphscope.io/docs/reference/gae_java/index.html">GRAPE-jdk JavaDoc</a>. For more example apps, please refer <a class="reference external" href="https://github.com/GraphScope/gs-algos">GraphScope/gs-algos</a>.</p>
 </section>
 <section id="submit-to-graphscope">
-<h3>Submit to GraphScope<a class="headerlink" href="#submit-to-graphscope" title="Permalink to this heading">#</a></h3>
+<h3>Submit to GraphScope<a class="headerlink" href="#submit-to-graphscope" title="Permalink to this heading">¶</a></h3>
 <p>To run your algorithm on GraphScope, your first need to obtain a fat-jar which contains your implementation.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mvn</span> <span class="n">package</span>
 </pre></div>
@@ -842,10 +856,8 @@ parameters.</p>
 <span class="c1"># you can also use your own graph, refer to graphscope load graph tutorial.</span>
 <span class="c1"># But remember project to single property graph before running algorithms.</span>
 
-<span class="n">app</span><span class="o">=</span><span class="n">JavaApp</span><span class="p">(</span>
-    <span class="n">full_jar_path</span><span class="o">=</span><span class="s2">&quot;{full/path/to/your/packed/jar}&quot;</span><span class="p">,</span> <span class="c1"># *-shaded.jar</span>
-    <span class="n">java_app_class</span><span class="o">=</span><span class="s2">&quot;{fully/qualified/class/name/of/your/app}&quot;</span><span class="p">,</span> <span class="c1"># com.a.b.c</span>
-<span class="p">)</span>
+<span class="n">sess</span><span class="o">.</span><span class="n">add_lib</span><span class="p">(</span><span class="s2">&quot;{full/path/to/your/packed/jar}&quot;</span><span class="p">)</span>  <span class="c1"># *-shaded.jar</span>
+<span class="n">app</span><span class="o">=</span><span class="n">load_app</span><span class="p">(</span><span class="n">algo</span><span class="o">=</span><span class="s2">&quot;java_pie:com.alibaba.graphscope.example.Traverse&quot;</span><span class="p">)</span> <span class="c1"># java_pie:{you-full-class-name}</span>
 <span class="n">ctx</span><span class="o">=</span><span class="n">app</span><span class="p">(</span><span class="n">graph</span><span class="p">,</span> <span class="s2">&quot;{param string}&quot;</span><span class="p">)</span> <span class="c1"># a=b,c=d</span>
 </pre></div>
 </div>
@@ -853,7 +865,7 @@ parameters.</p>
 </section>
 </section>
 <section id="graphscope-javasdk-with-github-template">
-<h2>GraphScope JavaSDK with GitHub Template<a class="headerlink" href="#graphscope-javasdk-with-github-template" title="Permalink to this heading">#</a></h2>
+<h2>GraphScope JavaSDK with GitHub Template<a class="headerlink" href="#graphscope-javasdk-with-github-template" title="Permalink to this heading">¶</a></h2>
 <p>If you don’t bother creating new project to try <code class="docutils literal notranslate"><span class="pre">GRAPE-jdk</span></code>, we provide a template project <a class="reference external" href="https://github.com/zhanglei1949/GraphScope-Java-template">GraphScope-Java-template</a>. By click <strong>Use this template</strong>, you can create a new repository with same files and structure of the template repository. You can then try developing your own algorithms in this project.</p>
 </section>
 </section>
@@ -919,7 +931,11 @@ parameters.</p>
 <li><a class="reference internal" href="#">Tutorial: Develop your Algorithm in Java with PIE Model</a><ul>
 <li><a class="reference internal" href="#run-example-algorithms-with-example-jar">Run example algorithms with example jar</a></li>
 <li><a class="reference internal" href="#implement-your-own-algorithms-in-java">Implement your own algorithms in Java.</a><ul>
-<li><a class="reference internal" href="#prepare-grape-jdk">Prepare <strong>GRAPE-jdk</strong></a></li>
+<li><a class="reference internal" href="#prepare-grape-jdk">Prepare <strong>GRAPE-jdk</strong></a><ul>
+<li><a class="reference internal" href="#get-from-maven-central-repository">Get from Maven Central Repository</a></li>
+<li><a class="reference internal" href="#build-from-source">Build from source</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#implement-your-algorithm">Implement your algorithm</a></li>
 <li><a class="reference internal" href="#submit-to-graphscope">Submit to GraphScope</a></li>
 </ul>
@@ -939,7 +955,7 @@ parameters.</p>
 </div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=ccbe24c1"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
-    <script src="../_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="../_static/scripts/furo.js?v=4e2eecee"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=f281be69"></script>
     </body>

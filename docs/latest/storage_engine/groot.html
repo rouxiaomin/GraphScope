@@ -11,10 +11,10 @@
 <meta name="description" content="Overview: In addition to Vineyard, the in-memory columnar graph store supported in GraphScope, we also have a disk-based, row-oriented, multi-versioned, persistent graph store. While Vineyard focus..." />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="In-memory immutable graphs on Vineyard" href="vineyard.html" /><link rel="prev" title="GRIN: Graph Retrieval INterface" href="grin.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.1.2 and Furo 2024.04.27 -->
         <title>Groot: Persistent Graph Store - GraphScope documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=437aa6ec" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css?v=2a6c4383" />
     <link rel="stylesheet" type="text/css" href="../_static/panels-bootstrap.5fd3999ee7762ccc51105388f4a9d115.css?v=45cf7dbc" />
@@ -164,6 +164,8 @@ MathJax = {
 <label class="overlay toc-overlay" for="__toc">
   <div class="visually-hidden">Hide table of contents sidebar</div>
 </label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
 
 
 
@@ -582,6 +584,18 @@ MathJax = {
         
           
             
+              <dd><a href="../../v0.27.0/index.html">
+                
+                  v0.27.0
+                
+              </a></dd>
+            
+          
+        
+      
+        
+          
+            
               <dd><a href="../../v0.26.0/index.html">
                 
                   v0.26.0
@@ -609,18 +623,6 @@ MathJax = {
               <dd><a href="../../v0.24.0/index.html">
                 
                   v0.24.0
-                
-              </a></dd>
-            
-          
-        
-      
-        
-          
-            
-              <dd><a href="../../v0.23.0/index.html">
-                
-                  v0.23.0
                 
               </a></dd>
             
@@ -683,23 +685,23 @@ MathJax = {
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
-        <article role="main">
+        <article role="main" id="furo-main-content">
           <section class="tex2jax_ignore mathjax_ignore" id="groot-persistent-graph-store">
-<h1>Groot: Persistent Graph Store<a class="headerlink" href="#groot-persistent-graph-store" title="Permalink to this heading">#</a></h1>
+<h1>Groot: Persistent Graph Store<a class="headerlink" href="#groot-persistent-graph-store" title="Permalink to this heading">¶</a></h1>
 <section id="overview">
-<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">#</a></h2>
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this heading">¶</a></h2>
 <p>In addition to Vineyard, the in-memory columnar graph store supported in GraphScope, we also have a disk-based, row-oriented, multi-versioned, persistent graph store. While Vineyard focuses on great support for in-memory whole graph analytics workloads, the persistent graph store is geared towards better supporting continuous graph data management services that frequently update the graph and answer traversal queries.</p>
 <p>The store is a distributed graph store built on top of the popular RocksDB key-value store. It adopts a row-oriented design to support frequent small updates to the graph. Each row is tagged with a snapshot ID as its version. A query reads the most recent version of rows relative to the snapshot ID when it starts and is hence not blocked by writes. For writes, we take a compromise between consistency and higher throughput. In our design, writes in the same session can be grouped and executed atomically as a unit, and the persistent store assigns a snapshot ID (which is a low-resolution timestamp of the current time) to each group and executes groups of writes by the order of their snapshot IDs and by a deterministic (though arbitrary) order for groups of writes that occur in the same snapshot ID. It provides high write throughput while still maintaining some degree of order and isolation, although it provides less consistency than strict snapshot isolation common in databases. We hope our design choice provides an interesting trade-off for practical usage.</p>
 </section>
 <section id="known-limitation">
-<h2>Known Limitation<a class="headerlink" href="#known-limitation" title="Permalink to this heading">#</a></h2>
+<h2>Known Limitation<a class="headerlink" href="#known-limitation" title="Permalink to this heading">¶</a></h2>
 <p>Initially, the new persistent store is provided as a separate option from Vineyard, and it can accept Gremlin queries for data access. Going forward we hope to evolve them into an integrated hybrid graph store suitable for all kinds of workloads.</p>
 </section>
 <section id="deploy-groot">
-<h2>Deploy Groot<a class="headerlink" href="#deploy-groot" title="Permalink to this heading">#</a></h2>
+<h2>Deploy Groot<a class="headerlink" href="#deploy-groot" title="Permalink to this heading">¶</a></h2>
 <p>We use <a class="reference external" href="https://helm.sh">Helm</a> to deploy Groot on <a class="reference external" href="http://kubernetes.io">Kubernetes</a> Cluster.</p>
 <section id="prerequisites">
-<h3>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this heading">#</a></h3>
+<h3>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>Kubernetes 1.21+</p></li>
 <li><p>Helm 3.2.0+</p></li>
@@ -709,9 +711,9 @@ MathJax = {
 <p>Refer to <a class="reference internal" href="../deployment/deploy_graphscope_on_self_managed_k8s.html"><span class="std std-doc">deploy graphscope on self managed k8s cluster</span></a> for more details guide.</p>
 </section>
 <section id="installation">
-<h3>Installation<a class="headerlink" href="#installation" title="Permalink to this heading">#</a></h3>
+<h3>Installation<a class="headerlink" href="#installation" title="Permalink to this heading">¶</a></h3>
 <section id="install-from-artifacthub">
-<h4>Install from ArtifactHub<a class="headerlink" href="#install-from-artifacthub" title="Permalink to this heading">#</a></h4>
+<h4>Install from ArtifactHub<a class="headerlink" href="#install-from-artifacthub" title="Permalink to this heading">¶</a></h4>
 <p>The latest stable version of <a class="reference external" href="https://artifacthub.io/packages/helm/graphscope/graphscope-store">Groot</a> can be installed from ArtifactHub by using the following command:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>helm<span class="w"> </span>repo<span class="w"> </span>add<span class="w"> </span>graphscope<span class="w"> </span>https://graphscope.oss-cn-beijing.aliyuncs.com/charts/
 helm<span class="w"> </span>repo<span class="w"> </span>update
@@ -720,7 +722,7 @@ helm<span class="w"> </span>install<span class="w"> </span>demo<span class="w"> 
 </div>
 </section>
 <section id="installing-from-a-local-directory">
-<h4>Installing from a local directory<a class="headerlink" href="#installing-from-a-local-directory" title="Permalink to this heading">#</a></h4>
+<h4>Installing from a local directory<a class="headerlink" href="#installing-from-a-local-directory" title="Permalink to this heading">¶</a></h4>
 <p>If you want to apply the latest updates or modify some files, you can clone the <a class="reference external" href="https://github.com/alibaba/GraphScope">GraphScope</a> repository and install Groot from a local directory by using the following commands:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>GraphScope/charts/graphscope-store
 helm<span class="w"> </span>dependency<span class="w"> </span>update<span class="w">  </span><span class="c1"># fetch the dependency charts</span>
@@ -740,7 +742,7 @@ helm<span class="w"> </span>install<span class="w"> </span>demo<span class="w"> 
 </section>
 </section>
 <section id="common-configurations">
-<h3>Common Configurations<a class="headerlink" href="#common-configurations" title="Permalink to this heading">#</a></h3>
+<h3>Common Configurations<a class="headerlink" href="#common-configurations" title="Permalink to this heading">¶</a></h3>
 <div class="table-wrapper colwidths-auto docutils container">
 <table class="docutils align-default">
 <thead>
@@ -817,10 +819,10 @@ helm<span class="w"> </span>install<span class="w"> </span>demo<span class="w"> 
 <p>It will specify the image tag to be pulled as latest while setting the username and password.</p>
 </section>
 <section id="connecting-to-groot">
-<h3>Connecting to Groot<a class="headerlink" href="#connecting-to-groot" title="Permalink to this heading">#</a></h3>
+<h3>Connecting to Groot<a class="headerlink" href="#connecting-to-groot" title="Permalink to this heading">¶</a></h3>
 <p>Upon installing Groot, an empty graph is created by default. We can execute connections, define graph models, load data, and perform queries using the <a class="reference external" href="https://tinkerpop.apache.org/gremlin.html">Gremlin Query Language</a>.</p>
 <section id="connection">
-<h4>Connection<a class="headerlink" href="#connection" title="Permalink to this heading">#</a></h4>
+<h4>Connection<a class="headerlink" href="#connection" title="Permalink to this heading">¶</a></h4>
 <p>In the previous step, upon executing the command to obtain connection information as printed by Helm, the said information is set to environment variables. The following statement can be used to obtain and connect to Groot:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">graphscope</span>
@@ -839,7 +841,7 @@ helm<span class="w"> </span>install<span class="w"> </span>demo<span class="w"> 
 </div>
 </section>
 <section id="building-and-modifying-graph-models">
-<h4>Building and Modifying Graph Models<a class="headerlink" href="#building-and-modifying-graph-models" title="Permalink to this heading">#</a></h4>
+<h4>Building and Modifying Graph Models<a class="headerlink" href="#building-and-modifying-graph-models" title="Permalink to this heading">¶</a></h4>
 <p>The graph object can be obtained through the <code class="docutils literal notranslate"><span class="pre">conn</span></code> object.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">graph</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">g</span><span class="p">()</span>
 <span class="c1"># Create schema</span>
@@ -848,7 +850,7 @@ helm<span class="w"> </span>install<span class="w"> </span>demo<span class="w"> 
 </div>
 </section>
 <section id="using-built-in-datasets">
-<h4>Using Built-in Datasets<a class="headerlink" href="#using-built-in-datasets" title="Permalink to this heading">#</a></h4>
+<h4>Using Built-in Datasets<a class="headerlink" href="#using-built-in-datasets" title="Permalink to this heading">¶</a></h4>
 <p>If <code class="docutils literal notranslate"><span class="pre">dataset.modern=true</span></code> is set during installation, Groot will load a simple example dataset for quick start.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
@@ -856,7 +858,7 @@ helm<span class="w"> </span>install<span class="w"> </span>demo<span class="w"> 
 </div>
 </section>
 <section id="customizing-models-and-datasets">
-<h4>Customizing Models and Datasets<a class="headerlink" href="#customizing-models-and-datasets" title="Permalink to this heading">#</a></h4>
+<h4>Customizing Models and Datasets<a class="headerlink" href="#customizing-models-and-datasets" title="Permalink to this heading">¶</a></h4>
 <p>Users can also customize models and load their own datasets.</p>
 <p>Common statements used to define graph models are as follows:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">schema</span><span class="o">.</span><span class="n">add_vertex_label</span><span class="p">(</span><span class="s1">&#39;v_label_name&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">add_primary_key</span><span class="p">(</span><span class="s1">&#39;pk_name&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">property</span><span class="p">(</span><span class="s1">&#39;prop_name_1&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">property</span><span class="p">(</span><span class="s1">&#39;prop_name_2&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">)</span>
@@ -883,9 +885,9 @@ helm<span class="w"> </span>install<span class="w"> </span>demo<span class="w"> 
 </section>
 </section>
 <section id="querying-data">
-<h3>Querying Data<a class="headerlink" href="#querying-data" title="Permalink to this heading">#</a></h3>
+<h3>Querying Data<a class="headerlink" href="#querying-data" title="Permalink to this heading">¶</a></h3>
 <section id="python">
-<h4>Python<a class="headerlink" href="#python" title="Permalink to this heading">#</a></h4>
+<h4>Python<a class="headerlink" href="#python" title="Permalink to this heading">¶</a></h4>
 <p>Using the connection information obtained earlier, we can perform Gremlin queries in Python.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">g</span> <span class="o">=</span> <span class="n">conn</span><span class="o">.</span><span class="n">gremlin</span><span class="p">()</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">g</span><span class="o">.</span><span class="n">V</span><span class="p">()</span><span class="o">.</span><span class="n">count</span><span class="p">()</span><span class="o">.</span><span class="n">toList</span><span class="p">())</span>
@@ -920,7 +922,7 @@ helm<span class="w"> </span>install<span class="w"> </span>demo<span class="w"> 
 </div>
 </section>
 <section id="java">
-<h4>Java<a class="headerlink" href="#java" title="Permalink to this heading">#</a></h4>
+<h4>Java<a class="headerlink" href="#java" title="Permalink to this heading">¶</a></h4>
 <ol class="arabic simple">
 <li><p>Create a directory structure as follows, where pom.xml and Main.java are files</p></li>
 </ol>
@@ -1024,7 +1026,7 @@ helm<span class="w"> </span>install<span class="w"> </span>demo<span class="w"> 
 </div>
 </section>
 <section id="node-js">
-<h4>Node.js<a class="headerlink" href="#node-js" title="Permalink to this heading">#</a></h4>
+<h4>Node.js<a class="headerlink" href="#node-js" title="Permalink to this heading">¶</a></h4>
 <ol class="arabic simple">
 <li><p>Install package <code class="docutils literal notranslate"><span class="pre">gremlin</span></code> for javascript</p></li>
 </ol>
@@ -1059,13 +1061,13 @@ helm<span class="w"> </span>install<span class="w"> </span>demo<span class="w"> 
 </section>
 </section>
 <section id="data-import">
-<h2>Data Import<a class="headerlink" href="#data-import" title="Permalink to this heading">#</a></h2>
+<h2>Data Import<a class="headerlink" href="#data-import" title="Permalink to this heading">¶</a></h2>
 <p>There are two methods for importing data. One method is to batch import data from external storage (such as HDFS) using an offline import tool, and the other is to perform real-time writing using statements provided by the SDK.</p>
 <p>Note: Offline import will *<em>overwrite</em> the full data of the imported label.</p>
 <section id="offline-import">
-<h3>Offline Import<a class="headerlink" href="#offline-import" title="Permalink to this heading">#</a></h3>
+<h3>Offline Import<a class="headerlink" href="#offline-import" title="Permalink to this heading">¶</a></h3>
 <section id="prerequisite">
-<h4>Prerequisite<a class="headerlink" href="#prerequisite" title="Permalink to this heading">#</a></h4>
+<h4>Prerequisite<a class="headerlink" href="#prerequisite" title="Permalink to this heading">¶</a></h4>
 <ul class="simple">
 <li><p>Hadoop Cluster</p></li>
 <li><p>Data import tool <a class="reference external" href="https://github.com/alibaba/GraphScope/releases/download/v0.20.0/data_load.tar.gz">data_load.tar.gz</a></p></li>
@@ -1076,7 +1078,7 @@ helm<span class="w"> </span>install<span class="w"> </span>demo<span class="w"> 
 </div>
 </section>
 <section id="data-format">
-<h4>Data Format<a class="headerlink" href="#data-format" title="Permalink to this heading">#</a></h4>
+<h4>Data Format<a class="headerlink" href="#data-format" title="Permalink to this heading">¶</a></h4>
 <p>Source data needs to be stored in HDFS in a certain format. Each file includes data related to a type of vertex or edge label.</p>
 <p>The following is an example of the data related to the <code class="docutils literal notranslate"><span class="pre">person</span></code> vertex label and the <code class="docutils literal notranslate"><span class="pre">knows</span></code> edge label, which contains the <code class="docutils literal notranslate"><span class="pre">person</span></code>-&gt;<code class="docutils literal notranslate"><span class="pre">knows</span></code>&lt;-<code class="docutils literal notranslate"><span class="pre">person</span></code> relationship.</p>
 <ul class="simple">
@@ -1099,7 +1101,7 @@ helm<span class="w"> </span>install<span class="w"> </span>demo<span class="w"> 
 <p>All the data fields will be parsed according to the data-type defined in the graph schema. If the input data field cannot be parsed correctly, data building process would be failed with corresponding errors.</p>
 </section>
 <section id="loading-process">
-<h4>Loading Process<a class="headerlink" href="#loading-process" title="Permalink to this heading">#</a></h4>
+<h4>Loading Process<a class="headerlink" href="#loading-process" title="Permalink to this heading">¶</a></h4>
 <p>The loading process contains three steps:</p>
 <ol class="arabic simple">
 <li><p>A partitioned graph is built from the source files and stored in the same HDFS using a MapReduce job</p></li>
@@ -1107,7 +1109,7 @@ helm<span class="w"> </span>install<span class="w"> </span>demo<span class="w"> 
 <li><p>Commit to the online service so that data is ready for serving queries</p></li>
 </ol>
 <section id="build-building-a-partitioned-graph">
-<h5>Build: Building a partitioned graph<a class="headerlink" href="#build-building-a-partitioned-graph" title="Permalink to this heading">#</a></h5>
+<h5>Build: Building a partitioned graph<a class="headerlink" href="#build-building-a-partitioned-graph" title="Permalink to this heading">¶</a></h5>
 <p>Build data by running the hadoop map-reduce job with following command:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ./load_tool.sh build &lt;path/to/config/file&gt;
 </pre></div>
@@ -1201,7 +1203,7 @@ Else, please proceed to ingest and commit.</p>
 </section>
 </section>
 <section id="loading-graph-partitions">
-<h4>2. Loading graph partitions<a class="headerlink" href="#loading-graph-partitions" title="Permalink to this heading">#</a></h4>
+<h4>2. Loading graph partitions<a class="headerlink" href="#loading-graph-partitions" title="Permalink to this heading">¶</a></h4>
 <p>Now ingest the offline built data into the graph storage. Run:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ./load_data.sh ingest &lt;path/to/config/file&gt;
 </pre></div>
@@ -1209,7 +1211,7 @@ Else, please proceed to ingest and commit.</p>
 <p>The offline built data can be ingested successfully only once, otherwise errors will occur.</p>
 </section>
 <section id="commit-to-store-service">
-<h4>3. Commit to store service<a class="headerlink" href="#commit-to-store-service" title="Permalink to this heading">#</a></h4>
+<h4>3. Commit to store service<a class="headerlink" href="#commit-to-store-service" title="Permalink to this heading">¶</a></h4>
 <p>After data ingested into graph storage, you need to commit data loading. The data will not be able to read until committed successfully. Run:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ./load_data.sh commit &lt;path/to/config/file&gt;
 </pre></div>
@@ -1218,10 +1220,10 @@ Else, please proceed to ingest and commit.</p>
 </section>
 </section>
 <section id="realtime-write">
-<h3>Realtime Write<a class="headerlink" href="#realtime-write" title="Permalink to this heading">#</a></h3>
+<h3>Realtime Write<a class="headerlink" href="#realtime-write" title="Permalink to this heading">¶</a></h3>
 <p>Groot graph have several methods for realtime write as follows:</p>
 <section id="id1">
-<h4>Python<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h4>
+<h4>Python<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h4>
 <p>Refer to <a class="reference external" href="https://github.com/alibaba/GraphScope/blob/main/python/graphscope/tests/kubernetes/test_store_service.py">test_store_service.py</a> for examples.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Inserts one vertex</span>
 <span class="k">def</span> <span class="nf">insert_vertex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertex</span><span class="p">:</span> <span class="n">VertexRecordKey</span><span class="p">,</span> <span class="n">properties</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span> <span class="k">pass</span>
@@ -1282,7 +1284,7 @@ Else, please proceed to ingest and commit.</p>
 </div>
 </section>
 <section id="id2">
-<h4>Java<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h4>
+<h4>Java<a class="headerlink" href="#id2" title="Permalink to this heading">¶</a></h4>
 <p>We also have a java sdk for realtime write and schema management.</p>
 <p>APIs including:</p>
 <ul class="simple">
@@ -1295,7 +1297,7 @@ Else, please proceed to ingest and commit.</p>
 </section>
 </section>
 <section id="other-features">
-<h3>Other features<a class="headerlink" href="#other-features" title="Permalink to this heading">#</a></h3>
+<h3>Other features<a class="headerlink" href="#other-features" title="Permalink to this heading">¶</a></h3>
 <p>Groot could enable user to replay realtime write records from a specific offset, or a timestamp, this is useful when you want to restore some records before
 a offline load finished, since offload will overwrite all records.</p>
 <p>You can only specify one of <code class="docutils literal notranslate"><span class="pre">offset</span></code> and <code class="docutils literal notranslate"><span class="pre">timestamp</span></code>. The other unused one must be set to -1. If not, <code class="docutils literal notranslate"><span class="pre">offset</span></code> will take precedence.</p>
@@ -1322,9 +1324,9 @@ a offline load finished, since offload will overwrite all records.</p>
 </section>
 </section>
 <section id="uninstalling-and-restarting">
-<h2>Uninstalling and Restarting<a class="headerlink" href="#uninstalling-and-restarting" title="Permalink to this heading">#</a></h2>
+<h2>Uninstalling and Restarting<a class="headerlink" href="#uninstalling-and-restarting" title="Permalink to this heading">¶</a></h2>
 <section id="uninstall-groot">
-<h3>Uninstall Groot<a class="headerlink" href="#uninstall-groot" title="Permalink to this heading">#</a></h3>
+<h3>Uninstall Groot<a class="headerlink" href="#uninstall-groot" title="Permalink to this heading">¶</a></h3>
 <p>To uninstall/delete the <code class="docutils literal notranslate"><span class="pre">demo</span></code> Groot cluster deployment, use</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>helm<span class="w"> </span>delete<span class="w"> </span>demo
 </pre></div>
@@ -1339,7 +1341,7 @@ kubectl<span class="w"> </span>get<span class="w"> </span>pvc<span class="w"> </
 </div>
 </section>
 <section id="restart-groot">
-<h3>Restart Groot<a class="headerlink" href="#restart-groot" title="Permalink to this heading">#</a></h3>
+<h3>Restart Groot<a class="headerlink" href="#restart-groot" title="Permalink to this heading">¶</a></h3>
 <p>To relaunch Groot on the original PV with the same command used for the initial installation. At this point, Groot can access the data from before the uninstallation, and all other operations are the same as before the uninstallation. This can facilitate seamless version updates, or when using cloud provider services, you can uninstall Groot on demand to release elastic computing resources and keep only the block storage to save costs.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Note that if the node count is configured during installation, it should be exactly the same when reinstalling.</span>
 helm<span class="w"> </span>install<span class="w"> </span>demo<span class="w"> </span>graphscope/graphscope-store
@@ -1347,7 +1349,7 @@ helm<span class="w"> </span>install<span class="w"> </span>demo<span class="w"> 
 </div>
 </section>
 <section id="destroy-groot">
-<h3>Destroy Groot<a class="headerlink" href="#destroy-groot" title="Permalink to this heading">#</a></h3>
+<h3>Destroy Groot<a class="headerlink" href="#destroy-groot" title="Permalink to this heading">¶</a></h3>
 <p>Destroying Groot means releasing all resources used by Groot, including StatefulSets, Services, PVCs, and PVs.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>helm<span class="w"> </span>delete<span class="w"> </span>demo
 kubectl<span class="w"> </span>delete<span class="w"> </span>pvc<span class="w"> </span>-lapp.kubernetes.io/instance<span class="o">=</span>demo
@@ -1363,9 +1365,9 @@ kubectl<span class="w"> </span>delete<span class="w"> </span>pvc<span class="w">
 </section>
 </section>
 <section id="developing-guide">
-<h2>Developing Guide<a class="headerlink" href="#developing-guide" title="Permalink to this heading">#</a></h2>
+<h2>Developing Guide<a class="headerlink" href="#developing-guide" title="Permalink to this heading">¶</a></h2>
 <section id="build-image">
-<h3>Build image<a class="headerlink" href="#build-image" title="Permalink to this heading">#</a></h3>
+<h3>Build image<a class="headerlink" href="#build-image" title="Permalink to this heading">¶</a></h3>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>GraphScope/k8s
 make<span class="w"> </span>graphscope-store<span class="w"> </span><span class="nv">VERSION</span><span class="o">=</span>latest
 </pre></div>
@@ -1373,13 +1375,13 @@ make<span class="w"> </span>graphscope-store<span class="w"> </span><span class=
 <p>This would produce an image named <code class="docutils literal notranslate"><span class="pre">graphscope/graphscope-store:latest</span></code>.</p>
 </section>
 <section id="persistence">
-<h3>Persistence<a class="headerlink" href="#persistence" title="Permalink to this heading">#</a></h3>
+<h3>Persistence<a class="headerlink" href="#persistence" title="Permalink to this heading">¶</a></h3>
 <p>Groot stores the graph data in <code class="docutils literal notranslate"><span class="pre">/var/lib/graphscope-store</span></code> directory in the Store Pod and the metadata in <code class="docutils literal notranslate"><span class="pre">/etc/groot/my.meta</span></code> directory in the Coordinator Pod.</p>
 </section>
 <section id="troubleshooting">
-<h3>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this heading">#</a></h3>
+<h3>Troubleshooting<a class="headerlink" href="#troubleshooting" title="Permalink to this heading">¶</a></h3>
 <section id="viewing-logs">
-<h4>Viewing logs<a class="headerlink" href="#viewing-logs" title="Permalink to this heading">#</a></h4>
+<h4>Viewing logs<a class="headerlink" href="#viewing-logs" title="Permalink to this heading">¶</a></h4>
 <p>You can view the logs of each Pod using the command
 <code class="docutils literal notranslate"><span class="pre">kubectl</span> <span class="pre">logs</span> <span class="pre">${POD_NAME}</span></code>.</p>
 <p>It is common to check the logs of Frontend and Store roles. When debugging, it is often necessary to check the logs of Coordinator as well. The logs of Frontend include the logs of the Compiler that generates the logical query plan, while the logs of Store include the logs of the query engine execution. For example,</p>
@@ -1389,7 +1391,7 @@ kubectl<span class="w"> </span>logs<span class="w"> </span>demo-graphscope-store
 </div>
 </section>
 <section id="configuring-logs">
-<h4>Configuring logs<a class="headerlink" href="#configuring-logs" title="Permalink to this heading">#</a></h4>
+<h4>Configuring logs<a class="headerlink" href="#configuring-logs" title="Permalink to this heading">¶</a></h4>
 <p>Groot uses <code class="docutils literal notranslate"><span class="pre">logback</span></code> as the logging library for the Java part, and <code class="docutils literal notranslate"><span class="pre">log4rs</span></code> as the logging library for the Rust part.</p>
 <p>Both of these logging libraries support automatic periodic reloading of configuration, which means that the logging configuration file can be changed and will take effect after a short time (up to 30 seconds).</p>
 <p>The location of the logging configuration file in the container is:</p>
@@ -1400,13 +1402,21 @@ kubectl<span class="w"> </span>logs<span class="w"> </span>demo-graphscope-store
 </section>
 </section>
 <section id="secondary-instance">
-<h3>Secondary Instance<a class="headerlink" href="#secondary-instance" title="Permalink to this heading">#</a></h3>
+<h3>Secondary Instance<a class="headerlink" href="#secondary-instance" title="Permalink to this heading">¶</a></h3>
 <p>Groot support open secondary instance along with primary instances. It leverages the <a class="reference external" href="https://github.com/facebook/rocksdb/wiki/Read-only-and-Secondary-instances">Secondary Instance</a> of RocksDB
 to provide the ability to serve the querying requests as well as catching up the schema and data updates.</p>
 <p>To use it, just set the <code class="docutils literal notranslate"><span class="pre">secondary.enabled=true</span></code> in the helm charts.
 Also remember the data path, ZK connect string as well as Kafka endpoint and topic should be as same as the primary instance.
 And use a different <code class="docutils literal notranslate"><span class="pre">zk.base.path</span></code> for each secondary instance to avoid conflict with each other when doing node discovery.</p>
 <p><code class="docutils literal notranslate"><span class="pre">storeGcIntervalMs</span></code> controls how often should the secondary perform a <code class="docutils literal notranslate"><span class="pre">try_catch_up_with_primary</span></code> call, default to <code class="docutils literal notranslate"><span class="pre">5000</span></code> which is 5 seconds.</p>
+</section>
+<section id="traces">
+<h3>Traces<a class="headerlink" href="#traces" title="Permalink to this heading">¶</a></h3>
+<p>use <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">otel.enabled=true</span></code> to enable trace export.</p>
+</section>
+<section id="write-high-availability">
+<h3>Write High-availability<a class="headerlink" href="#write-high-availability" title="Permalink to this heading">¶</a></h3>
+<p>use <code class="docutils literal notranslate"><span class="pre">--set</span> <span class="pre">write.ha.enabled=True</span></code> in multi-pod deployment mode to open a backup store pod.</p>
 </section>
 </section>
 </section>
@@ -1530,6 +1540,8 @@ And use a different <code class="docutils literal notranslate"><span class="pre"
 </ul>
 </li>
 <li><a class="reference internal" href="#secondary-instance">Secondary Instance</a></li>
+<li><a class="reference internal" href="#traces">Traces</a></li>
+<li><a class="reference internal" href="#write-high-availability">Write High-availability</a></li>
 </ul>
 </li>
 </ul>
@@ -1546,7 +1558,7 @@ And use a different <code class="docutils literal notranslate"><span class="pre"
 </div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=ccbe24c1"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
-    <script src="../_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="../_static/scripts/furo.js?v=4e2eecee"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=f281be69"></script>
     </body>

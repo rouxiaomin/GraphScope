@@ -11,10 +11,10 @@
 <meta name="description" content="GraphScope 目前支持的平台如下: gcc 7.1+, Python 3.7 - 3.9, Ubuntu 18.04 or later, CentOS 7 or later, macOS 12 (Monterey) or later, with both Intel chip and Apple M1 chip. 单机环境下安装: GraphScope 以 Python 程序包 的形..." />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="快速上手" href="getting_started.html" /><link rel="prev" title="GraphScope: 一站式图计算系统" href="index.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.1.2 and Furo 2024.04.27 -->
         <title>安装 - GraphScope documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=437aa6ec" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css?v=2a6c4383" />
     <link rel="stylesheet" type="text/css" href="../_static/panels-bootstrap.5fd3999ee7762ccc51105388f4a9d115.css?v=45cf7dbc" />
@@ -165,6 +165,8 @@ MathJax = {
   <div class="visually-hidden">Hide table of contents sidebar</div>
 </label>
 
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
+
 
 
 <div class="page">
@@ -277,6 +279,18 @@ MathJax = {
         
           
             
+              <dd><a href="../../v0.27.0/zh/index.html">
+                
+                  v0.27.0
+                
+              </a></dd>
+            
+          
+        
+      
+        
+          
+            
               <dd><a href="../../v0.26.0/zh/index.html">
                 
                   v0.26.0
@@ -304,18 +318,6 @@ MathJax = {
               <dd><a href="../../v0.24.0/zh/index.html">
                 
                   v0.24.0
-                
-              </a></dd>
-            
-          
-        
-      
-        
-          
-            
-              <dd><a href="../../v0.23.0/zh/index.html">
-                
-                  v0.23.0
                 
               </a></dd>
             
@@ -378,9 +380,9 @@ MathJax = {
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
-        <article role="main">
+        <article role="main" id="furo-main-content">
           <section id="id1">
-<h1>安装<a class="headerlink" href="#id1" title="Permalink to this heading">#</a></h1>
+<h1>安装<a class="headerlink" href="#id1" title="Permalink to this heading">¶</a></h1>
 <p>GraphScope 目前支持的平台如下:</p>
 <ul class="simple">
 <li><p>gcc 7.1+</p></li>
@@ -390,7 +392,7 @@ MathJax = {
 <li><p>macOS 12 (Monterey) or later, with both Intel chip and Apple M1 chip</p></li>
 </ul>
 <section id="id2">
-<h2>单机环境下安装<a class="headerlink" href="#id2" title="Permalink to this heading">#</a></h2>
+<h2>单机环境下安装<a class="headerlink" href="#id2" title="Permalink to this heading">¶</a></h2>
 <p>GraphScope 以 <a class="reference external" href="https://pypi.org/project/graphscope">Python 程序包</a> 的形式发布, 可直接通过 <a class="reference external" href="https://pip.pypa.io/en/stable/">pip</a> 安装。</p>
 <p><strong>注意: 需要满足 pip 版本 &gt; 19.0 (or &gt; 20.3 for macOS)</strong></p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Requires the latest pip</span>
@@ -402,7 +404,7 @@ pip3<span class="w"> </span>install<span class="w"> </span>--upgrade<span class=
 </div>
 </section>
 <section id="kubernetes-graphscope">
-<h2>基于 Kubernetes 安装 GraphScope 客户端<a class="headerlink" href="#kubernetes-graphscope" title="Permalink to this heading">#</a></h2>
+<h2>基于 Kubernetes 安装 GraphScope 客户端<a class="headerlink" href="#kubernetes-graphscope" title="Permalink to this heading">¶</a></h2>
 <p>我们可以按照本文档的以下步骤部署一个本地 Kubernetes 集群，并加载预编译好的镜像，在 Kubernetes 环境下运行 GraphScope。</p>
 <p>首先需要预先安装以下依赖。</p>
 <ul class="simple">
@@ -410,12 +412,8 @@ pip3<span class="w"> </span>install<span class="w"> </span>--upgrade<span class=
 <li><p>Local Kubernetes cluster set-up tool (e.g. <a class="reference external" href="https://kind.sigs.k8s.io">Kind</a>)</p></li>
 </ul>
 <p>对于 Windows 和 macOS 的用户，可通过官方文档来安装上述依赖, 并在 Docker 中开启 Kubernetes 功能。
-对于 Ubuntu/CentOS Linux 发行版用户，我们提供了脚本来准备运行时环境。
-您也可以在 Windows 上安装 <a class="reference external" href="https://docs.microsoft.com/zh-cn/windows/wsl/install-win10">WSL2</a> 以使用脚本。</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># run the environment preparing script.</span>
-./scripts/install_deps.sh<span class="w"> </span>--k8s
-</pre></div>
-</div>
+对于 Ubuntu/CentOS Linux 发行版用户，你也可以使用 [Kind](<a class="reference external" href="https://kind.sigs.k8s.io">https://kind.sigs.k8s.io</a>) 部署一个本地的 k8s 集群，Kind 的安装和部署可以参考官网的 [Quick Start](<a class="reference external" href="https://kind.sigs.k8s.io/docs/user/quick-start/">https://kind.sigs.k8s.io/docs/user/quick-start/</a>)。
+您也可以在 Windows 上安装 <a class="reference external" href="https://docs.microsoft.com/zh-cn/windows/wsl/install-win10">WSL2</a> 来模拟 Linux 环境。</p>
 <p>接下来，我们只需要通过 <a class="reference external" href="https://pip.pypa.io/en/stable/">pip</a> 安装 GraphScope 客户端：</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Requires the latest pip</span>
 pip3<span class="w"> </span>install<span class="w"> </span>--upgrade<span class="w"> </span>pip
@@ -502,7 +500,7 @@ pip3<span class="w"> </span>install<span class="w"> </span>--upgrade<span class=
 </div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=ccbe24c1"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
-    <script src="../_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="../_static/scripts/furo.js?v=4e2eecee"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=f281be69"></script>
     </body>

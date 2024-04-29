@@ -11,10 +11,10 @@
 <meta name="description" content="This guide walks you through the process of using custom graph data in GraphScope Interactive. The process comprises three main steps: Creating a new graph,, Importing graph data, and, Starting the..." />
 <link rel="index" title="Index" href="../../genindex.html" /><link rel="search" title="Search" href="../../search.html" /><link rel="next" title="Stored Procedures" href="stored_procedures.html" /><link rel="prev" title="Getting Started" href="getting_started.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.1.2 and Furo 2024.04.27 -->
         <title>Using Custom Graph - GraphScope documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=437aa6ec" />
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css?v=2a6c4383" />
     <link rel="stylesheet" type="text/css" href="../../_static/panels-bootstrap.5fd3999ee7762ccc51105388f4a9d115.css?v=45cf7dbc" />
@@ -164,6 +164,8 @@ MathJax = {
 <label class="overlay toc-overlay" for="__toc">
   <div class="visually-hidden">Hide table of contents sidebar</div>
 </label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
 
 
 
@@ -582,6 +584,18 @@ MathJax = {
         
           
             
+              <dd><a href="../../../v0.27.0/index.html">
+                
+                  v0.27.0
+                
+              </a></dd>
+            
+          
+        
+      
+        
+          
+            
               <dd><a href="../../../v0.26.0/index.html">
                 
                   v0.26.0
@@ -609,18 +623,6 @@ MathJax = {
               <dd><a href="../../../v0.24.0/index.html">
                 
                   v0.24.0
-                
-              </a></dd>
-            
-          
-        
-      
-        
-          
-            
-              <dd><a href="../../../v0.23.0/index.html">
-                
-                  v0.23.0
                 
               </a></dd>
             
@@ -683,9 +685,9 @@ MathJax = {
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
-        <article role="main">
+        <article role="main" id="furo-main-content">
           <section class="tex2jax_ignore mathjax_ignore" id="using-custom-graph">
-<h1>Using Custom Graph<a class="headerlink" href="#using-custom-graph" title="Permalink to this heading">#</a></h1>
+<h1>Using Custom Graph<a class="headerlink" href="#using-custom-graph" title="Permalink to this heading">¶</a></h1>
 <p>This guide walks you through the process of using custom graph data in GraphScope Interactive. The process comprises three main steps:</p>
 <ul class="simple">
 <li><p>Creating a new graph,</p></li>
@@ -694,7 +696,7 @@ MathJax = {
 </ul>
 <p>We’ll use the <a class="reference external" href="https://github.com/neo4j-graph-examples/movies/"><code class="docutils literal notranslate"><span class="pre">movies</span></code></a> graph as an example, with the necessary sample files located in <code class="docutils literal notranslate"><span class="pre">{INTERACTIVE_HOME}/examples/movies/</span></code>.</p>
 <section id="step-1-create-a-new-graph">
-<h2>Step 1: Create a New Graph<a class="headerlink" href="#step-1-create-a-new-graph" title="Permalink to this heading">#</a></h2>
+<h2>Step 1: Create a New Graph<a class="headerlink" href="#step-1-create-a-new-graph" title="Permalink to this heading">¶</a></h2>
 <p>Before starting, please make sure you are in the initial environment. If not, please destroy the currently running database first.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/gs_interactive<span class="w"> </span>service<span class="w"> </span>stop
 bin/gs_interactive<span class="w"> </span>destroy
@@ -735,10 +737,12 @@ bin/gs_interactive<span class="w"> </span>destroy
 <span class="w">            </span><span class="nt">primitive_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DT_SIGNED_INT32</span>
 <span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">property_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">tagline</span>
 <span class="w">          </span><span class="nt">property_type</span><span class="p">:</span>
-<span class="w">            </span><span class="nt">primitive_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DT_STRING</span>
+<span class="w">            </span><span class="nt">string</span><span class="p">:</span>
+<span class="w">              </span><span class="nt">long_text</span><span class="p">:</span>
 <span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">property_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">title</span>
 <span class="w">          </span><span class="nt">property_type</span><span class="p">:</span>
-<span class="w">            </span><span class="nt">primitive_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DT_STRING</span>
+<span class="w">            </span><span class="nt">string</span><span class="p">:</span>
+<span class="w">              </span><span class="nt">long_text</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">primary_keys</span><span class="p">:</span>
 <span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">id</span>
 <span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">type_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Person</span>
@@ -751,7 +755,8 @@ bin/gs_interactive<span class="w"> </span>destroy
 <span class="w">            </span><span class="nt">primitive_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DT_SIGNED_INT32</span>
 <span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">property_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">name</span>
 <span class="w">          </span><span class="nt">property_type</span><span class="p">:</span>
-<span class="w">            </span><span class="nt">primitive_type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">DT_STRING</span>
+<span class="w">            </span><span class="nt">string</span><span class="p">:</span>
+<span class="w">              </span><span class="nt">long_text</span><span class="p">:</span>
 <span class="w">      </span><span class="nt">primary_keys</span><span class="p">:</span>
 <span class="w">        </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">id</span>
 <span class="w">  </span><span class="nt">edge_types</span><span class="p">:</span>
@@ -800,13 +805,11 @@ bin/gs_interactive<span class="w"> </span>destroy
 <li><p>DT_BOOL</p></li>
 <li><p>DT_FLOAT</p></li>
 <li><p>DT_DOUBLE</p></li>
-<li><p>DT_STRING</p></li>
-<li><p>DT_DATE32</p></li>
 </ul>
 <p>For a comprehensive list of supported types, please refer to the <a class="reference internal" href="data_model.html"><span class="doc std std-doc">data model</span></a> page.</p>
 </section>
 <section id="step-2-import-graph-data">
-<h2>Step 2: Import Graph Data<a class="headerlink" href="#step-2-import-graph-data" title="Permalink to this heading">#</a></h2>
+<h2>Step 2: Import Graph Data<a class="headerlink" href="#step-2-import-graph-data" title="Permalink to this heading">¶</a></h2>
 <p>To import your data, utilize the <code class="docutils literal notranslate"><span class="pre">import</span></code> functionality of the administrative tool:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/gs_interactive<span class="w"> </span>database<span class="w"> </span>import<span class="w"> </span>-g<span class="w"> </span>movies<span class="w"> </span>-c<span class="w"> </span>examples/movies/import.yaml
 </pre></div>
@@ -876,7 +879,7 @@ bin/gs_interactive<span class="w"> </span>destroy
 <p>Note: The provided yaml file above offers a basic configuration for data importing. For a comprehensive understanding of data import configurations, please consult the <a class="reference internal" href="data_import.html"><span class="doc std std-doc">data import</span></a> page.</p>
 </section>
 <section id="step-3-start-the-service-with-the-new-graph">
-<h2>Step 3: Start the Service with the New Graph<a class="headerlink" href="#step-3-start-the-service-with-the-new-graph" title="Permalink to this heading">#</a></h2>
+<h2>Step 3: Start the Service with the New Graph<a class="headerlink" href="#step-3-start-the-service-with-the-new-graph" title="Permalink to this heading">¶</a></h2>
 <p>To start the service using the new graph, run:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bin/gs_interactive<span class="w"> </span>service<span class="w"> </span>start<span class="w"> </span>-g<span class="w"> </span>movies
 </pre></div>
@@ -885,7 +888,7 @@ bin/gs_interactive<span class="w"> </span>destroy
 <p>Now you can move to <a class="reference internal" href="stored_procedures.html"><span class="doc std std-doc">Stored Procedure</span></a> to explore querying via stored procedures.</p>
 </section>
 <section id="try-other-graphs">
-<h2>Try other graphs<a class="headerlink" href="#try-other-graphs" title="Permalink to this heading">#</a></h2>
+<h2>Try other graphs<a class="headerlink" href="#try-other-graphs" title="Permalink to this heading">¶</a></h2>
 <p>In addition to <code class="docutils literal notranslate"><span class="pre">movies</span></code> graph, we have also prepared the <code class="docutils literal notranslate"><span class="pre">graph_algo</span></code> graph. You can find the raw CSV files, graph.yaml, and import.yaml in the <code class="docutils literal notranslate"><span class="pre">./examples/graph_algo/</span></code> directory. You can import the <code class="docutils literal notranslate"><span class="pre">graph_algo</span></code> graph just like importing the <code class="docutils literal notranslate"><span class="pre">movies</span></code> graph. There are also some sample cypher queries, you can find them at <a class="reference external" href="https://github.com/alibaba/GraphScope/tree/main/flex/interactive/examples/graph_algo">GraphScope/flex/interactive/examples/graph_algo</a>.</p>
 </section>
 </section>
@@ -967,7 +970,7 @@ bin/gs_interactive<span class="w"> </span>destroy
 </div><script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js?v=ccbe24c1"></script>
     <script src="../../_static/doctools.js?v=888ff710"></script>
     <script src="../../_static/sphinx_highlight.js?v=4825356b"></script>
-    <script src="../../_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="../../_static/scripts/furo.js?v=4e2eecee"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../_static/copybutton.js?v=f281be69"></script>
     </body>

@@ -79,18 +79,20 @@ $(function() {
 <code>#include &lt;vector&gt;</code><br />
 <code>#include &quot;<a class="el" href="result_8h_source.html">flex/utils/result.h</a>&quot;</code><br />
 <code>#include &quot;glog/logging.h&quot;</code><br />
+<code>#include &quot;nlohmann/json.hpp&quot;</code><br />
 </div><div class="textblock"><div class="dynheader">
 Include dependency graph for yaml_utils.h:</div>
 <div class="dyncontent">
 <div class="center"><img src="yaml__utils_8h__incl.png" border="0" usemap="#_2home_2runner_2work_2GraphScope_2GraphScope_2flex_2utils_2yaml__utils_8h" alt=""/></div>
 <map name="_2home_2runner_2work_2GraphScope_2GraphScope_2flex_2utils_2yaml__utils_8h" id="_2home_2runner_2work_2GraphScope_2GraphScope_2flex_2utils_2yaml__utils_8h">
-<area shape="rect" title=" " alt="" coords="163,5,390,61"/>
+<area shape="rect" title=" " alt="" coords="215,5,442,61"/>
 <area shape="rect" title=" " alt="" coords="5,109,137,136"/>
 <area shape="rect" title=" " alt="" coords="91,184,182,211"/>
 <area shape="rect" title=" " alt="" coords="206,184,265,211"/>
 <area shape="rect" title=" " alt="" coords="393,184,456,211"/>
 <area shape="rect" href="result_8h.html" title=" " alt="" coords="263,109,394,136"/>
 <area shape="rect" title=" " alt="" coords="481,184,595,211"/>
+<area shape="rect" title=" " alt="" coords="519,109,666,136"/>
 <area shape="rect" title=" " alt="" coords="289,184,369,211"/>
 </map>
 </div>
@@ -154,10 +156,16 @@ Namespaces</h2></td></tr>
 Functions</h2></td></tr>
 <tr class="memitem:a14f6ec0ed0517e1c854f823110e94ae2"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegs.html#a14f6ec0ed0517e1c854f823110e94ae2">gs::get_yaml_files</a> (const std::string &amp;plugin_dir)</td></tr>
 <tr class="separator:a14f6ec0ed0517e1c854f823110e94ae2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aae69352eeac2d783c16ac62caaec1c4b"><td class="memItemLeft" align="right" valign="top">Result&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegs.html#aae69352eeac2d783c16ac62caaec1c4b">gs::get_string_from_yaml</a> (const std::string &amp;file_path)</td></tr>
-<tr class="separator:aae69352eeac2d783c16ac62caaec1c4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1d16dbf438ecb18d342a7e0e80041a40"><td class="memItemLeft" align="right" valign="top">Result&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegs.html#a1d16dbf438ecb18d342a7e0e80041a40">gs::get_string_from_yaml</a> (const YAML::Node &amp;node)</td></tr>
-<tr class="separator:a1d16dbf438ecb18d342a7e0e80041a40"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afaac713ea1cdc1df1b046ec3c254ab52"><td class="memItemLeft" align="right" valign="top">Result&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegs.html#afaac713ea1cdc1df1b046ec3c254ab52">gs::get_json_string_from_yaml</a> (const std::string &amp;file_path)</td></tr>
+<tr class="separator:afaac713ea1cdc1df1b046ec3c254ab52"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adcc1ff4c7363a52a3a78af035ecd0b72"><td class="memItemLeft" align="right" valign="top">Result&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegs.html#adcc1ff4c7363a52a3a78af035ecd0b72">gs::get_json_string_from_yaml</a> (const YAML::Node &amp;node)</td></tr>
+<tr class="separator:adcc1ff4c7363a52a3a78af035ecd0b72"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a74cc02d2b64e25c1fcadf17d38715934"><td class="memItemLeft" align="right" valign="top">Result&lt; nlohmann::json &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegs.html#a74cc02d2b64e25c1fcadf17d38715934">gs::read_json_from_file</a> (const std::string &amp;file_path)</td></tr>
+<tr class="separator:a74cc02d2b64e25c1fcadf17d38715934"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a80409f5198585560fe2a6a9ef8ba3932"><td class="memItemLeft" align="right" valign="top">Status&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegs.html#a80409f5198585560fe2a6a9ef8ba3932">gs::write_yaml_node_to_yaml_string</a> (const YAML::Node &amp;node, YAML::Emitter &amp;emitter)</td></tr>
+<tr class="separator:a80409f5198585560fe2a6a9ef8ba3932"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ed706c9d53b9d7b35389d3e032d62a8"><td class="memItemLeft" align="right" valign="top">Result&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespacegs.html#a5ed706c9d53b9d7b35389d3e032d62a8">gs::get_yaml_string_from_yaml_node</a> (const YAML::Node &amp;node)</td></tr>
+<tr class="separator:a5ed706c9d53b9d7b35389d3e032d62a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac209f94a566405352ce94d8072e4e721"><td class="memTemplParams" colspan="2">template&lt;typename T &gt; </td></tr>
 <tr class="memitem:ac209f94a566405352ce94d8072e4e721"><td class="memTemplItemLeft" align="right" valign="top">bool&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="namespacegs_1_1config__parsing.html#ac209f94a566405352ce94d8072e4e721">gs::config_parsing::get_scalar</a> (YAML::Node node, const std::string &amp;key, T &amp;value)</td></tr>
 <tr class="separator:ac209f94a566405352ce94d8072e4e721"><td class="memSeparator" colspan="2">&#160;</td></tr>

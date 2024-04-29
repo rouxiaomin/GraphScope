@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width,initial-scale=1"/>
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="../../../genindex.html" /><link rel="search" title="Search" href="../../../search.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.1.2 and Furo 2024.04.27 -->
         <title>graphscope.framework.graph - GraphScope documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/styles/furo.css?v=437aa6ec" />
     <link rel="stylesheet" type="text/css" href="../../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css?v=2a6c4383" />
     <link rel="stylesheet" type="text/css" href="../../../_static/panels-bootstrap.5fd3999ee7762ccc51105388f4a9d115.css?v=45cf7dbc" />
@@ -157,6 +157,8 @@ MathJax = {
 <label class="overlay toc-overlay" for="__toc">
   <div class="visually-hidden">Hide table of contents sidebar</div>
 </label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
 
 
 
@@ -575,6 +577,18 @@ MathJax = {
         
           
             
+              <dd><a href="../../../../v0.27.0/index.html">
+                
+                  v0.27.0
+                
+              </a></dd>
+            
+          
+        
+      
+        
+          
+            
               <dd><a href="../../../../v0.26.0/index.html">
                 
                   v0.26.0
@@ -602,18 +616,6 @@ MathJax = {
               <dd><a href="../../../../v0.24.0/index.html">
                 
                   v0.24.0
-                
-              </a></dd>
-            
-          
-        
-      
-        
-          
-            
-              <dd><a href="../../../../v0.23.0/index.html">
-                
-                  v0.23.0
                 
               </a></dd>
             
@@ -667,7 +669,7 @@ MathJax = {
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
-        <article role="main">
+        <article role="main" id="furo-main-content">
           <h1>Source code for graphscope.framework.graph</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python3</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
@@ -699,6 +701,7 @@ MathJax = {
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Mapping</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Tuple</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span>
+<span class="kn">from</span> <span class="nn">urllib.parse</span> <span class="kn">import</span> <span class="n">urlparse</span>
 
 <span class="k">try</span><span class="p">:</span>
     <span class="kn">import</span> <span class="nn">vineyard</span>
@@ -788,18 +791,17 @@ MathJax = {
     <span class="k">def</span> <span class="nf">load_from</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">sess</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-    <span class="k">def</span> <span class="nf">archive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
-
     <span class="nd">@abstractmethod</span>
     <span class="k">def</span> <span class="nf">project</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vertices</span><span class="p">,</span> <span class="n">edges</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
     <span class="k">def</span> <span class="nf">unload</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
-            <span class="s2">&quot;The Graph.unload() method has been deprecated, please using the `del` operator instead, e.g., `del graph`&quot;</span><span class="p">,</span>
-            <span class="ne">DeprecationWarning</span><span class="p">,</span>
-        <span class="p">)</span>
+        <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s2">&quot;always&quot;</span><span class="p">,</span> <span class="ne">DeprecationWarning</span><span class="p">)</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                <span class="s2">&quot;The Graph.unload() method has been deprecated, please using the `del` operator instead, i.e., `del graph`&quot;</span><span class="p">,</span>
+                <span class="ne">DeprecationWarning</span><span class="p">,</span>
+            <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_from_nx_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">g</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a gs graph from a nx graph.</span>
@@ -1134,16 +1136,6 @@ MathJax = {
         <span class="n">vertex_range</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">transform_vertex_range</span><span class="p">(</span><span class="n">vertex_range</span><span class="p">)</span>
         <span class="n">op</span> <span class="o">=</span> <span class="n">dag_utils</span><span class="o">.</span><span class="n">graph_to_dataframe</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">selector</span><span class="p">,</span> <span class="n">vertex_range</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">ResultDAGNode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">op</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">archive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Archive the graph to gar format with graph yaml file path.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            path (str): The graph yaml file path describe how to archive the graph.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">check_argument</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">graph_type</span> <span class="o">==</span> <span class="n">graph_def_pb2</span><span class="o">.</span><span class="n">ARROW_PROPERTY</span><span class="p">)</span>
-        <span class="n">op</span> <span class="o">=</span> <span class="n">dag_utils</span><span class="o">.</span><span class="n">archive_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">ArchivedGraph</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="p">,</span> <span class="n">op</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">to_directed</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">op</span> <span class="o">=</span> <span class="n">dag_utils</span><span class="o">.</span><span class="n">to_directed</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
@@ -1848,49 +1840,182 @@ MathJax = {
             <span class="bp">self</span><span class="o">.</span><span class="n">signature</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">_saved_signature</span><span class="p">,</span> <span class="s2">&quot;Graph has been modified!&quot;</span>
         <span class="p">)</span>
 
-<div class="viewcode-block" id="Graph.save_to"><a class="viewcode-back" href="../../../reference/graph.html#graphscope.framework.graph.Graph.save_to">[docs]</a>    <span class="k">def</span> <span class="nf">save_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Serialize graph to a location.</span>
-<span class="sd">        The meta and data of graph is dumped to specified location,</span>
-<span class="sd">        and can be restored by `Graph.load_from` in other sessions.</span>
-
-<span class="sd">        Each worker will write a `path_{worker_id}.meta` file and</span>
-<span class="sd">        a `path_{worker_id}` file to storage.</span>
-<span class="sd">        Args:</span>
-<span class="sd">            path (str): supported storages are local, hdfs, oss, s3</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="n">op</span> <span class="o">=</span> <span class="n">dag_utils</span><span class="o">.</span><span class="n">save_graph_to</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_vineyard_id</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">dag</span><span class="o">.</span><span class="n">add_op</span><span class="p">(</span><span class="n">op</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">_wrapper</span><span class="p">(</span><span class="n">op</span><span class="p">)</span></div>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_load_from_graphar</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">sess</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="c1"># graphar now only support global vertex map.</span>
+        <span class="n">vertex_map</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">vertex_map_type_to_enum</span><span class="p">(</span><span class="s2">&quot;global&quot;</span><span class="p">)</span>
+        <span class="c1"># oid_type = utils.get_oid_type_from_graph_info(path)</span>
+        <span class="n">config</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="n">types_pb2</span><span class="o">.</span><span class="n">OID_TYPE</span><span class="p">:</span> <span class="n">utils</span><span class="o">.</span><span class="n">s_to_attr</span><span class="p">(</span>
+                <span class="s2">&quot;int64_t&quot;</span>
+            <span class="p">),</span>  <span class="c1"># graphar use vertex index as oid, so it always be int64_t</span>
+            <span class="n">types_pb2</span><span class="o">.</span><span class="n">VID_TYPE</span><span class="p">:</span> <span class="n">utils</span><span class="o">.</span><span class="n">s_to_attr</span><span class="p">(</span><span class="s2">&quot;uint64_t&quot;</span><span class="p">),</span>
+            <span class="n">types_pb2</span><span class="o">.</span><span class="n">IS_FROM_VINEYARD_ID</span><span class="p">:</span> <span class="n">utils</span><span class="o">.</span><span class="n">b_to_attr</span><span class="p">(</span><span class="kc">False</span><span class="p">),</span>
+            <span class="n">types_pb2</span><span class="o">.</span><span class="n">IS_FROM_GAR</span><span class="p">:</span> <span class="n">utils</span><span class="o">.</span><span class="n">b_to_attr</span><span class="p">(</span><span class="kc">True</span><span class="p">),</span>
+            <span class="n">types_pb2</span><span class="o">.</span><span class="n">VERTEX_MAP_TYPE</span><span class="p">:</span> <span class="n">utils</span><span class="o">.</span><span class="n">i_to_attr</span><span class="p">(</span><span class="n">vertex_map</span><span class="p">),</span>
+            <span class="n">types_pb2</span><span class="o">.</span><span class="n">COMPACT_EDGES</span><span class="p">:</span> <span class="n">utils</span><span class="o">.</span><span class="n">b_to_attr</span><span class="p">(</span><span class="kc">False</span><span class="p">),</span>
+            <span class="n">types_pb2</span><span class="o">.</span><span class="n">GRAPH_INFO_PATH</span><span class="p">:</span> <span class="n">utils</span><span class="o">.</span><span class="n">s_to_attr</span><span class="p">(</span><span class="n">path</span><span class="p">),</span>
+            <span class="n">types_pb2</span><span class="o">.</span><span class="n">STORAGE_OPTIONS</span><span class="p">:</span> <span class="n">utils</span><span class="o">.</span><span class="n">s_to_attr</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)),</span>
+        <span class="p">}</span>
+        <span class="n">op</span> <span class="o">=</span> <span class="n">dag_utils</span><span class="o">.</span><span class="n">create_graph</span><span class="p">(</span>
+            <span class="n">sess</span><span class="o">.</span><span class="n">session_id</span><span class="p">,</span> <span class="n">graph_def_pb2</span><span class="o">.</span><span class="n">ARROW_PROPERTY</span><span class="p">,</span> <span class="n">inputs</span><span class="o">=</span><span class="p">[],</span> <span class="n">attrs</span><span class="o">=</span><span class="n">config</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">sess</span><span class="o">.</span><span class="n">_wrapper</span><span class="p">(</span><span class="n">GraphDAGNode</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">op</span><span class="p">))</span>
 
 <div class="viewcode-block" id="Graph.load_from"><a class="viewcode-back" href="../../../reference/graph.html#graphscope.framework.graph.Graph.load_from">[docs]</a>    <span class="nd">@classmethod</span>
-    <span class="k">def</span> <span class="nf">load_from</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">sess</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Construct a `Graph` by deserialize from `path`.</span>
-<span class="sd">        It will read all serialization files, which is dumped by</span>
-<span class="sd">        `Graph.serialize`.</span>
-<span class="sd">        If any serialize file doesn&#39;t exists or broken, will error out.</span>
+    <span class="k">def</span> <span class="nf">load_from</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">uri</span><span class="p">,</span> <span class="n">sess</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load a ArrowProperty graph from a certain data source. The data source</span>
+<span class="sd">        can be vineyard serialized files, graphar serialized files, or other data</span>
+<span class="sd">        sources supported by graphscope.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            path (str): Path contains the serialization files.</span>
-<span class="sd">            sess (`graphscope.Session`): The target session</span>
-<span class="sd">                that the graph will be construct in</span>
-
+<span class="sd">            uri (str): URI contains the description of the data source or</span>
+<span class="sd">                path contains the serialization files,</span>
+<span class="sd">                example: &quot;graphar+file:///tmp/graphar/xxx&quot;</span>
+<span class="sd">            sess (`graphscope.Session`): The target session that the graph</span>
+<span class="sd">                will be construct, if None, use the default session.</span>
+<span class="sd">            selector (dict, optional): the selector to select the data to read.</span>
+<span class="sd">            graphar_store_in_local (bool, optional): whether store graphar format in local, default is False.</span>
 <span class="sd">        Returns:</span>
-<span class="sd">            `Graph`: A new graph object. Schema and data is supposed to be</span>
-<span class="sd">                identical with the one that called serialized method.</span>
+<span class="sd">            `Graph`: A new graph object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">op</span> <span class="o">=</span> <span class="n">dag_utils</span><span class="o">.</span><span class="n">load_graph_from</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">sess</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">sess</span><span class="o">.</span><span class="n">_wrapper</span><span class="p">(</span><span class="n">GraphDAGNode</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">op</span><span class="p">))</span></div>
+        <span class="kn">from</span> <span class="nn">graphscope.client.session</span> <span class="kn">import</span> <span class="n">get_default_session</span>
 
-<div class="viewcode-block" id="Graph.archive"><a class="viewcode-back" href="../../../reference/graph.html#graphscope.framework.graph.Graph.archive">[docs]</a>    <span class="k">def</span> <span class="nf">archive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Archive graph gar format files base on the graph info.</span>
-<span class="sd">        The meta and data of graph is dumped to specified location,</span>
-<span class="sd">        and can be restored by `Graph.deserialize` in other sessions.</span>
+        <span class="k">def</span> <span class="nf">_check_load_options</span><span class="p">(</span><span class="n">load_options</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">load_options</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="s2">&quot;selector&quot;</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                            <span class="s2">&quot;selector should be a dict, but got </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
+                        <span class="p">)</span>
+                <span class="k">elif</span> <span class="n">k</span> <span class="o">==</span> <span class="s2">&quot;graphar_store_in_local&quot;</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
+                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                            <span class="s2">&quot;graphar_store_in_local should be a bool, but got </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                                <span class="n">v</span>
+                            <span class="p">)</span>
+                        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">sess</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">sess</span> <span class="o">=</span> <span class="n">get_default_session</span><span class="p">()</span>
+        <span class="n">uri_str</span> <span class="o">=</span> <span class="n">uri</span>
+        <span class="n">uri</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">uri</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">uri</span><span class="o">.</span><span class="n">scheme</span> <span class="ow">and</span> <span class="s2">&quot;+&quot;</span> <span class="ow">in</span> <span class="n">uri</span><span class="o">.</span><span class="n">scheme</span><span class="p">:</span>
+            <span class="n">source</span> <span class="o">=</span> <span class="n">uri</span><span class="o">.</span><span class="n">scheme</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;+&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">if</span> <span class="n">uri</span><span class="o">.</span><span class="n">scheme</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;+&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;file&quot;</span><span class="p">,</span> <span class="s2">&quot;s3&quot;</span><span class="p">,</span> <span class="s2">&quot;oss&quot;</span><span class="p">,</span> <span class="s2">&quot;hdfs&quot;</span><span class="p">]:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">&quot;Unknown file system </span><span class="si">%s</span><span class="s2">, currently only support file, s3, oss and hdfs&quot;</span>
+                    <span class="o">%</span> <span class="n">uri</span><span class="o">.</span><span class="n">scheme</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;+&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="p">)</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">uri</span><span class="o">.</span><span class="n">scheme</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;+&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s2">&quot;://&quot;</span> <span class="o">+</span> <span class="n">uri</span><span class="o">.</span><span class="n">netloc</span> <span class="o">+</span> <span class="n">uri</span><span class="o">.</span><span class="n">path</span>
+            <span class="k">if</span> <span class="n">source</span> <span class="o">==</span> <span class="s2">&quot;graphar&quot;</span><span class="p">:</span>
+                <span class="n">_check_load_options</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+                <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">_load_from_graphar</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">sess</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unknown source </span><span class="si">%s</span><span class="s2"> with uri $s:&quot;</span> <span class="o">%</span> <span class="n">source</span><span class="p">,</span> <span class="n">uri_str</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># not a uri string, assume it is a path for deserialization</span>
+            <span class="n">op</span> <span class="o">=</span> <span class="n">dag_utils</span><span class="o">.</span><span class="n">deserialize_graph</span><span class="p">(</span><span class="n">uri_str</span><span class="p">,</span> <span class="n">sess</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">sess</span><span class="o">.</span><span class="n">_wrapper</span><span class="p">(</span><span class="n">GraphDAGNode</span><span class="p">(</span><span class="n">sess</span><span class="p">,</span> <span class="n">op</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="Graph.save_to"><a class="viewcode-back" href="../../../reference/graph.html#graphscope.framework.graph.Graph.save_to">[docs]</a>    <span class="k">def</span> <span class="nf">save_to</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">path</span><span class="p">,</span>
+        <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;serialization&quot;</span><span class="p">,</span>
+        <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Save graph to specified location with specified format.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            path (str): the graph info file path.</span>
+<span class="sd">            path (str): the directory path to write graph.</span>
+<span class="sd">            format (str): the format to write graph, default is &quot;serialization&quot;.</span>
+<span class="sd">            selector (dict, optional): the selector to select the data to write.</span>
+<span class="sd">            graphar_graph_name (str, optional): the name of graph in graphar format.</span>
+<span class="sd">            graphar_file_type (str, optional): the file type of graphar format,</span>
+<span class="sd">                support &quot;parquet&quot;, &quot;orc&quot;, &quot;csv&quot;, default is &quot;parquet&quot;.</span>
+<span class="sd">            graphar_vertex_chunk_size (int, optional): the chunk size of vertex in graphar format, default is 2^18.</span>
+<span class="sd">            graphar_edge_chunk_size (int, optional): the chunk size of edge in graphar format, default is 2^22.</span>
+<span class="sd">            graphar_store_in_local (bool, optional): whether store graphar format in local, default is False.</span>
+
+<span class="sd">        Return (dict): A dict contains the type and uri string of output data.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">_wrapper</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_graph_node</span><span class="o">.</span><span class="n">archive</span><span class="p">(</span><span class="n">path</span><span class="p">))</span></div>
+
+        <span class="k">def</span> <span class="nf">_check_write_options</span><span class="p">(</span><span class="n">write_options</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">write_options</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="s2">&quot;graphar_graph_name&quot;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                        <span class="s2">&quot;graphar_graph_name should be a string, but got </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                            <span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+                        <span class="p">)</span>
+                    <span class="p">)</span>
+                <span class="k">elif</span> <span class="n">k</span> <span class="o">==</span> <span class="s2">&quot;graphar_file_type&quot;</span> <span class="ow">and</span> <span class="n">v</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;parquet&quot;</span><span class="p">,</span> <span class="s2">&quot;orc&quot;</span><span class="p">,</span> <span class="s2">&quot;csv&quot;</span><span class="p">]:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                        <span class="s2">&quot;graphar_file_type should be one of [&#39;parquet&#39;, &#39;orc&#39;, &#39;csv&#39;], but got </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                            <span class="n">v</span>
+                        <span class="p">)</span>
+                    <span class="p">)</span>
+                <span class="k">elif</span> <span class="n">k</span> <span class="o">==</span> <span class="s2">&quot;graphar_vertex_chunk_size&quot;</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">or</span> <span class="n">v</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                            <span class="s2">&quot;graphar_vertex_chunk_size should be a positive integer, but got </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                                <span class="n">v</span>
+                            <span class="p">)</span>
+                        <span class="p">)</span>
+                <span class="k">elif</span> <span class="n">k</span> <span class="o">==</span> <span class="s2">&quot;graphar_edge_chunk_size&quot;</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">int</span><span class="p">)</span> <span class="ow">or</span> <span class="n">v</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                            <span class="s2">&quot;graphar_edge_chunk_size should be a positive integer, but got </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                                <span class="n">v</span>
+                            <span class="p">)</span>
+                        <span class="p">)</span>
+                <span class="k">elif</span> <span class="n">k</span> <span class="o">==</span> <span class="s2">&quot;graphar_store_in_local&quot;</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
+                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                            <span class="s2">&quot;graphar_store_in_local should be a bool, but got </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                                <span class="n">v</span>
+                            <span class="p">)</span>
+                        <span class="p">)</span>
+                <span class="k">elif</span> <span class="n">k</span> <span class="o">==</span> <span class="s2">&quot;selector&quot;</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+                        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                            <span class="s2">&quot;selector should be a dict, but got </span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
+                        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">format</span> <span class="o">==</span> <span class="s2">&quot;graphar&quot;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;graphar_graph_name&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+                <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;graphar_graph_name&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;graph&quot;</span>  <span class="c1"># default graph name</span>
+            <span class="n">_check_write_options</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="n">graph_name</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;graphar_graph_name&quot;</span><span class="p">]</span>
+
+            <span class="n">maybe_uri</span> <span class="o">=</span> <span class="n">urlparse</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">maybe_uri</span><span class="o">.</span><span class="n">scheme</span> <span class="ow">and</span> <span class="n">maybe_uri</span><span class="o">.</span><span class="n">scheme</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span>
+                <span class="s2">&quot;file&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;s3&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;oss&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;hdfs&quot;</span><span class="p">,</span>
+            <span class="p">]:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">&quot;Unknown file system </span><span class="si">%s</span><span class="s2">, currently only support file, s3, oss and hdfs&quot;</span>
+                    <span class="o">%</span> <span class="n">maybe_uri</span><span class="o">.</span><span class="n">scheme</span>
+                <span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">maybe_uri</span><span class="o">.</span><span class="n">scheme</span><span class="p">:</span>
+                <span class="n">maybe_uri</span> <span class="o">=</span> <span class="n">maybe_uri</span><span class="o">.</span><span class="n">_replace</span><span class="p">(</span><span class="n">scheme</span><span class="o">=</span><span class="s2">&quot;file&quot;</span><span class="p">)</span>
+
+            <span class="n">op</span> <span class="o">=</span> <span class="n">dag_utils</span><span class="o">.</span><span class="n">save_to_graphar</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">dag</span><span class="o">.</span><span class="n">add_op</span><span class="p">(</span><span class="n">op</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">_wrapper</span><span class="p">(</span><span class="n">op</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">{</span>
+                <span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="nb">format</span><span class="p">,</span>
+                <span class="s2">&quot;URI&quot;</span><span class="p">:</span> <span class="s2">&quot;graphar+&quot;</span> <span class="o">+</span> <span class="n">maybe_uri</span><span class="o">.</span><span class="n">geturl</span><span class="p">()</span> <span class="o">+</span> <span class="n">graph_name</span> <span class="o">+</span> <span class="s2">&quot;.graph.yaml&quot;</span><span class="p">,</span>
+            <span class="p">}</span>
+        <span class="k">elif</span> <span class="nb">format</span> <span class="o">==</span> <span class="s2">&quot;serialization&quot;</span><span class="p">:</span>
+            <span class="c1"># serialize graph</span>
+            <span class="n">op</span> <span class="o">=</span> <span class="n">dag_utils</span><span class="o">.</span><span class="n">serialize_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">dag</span><span class="o">.</span><span class="n">add_op</span><span class="p">(</span><span class="n">op</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">_wrapper</span><span class="p">(</span><span class="n">op</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;type&quot;</span><span class="p">:</span> <span class="nb">format</span><span class="p">,</span> <span class="s2">&quot;URI&quot;</span><span class="p">:</span> <span class="n">path</span><span class="p">}</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unknown format: </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">format</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Graph.add_vertices"><a class="viewcode-back" href="../../../reference/graph.html#graphscope.framework.graph.Graph.add_vertices">[docs]</a>    <span class="nd">@apply_docstring</span><span class="p">(</span><span class="n">GraphDAGNode</span><span class="o">.</span><span class="n">add_vertices</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">add_vertices</span><span class="p">(</span>
@@ -1983,17 +2108,6 @@ MathJax = {
         <span class="bp">self</span><span class="o">.</span><span class="n">_op</span> <span class="o">=</span> <span class="n">op</span>
         <span class="c1"># add op to dag</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">dag</span><span class="o">.</span><span class="n">add_op</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_op</span><span class="p">)</span>
-
-
-<span class="k">class</span> <span class="nc">ArchivedGraph</span><span class="p">(</span><span class="n">DAGNode</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Archived graph node in a DAG&quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">session</span><span class="p">,</span> <span class="n">op</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_session</span> <span class="o">=</span> <span class="n">session</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_op</span> <span class="o">=</span> <span class="n">op</span>
-        <span class="c1"># add op to dag</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_session</span><span class="o">.</span><span class="n">dag</span><span class="o">.</span><span class="n">add_op</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_op</span><span class="p">)</span>
 </pre></div>
         </article>
       </div>
@@ -2032,7 +2146,7 @@ MathJax = {
 </div><script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js?v=ccbe24c1"></script>
     <script src="../../../_static/doctools.js?v=888ff710"></script>
     <script src="../../../_static/sphinx_highlight.js?v=4825356b"></script>
-    <script src="../../../_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="../../../_static/scripts/furo.js?v=4e2eecee"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../../../_static/copybutton.js?v=f281be69"></script>
     </body>

@@ -11,10 +11,10 @@
 <meta name="description" content="GIE (Graph Interactive Engine) is a system for interactive workloads on graphs, such as graph traversal and pattern matching. It provides a declarative query language for users to interact with the..." />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Dev and Test" href="dev_and_test.html" /><link rel="prev" title="A Generic Graph Optimizer for GIE" href="optimizer.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.1.2 and Furo 2024.04.27 -->
         <title>Design of GIE - GraphScope documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=437aa6ec" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css?v=2a6c4383" />
     <link rel="stylesheet" type="text/css" href="../_static/panels-bootstrap.5fd3999ee7762ccc51105388f4a9d115.css?v=45cf7dbc" />
@@ -164,6 +164,8 @@ MathJax = {
 <label class="overlay toc-overlay" for="__toc">
   <div class="visually-hidden">Hide table of contents sidebar</div>
 </label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
 
 
 
@@ -582,6 +584,18 @@ MathJax = {
         
           
             
+              <dd><a href="../../v0.27.0/index.html">
+                
+                  v0.27.0
+                
+              </a></dd>
+            
+          
+        
+      
+        
+          
+            
               <dd><a href="../../v0.26.0/index.html">
                 
                   v0.26.0
@@ -609,18 +623,6 @@ MathJax = {
               <dd><a href="../../v0.24.0/index.html">
                 
                   v0.24.0
-                
-              </a></dd>
-            
-          
-        
-      
-        
-          
-            
-              <dd><a href="../../v0.23.0/index.html">
-                
-                  v0.23.0
                 
               </a></dd>
             
@@ -683,9 +685,9 @@ MathJax = {
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
-        <article role="main">
+        <article role="main" id="furo-main-content">
           <section class="tex2jax_ignore mathjax_ignore" id="design-of-gie">
-<h1>Design of GIE<a class="headerlink" href="#design-of-gie" title="Permalink to this heading">#</a></h1>
+<h1>Design of GIE<a class="headerlink" href="#design-of-gie" title="Permalink to this heading">¶</a></h1>
 <p>GIE (Graph Interactive Engine) is a system for interactive workloads on graphs, such as graph
 traversal and pattern matching. It provides a declarative query language for users to interact
 with the engine at the application layer. It also supports different computing engines at the
@@ -693,7 +695,7 @@ runtime layer to meet various computing needs. GIE has two main design goals. On
 easy for users to use GIE with familiar query languages. The other is to make it easy to
 integrate different computing engines with GIE.</p>
 <section id="the-motivations">
-<h2>The Motivations<a class="headerlink" href="#the-motivations" title="Permalink to this heading">#</a></h2>
+<h2>The Motivations<a class="headerlink" href="#the-motivations" title="Permalink to this heading">¶</a></h2>
 <p>Graph data is a data structure that models the relationships between data. Compared with
 traditional relational data, it expresses relationships more intuitively and has inherent
 advantages in storage and computation. Therefore, graph queries play a very important
@@ -723,7 +725,7 @@ to introduce multiple computing engines</p></li>
 <figure class="align-default" id="id1">
 <a class="reference internal image-reference" href="../_images/states_of_gie.png"><img alt="The current states of graph queries" src="../_images/states_of_gie.png" style="width: 65%;" /></a>
 <figcaption>
-<p><span class="caption-text">Figure 1. The current states of graph queries.</span><a class="headerlink" href="#id1" title="Permalink to this image">#</a></p>
+<p><span class="caption-text">Figure 1. The current states of graph queries.</span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>As shown in Figure 1, in order to support as many query languages as possible and adapt to various
@@ -735,7 +737,7 @@ needs to be completed. The whole process is lengthy and complicated. It is not e
 one of these implementations, let alone do well in all these “M×N” combinations.</p>
 </section>
 <section id="the-architecture">
-<h2>The Architecture<a class="headerlink" href="#the-architecture" title="Permalink to this heading">#</a></h2>
+<h2>The Architecture<a class="headerlink" href="#the-architecture" title="Permalink to this heading">¶</a></h2>
 <p>Figure 2 shows the architecture of the GIE framework. It can be seen that the “M × N” fragmented
 engineering implementation in the original scene has been replaced by a unified GIE IR
 (Intermediate Representation) Layer. The GIE IR Layer is responsible for processing the two most
@@ -746,7 +748,7 @@ languages and N sets of code generation for N engines.</p>
 <figure class="align-default" id="id2">
 <a class="reference internal image-reference" href="../_images/design_of_gie.png"><img alt="The architecture of GIE" src="../_images/design_of_gie.png" style="width: 85%;" /></a>
 <figcaption>
-<p><span class="caption-text">Figure 2. The architecture of GIE.</span><a class="headerlink" href="#id2" title="Permalink to this image">#</a></p>
+<p><span class="caption-text">Figure 2. The architecture of GIE.</span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
 </figcaption>
 </figure>
 <p>The original “M × N” engineering implementation can be replaced by this new “M+N” pattern.
@@ -764,7 +766,7 @@ assemble a query system that meets their language and computing needs.</p></li>
 </ul>
 </section>
 <section id="query-processing">
-<h2>Query Processing<a class="headerlink" href="#query-processing" title="Permalink to this heading">#</a></h2>
+<h2>Query Processing<a class="headerlink" href="#query-processing" title="Permalink to this heading">¶</a></h2>
 <p>Based on Figure 2, we briefly demonstrate the procedural of query processing in GIE.</p>
 <p>Step 1: The user submits a graph query to the GIE engine. This query will be compiled by the
 Parser of the corresponding language that we have registered in advance on the client-side into
@@ -896,7 +898,7 @@ are returned to the client.</p>
 </div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=ccbe24c1"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
-    <script src="../_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="../_static/scripts/furo.js?v=4e2eecee"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=f281be69"></script>
     </body>

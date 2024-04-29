@@ -11,10 +11,10 @@
 <meta name="description" content="We have developed a versatile graph optimizer for the Graph Interactive Engine (GIE), capable of optimizing the execution for multiple query languages in GraphScope, including Gremlin and Cypher. T..." />
 <link rel="index" title="Index" href="../genindex.html" /><link rel="search" title="Search" href="../search.html" /><link rel="next" title="Design of GIE" href="design_of_gie.html" /><link rel="prev" title="Using LLM as an Assistant in GIE" href="neo4j/llm_assistant.html" />
 
-    <!-- Generated with Sphinx 7.1.2 and Furo 2024.01.29 -->
+    <!-- Generated with Sphinx 7.1.2 and Furo 2024.04.27 -->
         <title>A Generic Graph Optimizer for GIE - GraphScope documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=a746c00c" />
-    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=135e06be" />
+    <link rel="stylesheet" type="text/css" href="../_static/styles/furo.css?v=437aa6ec" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css?v=2a6c4383" />
     <link rel="stylesheet" type="text/css" href="../_static/panels-bootstrap.5fd3999ee7762ccc51105388f4a9d115.css?v=45cf7dbc" />
@@ -164,6 +164,8 @@ MathJax = {
 <label class="overlay toc-overlay" for="__toc">
   <div class="visually-hidden">Hide table of contents sidebar</div>
 </label>
+
+<a class="skip-to-content muted-link" href="#furo-main-content">Skip to content</a>
 
 
 
@@ -582,6 +584,18 @@ MathJax = {
         
           
             
+              <dd><a href="../../v0.27.0/index.html">
+                
+                  v0.27.0
+                
+              </a></dd>
+            
+          
+        
+      
+        
+          
+            
               <dd><a href="../../v0.26.0/index.html">
                 
                   v0.26.0
@@ -609,18 +623,6 @@ MathJax = {
               <dd><a href="../../v0.24.0/index.html">
                 
                   v0.24.0
-                
-              </a></dd>
-            
-          
-        
-      
-        
-          
-            
-              <dd><a href="../../v0.23.0/index.html">
-                
-                  v0.23.0
                 
               </a></dd>
             
@@ -683,16 +685,16 @@ MathJax = {
             <i class="icon"><svg><use href="#svg-toc"></use></svg></i>
           </label>
         </div>
-        <article role="main">
+        <article role="main" id="furo-main-content">
           <section class="tex2jax_ignore mathjax_ignore" id="a-generic-graph-optimizer-for-gie">
-<h1>A Generic Graph Optimizer for GIE<a class="headerlink" href="#a-generic-graph-optimizer-for-gie" title="Permalink to this heading">#</a></h1>
+<h1>A Generic Graph Optimizer for GIE<a class="headerlink" href="#a-generic-graph-optimizer-for-gie" title="Permalink to this heading">¶</a></h1>
 <p>We have developed a versatile graph optimizer for the Graph Interactive Engine (GIE), capable of optimizing the execution for multiple query languages in GraphScope, including <a class="reference internal" href="tinkerpop_eco.html"><span class="doc std std-doc">Gremlin</span></a> and <a class="reference internal" href="neo4j_eco.html"><span class="doc std std-doc">Cypher</span></a>. This optimizer is built upon the <a class="reference external" href="https://calcite.apache.org/">Apache Calcite</a> framework, traditionally focused on relational databases, but now extended to accommodate graph databases by incorporating graph-specific operations and rules. The optimizer consists of two main components: the Rule-based Optimizer (RBO) and the Cost-based Optimizer (CBO). Like their relational counterparts, both RBO and CBO utilize pre-registered rules for transformation and path optimization, either through heuristic methods or cost estimation. However, our optimizer differs from standard relational optimizers in two key aspects:</p>
 <ol class="arabic simple">
 <li><p><strong>Graph-specific Rules</strong>: Our optimizer integrates rules for specific graph operators within Graph and Relational databases, allowing for true optimization where Graph and Relational structures coexist. Relational operators directly benefit from the reuse of existing SQL rules.</p></li>
 <li><p><strong>High-Order Statistics in CBO</strong>: Our Cost-Based Optimizer (CBO) utilizes sophisticated statistical models grounded in graph structures, providing more accurate cardinality estimates compared to conventional optimizers. The foundational work for our CBO primarily stems from the research presented in <a class="reference external" href="https://www.usenix.org/conference/atc23/presentation/lai">GlogS</a>, which was published at ATC 2023. This research has been instrumental in enhancing the efficacy of graph pattern matching, setting a new standard for optimization in graph databases.</p></li>
 </ol>
 <section id="rule-based-optimizer-rbo">
-<h2>Rule-based Optimizer (RBO)<a class="headerlink" href="#rule-based-optimizer-rbo" title="Permalink to this heading">#</a></h2>
+<h2>Rule-based Optimizer (RBO)<a class="headerlink" href="#rule-based-optimizer-rbo" title="Permalink to this heading">¶</a></h2>
 <div class="table-wrapper colwidths-auto docutils container">
 <table class="docutils align-default">
 <thead>
@@ -718,7 +720,7 @@ MathJax = {
 </div>
 <p>This table offers a concise overview of the existing rules for RBO. Each rule is designed to optimize graph query performance by transforming the way queries are processed and executed. Examples of how these rules conceptually affect the execution of queries are detailed as follows. Note that we use Cypher as the query language for demonstration purposes, but the rules apply to Gremlin as well.</p>
 <section id="filtermatchrule">
-<h3>FilterMatchRule<a class="headerlink" href="#filtermatchrule" title="Permalink to this heading">#</a></h3>
+<h3>FilterMatchRule<a class="headerlink" href="#filtermatchrule" title="Permalink to this heading">¶</a></h3>
 <p>This rule pushes filter conditions down to individual graph operators within a <code class="docutils literal notranslate"><span class="pre">Match</span></code> clause. For example:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>Match<span class="w"> </span><span class="o">(</span>p1:PERSON<span class="o">)</span>-<span class="o">[</span>:KNOWS<span class="o">]</span>-&gt;<span class="o">(</span>p2:PERSON<span class="o">)</span>
 Where<span class="w"> </span>p1.id<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$id1</span><span class="w"> </span>and<span class="w"> </span>p2.id<span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nv">$id2</span>
@@ -733,7 +735,7 @@ Return<span class="w"> </span>p1,<span class="w"> </span>p2<span class="p">;</sp
 <p>following the push-down, splitting the <code class="docutils literal notranslate"><span class="pre">Where</span></code> clause to filter directly at the vertices p1 and p2.</p>
 </section>
 <section id="degreefusionrule">
-<h3>DegreeFusionRule<a class="headerlink" href="#degreefusionrule" title="Permalink to this heading">#</a></h3>
+<h3>DegreeFusionRule<a class="headerlink" href="#degreefusionrule" title="Permalink to this heading">¶</a></h3>
 <p>The DegreeFusionRule capitalizes on the fact that most graph storage systems already maintain the count of neighbors (i.e., the degree) for each vertex. For example:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>Match<span class="w"> </span><span class="o">(</span>p1:PERSON<span class="w"> </span><span class="o">{</span>id:<span class="w"> </span><span class="nv">$id1</span><span class="o">})</span>-<span class="o">[]</span>-&gt;<span class="o">(</span>p2<span class="o">)</span>
 Return<span class="w"> </span>p1,<span class="w"> </span>COUNT<span class="o">(</span>p2<span class="o">)</span><span class="p">;</span>
@@ -742,7 +744,7 @@ Return<span class="w"> </span>p1,<span class="w"> </span>COUNT<span class="o">(<
 <p>With this rule applied, instead of individually counting each neighbor of <code class="docutils literal notranslate"><span class="pre">p1</span></code>, we can directly obtain <code class="docutils literal notranslate"><span class="pre">p1</span></code>’s degree, streamlining the process considerably. This optimization effectively utilizes preexisting graph data structures to expedite query execution.</p>
 </section>
 <section id="notmatchtoantijoinrule">
-<h3>NotMatchToAntiJoinRule<a class="headerlink" href="#notmatchtoantijoinrule" title="Permalink to this heading">#</a></h3>
+<h3>NotMatchToAntiJoinRule<a class="headerlink" href="#notmatchtoantijoinrule" title="Permalink to this heading">¶</a></h3>
 <p>This rule converts queries containing <code class="docutils literal notranslate"><span class="pre">Where</span> <span class="pre">Not</span></code> clauses into the equivalent anti-join structures, where the anti-join
 is a relational operator that returns all rows from the left table that fail to match with the right table.
 Consider the following query:</p>
@@ -761,7 +763,7 @@ Return<span class="w"> </span>p1,<span class="w"> </span>p2<span class="p">;</sp
 <p>Here, <code class="docutils literal notranslate"><span class="pre">&lt;Anti</span> <span class="pre">Join&gt;</span></code> serves as a conceptual operator, used here to effectively illustrate how the original query’s intent is preserved while enhancing its execution efficiency.</p>
 </section>
 <section id="fieldtrimrule">
-<h3>FieldTrimRule<a class="headerlink" href="#fieldtrimrule" title="Permalink to this heading">#</a></h3>
+<h3>FieldTrimRule<a class="headerlink" href="#fieldtrimrule" title="Permalink to this heading">¶</a></h3>
 <p>Removes unnecessary aliases or properties, reducing data processing. Consider:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>Match<span class="w"> </span><span class="o">(</span>p1:PERSON<span class="o">)</span>-<span class="o">[</span>k1:KNOWS<span class="o">]</span>-&gt;<span class="o">(</span>p2:PERSON<span class="o">)</span>-<span class="o">[</span>k2:KNOWS<span class="o">]</span>-&gt;<span class="o">(</span>p3:PERSON<span class="o">)</span>
 Return<span class="w"> </span>p1.name<span class="p">;</span>
@@ -772,11 +774,11 @@ This rule optimizes to retain only necessary data, significantly reducing the vo
 </section>
 </section>
 <section id="cost-based-optimizer-cbo">
-<h2>Cost-based Optimizer (CBO)<a class="headerlink" href="#cost-based-optimizer-cbo" title="Permalink to this heading">#</a></h2>
+<h2>Cost-based Optimizer (CBO)<a class="headerlink" href="#cost-based-optimizer-cbo" title="Permalink to this heading">¶</a></h2>
 <p>TODO</p>
 </section>
 <section id="graph-type-inference">
-<h2>Graph Type Inference<a class="headerlink" href="#graph-type-inference" title="Permalink to this heading">#</a></h2>
+<h2>Graph Type Inference<a class="headerlink" href="#graph-type-inference" title="Permalink to this heading">¶</a></h2>
 <p>Traditional SQL only provides checks and inference for basic data types, such as int, double, string, boolean, etc. However, graph databases encompass more complex types. Beyond basic data types, they introduce special vertex and edge types. Vertex types constrain the range of entity types within the graph, while edge types constrain relationships between entities. While the introduction of vertex and edge types in graph databases provides a more flexible data model, it simultaneously adds complexity to the data, necessitating type checks and inference for graph data.</p>
 <p>We address this complexity through Graph Type Inference, offering functionality for type checks and inference for graph data. This feature examines whether vertex and edge types in graph data adhere to user-defined schemas and can infer vertex and edge types, laying the groundwork for subsequent optimizations in graph queries.</p>
 <p>Taking the example of a modern graph schema, which includes the following vertex and edge types:</p>
@@ -943,7 +945,7 @@ Match<span class="w"> </span><span class="o">(</span>a<span class="o">)</span>-<
 </div><script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js?v=ccbe24c1"></script>
     <script src="../_static/doctools.js?v=888ff710"></script>
     <script src="../_static/sphinx_highlight.js?v=4825356b"></script>
-    <script src="../_static/scripts/furo.js?v=32e29ea5"></script>
+    <script src="../_static/scripts/furo.js?v=4e2eecee"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
     <script src="../_static/copybutton.js?v=f281be69"></script>
     </body>
