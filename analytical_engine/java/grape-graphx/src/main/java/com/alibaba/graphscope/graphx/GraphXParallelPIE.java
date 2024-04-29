@@ -230,8 +230,8 @@ public class GraphXParallelPIE<VD, ED, MSG_T> {
 
     private void runVProg(int startLid, int endLid, boolean firstRound) {
         for (int lid = curSet.nextSetBit(startLid);
-                lid >= 0 && lid < endLid;
-                lid = curSet.nextSetBit(lid + 1)) {
+             lid >= 0 && lid < endLid;
+             lid = curSet.nextSetBit(lid + 1)) {
             long oid = lid2Oid[lid];
             VD originalVD = newVdataArray.get(lid);
             // if (originalVD == null){
@@ -258,8 +258,8 @@ public class GraphXParallelPIE<VD, ED, MSG_T> {
         GSEdgeTripletImpl<VD, ED> edgeTriplet = new GSEdgeTripletImpl<>();
         long beginOffset, endOffset;
         for (int lid = curSet.nextSetBit(startLid);
-                lid >= 0 && lid < endLid;
-                lid = curSet.nextSetBit(lid + 1)) {
+             lid >= 0 && lid < endLid;
+             lid = curSet.nextSetBit(lid + 1)) {
             if (newVdataArray.get(lid) == null) {
                 throw new IllegalStateException("received null vertex data");
             }
@@ -300,6 +300,14 @@ public class GraphXParallelPIE<VD, ED, MSG_T> {
 
     public void parallelExecute(
             InterruptibleTriConsumer<Integer, Integer, Integer> function, int limit) {
+        try {
+            logger.info("load grape-jni start");
+            System.loadLibrary("grape-jni");
+            logger.info("load grape-jni end");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         AtomicInteger getter = new AtomicInteger(0);
         CountDownLatch countDownLatch = new CountDownLatch(numCores);
         for (int tid = 0; tid < numCores; ++tid) {
@@ -524,10 +532,10 @@ public class GraphXParallelPIE<VD, ED, MSG_T> {
     }
 
     private static <VD_T, ED_T, MSG_T_>
-            Tuple2<PrimitiveArray<VD_T>, PrimitiveArray<ED_T>> initOldAndNewArrays(
-                    BaseArrowProjectedFragment<Long, Long, VD_T, ED_T> projectedFragment,
-                    GraphXConf<VD_T, ED_T, MSG_T_> conf)
-                    throws IOException, ClassNotFoundException {
+    Tuple2<PrimitiveArray<VD_T>, PrimitiveArray<ED_T>> initOldAndNewArrays(
+            BaseArrowProjectedFragment<Long, Long, VD_T, ED_T> projectedFragment,
+            GraphXConf<VD_T, ED_T, MSG_T_> conf)
+            throws IOException, ClassNotFoundException {
 
         // For vd array
         BaseTypedArray<VD_T> oldVdataArray =

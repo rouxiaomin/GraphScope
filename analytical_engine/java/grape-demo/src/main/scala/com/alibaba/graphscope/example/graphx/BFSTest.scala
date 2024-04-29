@@ -20,8 +20,17 @@ import org.apache.spark.graphx.{Graph, GraphLoader, VertexId}
 import org.apache.spark.internal.Logging
 import org.apache.spark.sql.{GSSparkSession, SparkSession}
 
-object BFSTest extends Logging{
+object BFSTest extends Logging {
   def main(args: Array[String]): Unit = {
+
+    try {
+      log.info("load grape-jni start")
+      System.loadLibrary("grape-jni")
+      log.info("load grape-jni end")
+    } catch {
+      case e: Exception => e.printStackTrace();
+    }
+
     // Creates a SparkSession.
     val spark = GSSparkSession
       .builder
@@ -36,15 +45,15 @@ object BFSTest extends Logging{
     val partNum = args(1).toInt
     val sourceId = args(2).toLong
     val graph: Graph[Int, Int] =
-      GraphLoader.edgeListFile(sc, efile,canonicalOrientation = false, partNum)
+      GraphLoader.edgeListFile(sc, efile, canonicalOrientation = false, partNum)
     // Initialize the graph such that all vertices except the root have distance infinity.
     val initialGraph = graph.mapVertices((id, _) =>
       if (id == sourceId) 0 else Int.MaxValue)
     val sssp = initialGraph.pregel(Int.MaxValue, 100)(
-      (id, dist, newDist) =>{
+      (id, dist, newDist) => {
         math.min(dist, newDist); // Vertex Program
       },
-      triplet => {  // Send Message
+      triplet => { // Send Message
         if (triplet.srcAttr < triplet.dstAttr - 1) {
           Iterator((triplet.dstId, triplet.srcAttr + 1))
         } else {

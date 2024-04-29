@@ -36,6 +36,13 @@ import java.util.HashMap
 import scala.reflect.ClassTag
 
 object ScalaFFIFactory extends Logging {
+  try {
+    log.info("load grape-jni start")
+    System.loadLibrary("grape-jni")
+    log.info("load grape-jni end")
+  } catch {
+    case e: Exception => e.printStackTrace();
+  }
   val clientFactory: VineyardClient.Factory = FFITypeFactory
     .getFactory(classOf[VineyardClient], "vineyard::Client")
     .asInstanceOf[VineyardClient.Factory]
@@ -72,22 +79,22 @@ object ScalaFFIFactory extends Logging {
     synchronized {
       if (clz.equals(classOf[java.lang.Long]) || clz.equals(classOf[Long])) {
         val factory = FFITypeFactory
-          .getFactory(classOf[BaseArrowArrayBuilder[Long]], "gs::ArrowArrayBuilder<int64_t>")
+          .getFactory(classOf[BaseArrowArrayBuilder[Long]], "gs::BaseArrowArrayBuilder<int64_t>")
           .asInstanceOf[BaseArrowArrayBuilder.Factory[Long]]
         factory.create().asInstanceOf[BaseArrowArrayBuilder[T]]
       } else if (clz.equals(classOf[java.lang.Double]) || clz.equals(classOf[Double])) {
         val factory = FFITypeFactory
-          .getFactory(classOf[BaseArrowArrayBuilder[Double]], "gs::ArrowArrayBuilder<double>")
+          .getFactory(classOf[BaseArrowArrayBuilder[Double]], "gs::BaseArrowArrayBuilder<double>")
           .asInstanceOf[BaseArrowArrayBuilder.Factory[Double]]
         factory.create().asInstanceOf[BaseArrowArrayBuilder[T]]
       } else if (clz.equals(classOf[Integer]) || clz.equals(classOf[Int])) {
         val factory = FFITypeFactory
-          .getFactory(classOf[BaseArrowArrayBuilder[Integer]], "gs::ArrowArrayBuilder<int32_t>")
+          .getFactory(classOf[BaseArrowArrayBuilder[Integer]], "gs::BaseArrowArrayBuilder<int32_t>")
           .asInstanceOf[BaseArrowArrayBuilder.Factory[Integer]]
         factory.create().asInstanceOf[BaseArrowArrayBuilder[T]]
       } else {
         val factory = FFITypeFactory
-          .getFactory(classOf[BaseArrowArrayBuilder[StringView]], "gs::ArrowArrayBuilder<std::string>")
+          .getFactory(classOf[BaseArrowArrayBuilder[StringView]], "gs::BaseArrowArrayBuilder<std::string>")
           .asInstanceOf[BaseArrowArrayBuilder.Factory[StringView]]
         factory.create().asInstanceOf[BaseArrowArrayBuilder[T]]
       }
@@ -95,8 +102,8 @@ object ScalaFFIFactory extends Logging {
   }
 
   def getPrimitiveArrowArrayBuilderFactory(
-      foreignTypeName: String
-  ): PrimitiveArrowArrayBuilder.Factory[_] = synchronized {
+                                            foreignTypeName: String
+                                          ): PrimitiveArrowArrayBuilder.Factory[_] = synchronized {
     if (!arrowArrayBuilderMap.containsKey(foreignTypeName)) {
       synchronized {
         if (!arrowArrayBuilderMap.containsKey(foreignTypeName)) {
@@ -166,9 +173,9 @@ object ScalaFFIFactory extends Logging {
   }
 
   def newVineyardArrayBuilder[T: ClassTag](
-      client: VineyardClient,
-      size: Int
-  ): VineyardArrayBuilder[T] = {
+                                            client: VineyardClient,
+                                            size: Int
+                                          ): VineyardArrayBuilder[T] = {
     val factory = FFITypeFactory
       .getFactory(
         classOf[VineyardArrayBuilder[T]],
@@ -180,13 +187,15 @@ object ScalaFFIFactory extends Logging {
 
   def newVineyardClient(): VineyardClient = synchronized {
     synchronized {
+      val path = classOf[VineyardClient.Factory].getProtectionDomain.getCodeSource.getLocation.getPath
+      log.info("path=" + path)
       clientFactory.create()
     }
   }
 
   def newProjectedFragmentMapper[
-      NEW_VD: ClassTag,
-      NEW_ED: ClassTag
+    NEW_VD: ClassTag,
+    NEW_ED: ClassTag
   ]: ArrowProjectedFragmentMapper[Long, Long, NEW_VD, NEW_ED] =
     synchronized {
       val factory = FFITypeFactory
@@ -200,7 +209,7 @@ object ScalaFFIFactory extends Logging {
     }
 
   def newArrowProjectedFragmentGetter[VD: ClassTag, ED: ClassTag]
-      : ArrowProjectedFragmentGetter[Long, Long, VD, ED] = {
+  : ArrowProjectedFragmentGetter[Long, Long, VD, ED] = {
     val getterStr = CppClassName.CPP_ARROW_PROJECTED_FRAGMENT_GETTER + "<int64_t,uint64_t," +
       GrapeUtils.classToStr[VD](true) + "," + GrapeUtils.classToStr[ED](true) + ">"
     val factory = FFITypeFactory
@@ -213,16 +222,16 @@ object ScalaFFIFactory extends Logging {
   }
 
   def getFragment[VD: ClassTag, ED: ClassTag](
-      client: VineyardClient,
-      objectID: Long,
-      fragStr: String
-  ): IFragment[Long, Long, VD, ED] = synchronized {
+                                               client: VineyardClient,
+                                               objectID: Long,
+                                               fragStr: String
+                                             ): IFragment[Long, Long, VD, ED] = synchronized {
     if (fragStr.startsWith("gs::ArrowFragment")) {
       throw new IllegalStateException("Not implemented now")
     } else if (fragStr.startsWith("gs::ArrowProjectedFragment")) {
       log.info(s"Getting fragment for ${fragStr}, ${objectID}")
       val getter = newArrowProjectedFragmentGetter[VD, ED]
-      val res    = getter.get(client, objectID)
+      val res = getter.get(client, objectID)
       new ArrowProjectedAdaptor[Long, Long, VD, ED](
         res.get(),
         classOf[Long],
@@ -257,8 +266,8 @@ object ScalaFFIFactory extends Logging {
   }
 
   def newStdMap[K: ClassTag, V: ClassTag](
-      signed: Boolean = true
-  ): StdMap[K, V] = {
+                                           signed: Boolean = true
+                                         ): StdMap[K, V] = {
     val factory = FFITypeFactory
       .getFactory(
         classOf[StdMap[K, V]],
@@ -271,18 +280,18 @@ object ScalaFFIFactory extends Logging {
   }
 
   def newRawDataBuilder[
-      OID_T: ClassTag,
-      VID_T: ClassTag,
-      VD_T: ClassTag,
-      ED_T: ClassTag
+    OID_T: ClassTag,
+    VID_T: ClassTag,
+    VD_T: ClassTag,
+    ED_T: ClassTag
   ](
-      client: VineyardClient,
-      oids: StdVector[OID_T],
-      vdatas: StdVector[VD_T],
-      srcOids: StdVector[OID_T],
-      dstOids: StdVector[OID_T],
-      edatas: StdVector[ED_T]
-  ): GraphXRawDataBuilder[OID_T, VID_T, VD_T, ED_T] = {
+     client: VineyardClient,
+     oids: StdVector[OID_T],
+     vdatas: StdVector[VD_T],
+     srcOids: StdVector[OID_T],
+     dstOids: StdVector[OID_T],
+     edatas: StdVector[ED_T]
+   ): GraphXRawDataBuilder[OID_T, VID_T, VD_T, ED_T] = {
     val factory = FFITypeFactory
       .getFactory(
         classOf[GraphXRawDataBuilder[OID_T, VID_T, VD_T, ED_T]],
@@ -293,8 +302,10 @@ object ScalaFFIFactory extends Logging {
           GrapeUtils.classToStr[ED_T](true) + ">"
       )
       .asInstanceOf[GraphXRawDataBuilder.Factory[OID_T, VID_T, VD_T, ED_T]]
-    log.info(s"Creating GraphX raw data builder with vd ${GrapeUtils.classToStr[VD_T](true)}, ED ${GrapeUtils
-      .classToStr[ED_T](true)}")
+    log.info(s"Creating GraphX raw data builder with vd ${GrapeUtils.classToStr[VD_T](true)}, ED ${
+      GrapeUtils
+        .classToStr[ED_T](true)
+    }")
     factory.create(client, oids, vdatas, srcOids, dstOids, edatas)
   }
 

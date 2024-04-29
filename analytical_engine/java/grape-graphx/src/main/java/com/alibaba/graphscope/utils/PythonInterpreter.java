@@ -43,10 +43,17 @@ public class PythonInterpreter {
     private InterpreterInputStream is;
     private InterpreterErrorStream errorStream;
 
-    public PythonInterpreter() {}
+    public PythonInterpreter() {
+    }
 
-    public void init() throws IOException {
-        ProcessBuilder builder = new ProcessBuilder("/usr/bin/env", "python3", "-i");
+    public void init(String env) throws IOException {
+        ProcessBuilder builder;
+        if (env == null) {
+            builder = new ProcessBuilder("/usr/bin/env", "python3.10", "-i");
+        } else {
+            logger.info("use custom env............{}", env);
+            builder = new ProcessBuilder(env, "-i");
+        }
         process = builder.start();
         outputQueue = new LinkedBlockingQueue<>();
         inputQueue = new LinkedBlockingQueue<>();

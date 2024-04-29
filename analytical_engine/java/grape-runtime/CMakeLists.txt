@@ -11,6 +11,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+set(CMAKE_BUILD_TYPE Debug)
 cmake_minimum_required(VERSION 3.1)
 project(GRAPE-JNI)
 
@@ -86,7 +87,7 @@ include_directories(SYSTEM ${LIBGRAPELITE_INCLUDE_DIRS})
 find_package(vineyard 0.14.8 REQUIRED)
 include_directories(${VINEYARD_INCLUDE_DIRS})
 
-add_library(grape-jni SHARED ${SOURCES})
+add_library(grape-jni STATIC ${SOURCES})
 target_compile_definitions(grape-jni PUBLIC ENABLE_JAVA_SDK)
 target_include_directories(grape-jni PRIVATE "${PROJECT_SOURCE_DIR}/../../")
 target_link_libraries(grape-jni ${CMAKE_JNI_LINKER_FLAGS}  ${LIBGRAPELITE_LIBRARIES} ${Boost_LIBRARIES} ${VINEYARD_LIBRARIES})

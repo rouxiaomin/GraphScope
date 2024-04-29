@@ -1,17 +1,7 @@
 package com.alibaba.graphscope.graphx.store
 
-import com.alibaba.graphscope.graphx.shuffle.{
-  CustomDataShuffle,
-  DataShuffle,
-  DataShuffleHolder,
-  DefaultDataShuffle
-}
-import com.alibaba.graphscope.graphx.store.RawGraphData.{
-  mergeInnerOids,
-  mergeInnerOpenHashSet,
-  processCustomShufflesToEdges,
-  processDefaultShufflesToEdges
-}
+import com.alibaba.graphscope.graphx.shuffle.{CustomDataShuffle, DataShuffle, DataShuffleHolder, DefaultDataShuffle}
+import com.alibaba.graphscope.graphx.store.RawGraphData.{mergeInnerOids, mergeInnerOpenHashSet, processCustomShufflesToEdges, processDefaultShufflesToEdges}
 import com.alibaba.graphscope.graphx.utils.GrapeUtils.hashSet2Vector
 import com.alibaba.graphscope.graphx.utils.{ExecutorUtils, GrapeUtils, ScalaFFIFactory}
 import com.alibaba.graphscope.graphx.{GraphXRawData, VineyardClient}
@@ -19,23 +9,24 @@ import com.alibaba.graphscope.stdcxx.StdVector
 import org.apache.spark.internal.Logging
 import org.apache.spark.util.collection.OpenHashSet
 
-import java.util.concurrent.ArrayBlockingQueue
+import java.util
+import java.util.concurrent.{ArrayBlockingQueue, TimeUnit}
 import java.util.concurrent.atomic.AtomicInteger
 import scala.reflect.ClassTag
 
 /** Stores raw data,i.e. oid array and edge array, before fed to FragmentLoader.
-  *
-  * @tparam VD
-  * @tparam ED
-  */
+ *
+ * @tparam VD
+ * @tparam ED
+ */
 class RawGraphData[VD: ClassTag, ED: ClassTag](
-    val partitionID: Int,
-    val partitionNum: Int,
-    val vineyardClient: VineyardClient,
-    val hostName: String,
-    val parallelism: Int,
-    val shuffleHolders: Array[DataShuffleHolder[VD, ED]]
-) extends Logging {
+                                                val partitionID: Int,
+                                                val partitionNum: Int,
+                                                val vineyardClient: VineyardClient,
+                                                val hostName: String,
+                                                val parallelism: Int,
+                                                val shuffleHolders: Array[DataShuffleHolder[VD, ED]]
+                                              ) extends Logging {
 
   val time0: Long = System.nanoTime()
   val shuffles: Array[DataShuffle[VD, ED]] =
@@ -85,10 +76,10 @@ class RawGraphData[VD: ClassTag, ED: ClassTag](
     s"Totally ${shuffles.length} shuffles from ${shuffleHolders.length} holders"
   )
   val (srcOidArray, dstOidArray, edataArray): (
-      StdVector[Long],
+    StdVector[Long],
       StdVector[Long],
       StdVector[ED]
-  ) = {
+    ) = {
     val size = shuffles.map(_.numEdges).sum
     log.info(
       s"Got ${size} edges from ${shuffles.size} shuffles before merge"
@@ -143,63 +134,99 @@ class RawGraphData[VD: ClassTag, ED: ClassTag](
 object RawGraphData extends Logging {
 
   def mergeInnerOpenHashSet(
-      oidSets: Array[OpenHashSet[Long]]
-  ): OpenHashSet[Long] = {
-    val t0    = System.nanoTime()
-    val queue = new ArrayBlockingQueue[OpenHashSet[Long]](8 * oidSets.length)
-    for (i <- oidSets.indices) {
-      require(queue.offer(oidSets(i)))
+                             oidSets: Array[OpenHashSet[Long]]
+                           ): OpenHashSet[Long] = RawGraphData.synchronized {
+    val t0 = System.nanoTime()
+    //val queue = new ArrayBlockingQueue[OpenHashSet[Long]](8 * oidSets.length)
+
+    //    for (i <- oidSets.indices) {
+    //      require(queue.offer(oidSets(i)))
+    //    }
+    //val coreNum = Math.min(queue.size(), 1)
+    //    log.info(
+    //      s"using ${coreNum} threads for local inner vertex join, queue size ${queue.size()}"
+    //    )
+    log.info(s"mergeInnerOpenHashSet.total size is ${oidSets.map(_.size).sum}")
+    var arrays = oidSets.toList.sliding(2, 2).toList
+    while (arrays.size > 1) {
+      arrays = arrays.map(a => a.reduce(_.union(_))).sliding(2, 2).toList
     }
-    val coreNum = Math.min(queue.size(), 64)
-    log.info(
-      s"using ${coreNum} threads for local inner vertex join, queue size ${queue.size()}"
-    )
-    val threads = new Array[Thread](coreNum)
-    for (i <- 0 until coreNum) {
-      threads(i) = new Thread() {
-        override def run(): Unit = {
-          while (queue.size() > 1) {
-            val tuple = this.synchronized {
-              if (queue.size() > 1) {
-                val first  = queue.take()
-                val second = queue.take()
-                if (first.size < second.size) {
-                  (second, first)
-                } else (first, second)
-              } else null
-            }
-            if (tuple != null) {
-              require(queue.offer(tuple._1.union(tuple._2)))
-            }
-          }
-        }
-      }
-      threads(i).start()
-    }
-    for (i <- 0 until coreNum) {
-      threads(i).join()
-    }
-    require(queue.size() == 1)
+
+    require(arrays.size == 1)
+    val res = arrays.map(a => a.reduce(_.union(_))).head
+
+    //    var res = new OpenHashSet[Long]()
+    //    val opt = util.Arrays.stream(oidSets).reduce(_.union(_))
+    //    if (opt.isPresent) {
+    //      res = opt.get()
+    //    }
+
+    //    val threads = new Array[Thread](coreNum)
+    //    for (i <- 0 until coreNum) {
+    //      threads(i) = new Thread() {
+    //        override def run(): Unit = {
+    //          log.info(
+    //            s"thread ${i} start，queue size ${queue.size()}"
+    //          )
+    //          while (queue.size() > 1) {
+    //            val tuple = this.synchronized {
+    //              {
+    //                if (queue.size() > 1) {
+    //                  var first = queue.poll(5, TimeUnit.SECONDS)
+    //                  var second = queue.poll(5, TimeUnit.SECONDS)
+    //                  if (first == null) {
+    //                    first = new OpenHashSet[Long](1000)
+    //                  }
+    //                  if (second == null) {
+    //                    second = new OpenHashSet[Long](1000)
+    //                  }
+    //
+    //                  if (first.size < second.size) {
+    //                    (second, first)
+    //                  } else (first, second)
+    //                } else null
+    //              }
+    //            }
+    //
+    //            if (tuple != null) {
+    //              log.info(s"union start.tuple._1 size is ${tuple._1.size},tuple._2 size is ${tuple._2.size}")
+    //              require(queue.offer(tuple._1.union(tuple._2)))
+    //              log.info(s"union end.queue size is ${queue.size()}")
+    //            }
+    //          }
+    //
+    //          log.info(
+    //            s"thread ${i} end.queue size ${queue.size()}"
+    //          )
+    //        }
+    //      }
+    //      threads(i).start()
+    //    }
+    //    for (i <- 0 until coreNum) {
+    //      threads(i).join()
+    //    }
+    //    require(queue.size() == 1)
     val t1 = System.nanoTime()
     log.info(s"merge openHashSet cost ${(t1 - t0) / 1000000} ms")
-    queue.take()
+    //queue.take()
+    res
   }
 
   def mergeInnerOids[VD: ClassTag](
-      oidsSet: Array[Array[Long]],
-      vdatas: Array[Array[VD]]
-  ): (StdVector[Long], StdVector[VD]) = {
-    val t0      = System.nanoTime()
+                                    oidsSet: Array[Array[Long]],
+                                    vdatas: Array[Array[VD]]
+                                  ): (StdVector[Long], StdVector[VD]) = {
+    val t0 = System.nanoTime()
     val rawSize = oidsSet.map(_.size).sum
     if (vdatas.map(_.size).sum != rawSize) {
       throw new IllegalStateException(s"vdata size sum ${vdatas.map(_.size).sum} neq ${rawSize}")
     }
     val consumerNum = 64
-    val consumers   = new Array[Thread](consumerNum)
-    val index       = new AtomicInteger(0)
-    val numArrays   = oidsSet.length
+    val consumers = new Array[Thread](consumerNum)
+    val index = new AtomicInteger(0)
+    val numArrays = oidsSet.length
 
-    val oidVector   = ScalaFFIFactory.newLongVector
+    val oidVector = ScalaFFIFactory.newLongVector
     val vdataVector = ScalaFFIFactory.newVector[VD]
     log.info(
       s"parallel processing inner oids arr length ${numArrays}, raw size ${rawSize}"
@@ -221,13 +248,13 @@ object RawGraphData extends Logging {
           if (cur >= numArrays) {
             flag = false
           } else {
-            val curOids   = oidsSet(cur)
+            val curOids = oidsSet(cur)
             val curVdatas = vdatas(cur)
             require(
               curOids.length == curVdatas.length,
               s"inner array size neq ${curOids.length}, ${curVdatas.length}"
             )
-            val begin      = offsets(cur)
+            val begin = offsets(cur)
             var innerIndex = 0
             while (innerIndex < curOids.length) {
               oidVector.set(begin + innerIndex, curOids(innerIndex))
@@ -251,9 +278,9 @@ object RawGraphData extends Logging {
   }
 
   def processDefaultShufflesToEdges[VD: ClassTag, ED: ClassTag](
-      cores: Int,
-      shuffles: Array[DefaultDataShuffle[VD, ED]]
-  ): (StdVector[Long], StdVector[Long], StdVector[ED]) = {
+                                                                 cores: Int,
+                                                                 shuffles: Array[DefaultDataShuffle[VD, ED]]
+                                                               ): (StdVector[Long], StdVector[Long], StdVector[ED]) = {
     val rawEdgesNum = shuffles.map(_.numEdges).sum
     log.info(
       s"Got totally shuffle ${shuffles.length}, edges ${rawEdgesNum} in ${ExecutorUtils.getHostName}"
@@ -266,12 +293,12 @@ object RawGraphData extends Logging {
 
     val (srcArrays, dstArrays) =
       (shuffles.map(_.srcOids), shuffles.map(_.dstOids))
-    var tid       = 0
+    var tid = 0
     val atomicInt = new AtomicInteger(0)
     val outerSize = srcArrays.length
     log.info(s"use ${cores} threads for ${outerSize} shuffles")
     val threads = new Array[Thread](cores)
-    val curInd  = new AtomicInteger(0)
+    val curInd = new AtomicInteger(0)
     while (tid < cores) {
       val newThread = new Thread() {
         override def run(): Unit = {
@@ -292,7 +319,7 @@ object RawGraphData extends Logging {
               require(dstArrays(got).length == innerLimit)
               val srcArray = srcArrays(got)
               val dstArray = dstArrays(got)
-              val end      = myBegin + innerLimit
+              val end = myBegin + innerLimit
               var innerInd = 0
               while (myBegin < end) {
                 srcOids.set(myBegin, srcArray(innerInd))
@@ -330,10 +357,10 @@ object RawGraphData extends Logging {
   }
 
   def processCustomShufflesToEdges[VD: ClassTag, ED: ClassTag](
-      cores: Int,
-      shuffles: Array[CustomDataShuffle[VD, ED]]
-  ): (StdVector[Long], StdVector[Long], StdVector[ED]) = {
-    val rawEdgesNum  = shuffles.map(_.numEdges).sum
+                                                                cores: Int,
+                                                                shuffles: Array[CustomDataShuffle[VD, ED]]
+                                                              ): (StdVector[Long], StdVector[Long], StdVector[ED]) = {
+    val rawEdgesNum = shuffles.map(_.numEdges).sum
     val tmpEdgesNum1 = shuffles.map(_.dstOids.length).sum
     val tmpEdgesNum2 = shuffles.map(_.edatas.length).sum
     require(rawEdgesNum == tmpEdgesNum1, s"src and dst oids length neq ${rawEdgesNum}, ${tmpEdgesNum1}")
@@ -342,8 +369,8 @@ object RawGraphData extends Logging {
     log.info(
       s"Got totally shuffle ${shuffles.length}, edges ${rawEdgesNum} in ${ExecutorUtils.getHostName}"
     )
-    val srcOids     = ScalaFFIFactory.newLongVector
-    val dstOids     = ScalaFFIFactory.newLongVector
+    val srcOids = ScalaFFIFactory.newLongVector
+    val dstOids = ScalaFFIFactory.newLongVector
     val eDataVector = ScalaFFIFactory.newVector[ED]
 
     srcOids.resize(rawEdgesNum)
@@ -353,12 +380,12 @@ object RawGraphData extends Logging {
 
     val (srcArrays, dstArrays, edataArrays) =
       (shuffles.map(_.srcOids), shuffles.map(_.dstOids), shuffles.map(_.edatas))
-    var tid       = 0
+    var tid = 0
     val atomicInt = new AtomicInteger(0)
     val outerSize = srcArrays.length
     log.info(s"use ${cores} threads for ${outerSize} shuffles")
     val threads = new Array[Thread](cores)
-    val curInd  = new AtomicInteger(0)
+    val curInd = new AtomicInteger(0)
     while (tid < cores) {
       val newThread = new Thread() {
         override def run(): Unit = {
@@ -377,11 +404,11 @@ object RawGraphData extends Logging {
             } else {
               val innerLimit = srcArrays(got).length
               require(dstArrays(got).length == innerLimit)
-              val srcArray   = srcArrays(got)
-              val dstArray   = dstArrays(got)
+              val srcArray = srcArrays(got)
+              val dstArray = dstArrays(got)
               val edataArray = edataArrays(got)
-              val end        = myBegin + innerLimit
-              var innerInd   = 0
+              val end = myBegin + innerLimit
+              var innerInd = 0
               while (myBegin < end) {
                 srcOids.set(myBegin, srcArray(innerInd))
                 dstOids.set(myBegin, dstArray(innerInd))

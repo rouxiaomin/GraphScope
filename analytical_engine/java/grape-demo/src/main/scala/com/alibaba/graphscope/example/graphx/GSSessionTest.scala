@@ -18,7 +18,7 @@ package com.alibaba.graphscope.example.graphx
 
 import org.apache.spark.internal.Logging
 import org.apache.spark.sql.{GSSparkSession, SparkSession}
-
+import org.apache.spark.graphx.grape.GrapeGraphImpl
 object GSSessionTest extends Logging{
   def main(args: Array[String]) : Unit = {
     val session = GSSparkSession.builder().vineyardMemory("10Gi").getOrCreate()

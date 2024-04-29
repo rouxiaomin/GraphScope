@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.1)
-
+# 把 VERSION 文件内容读出来 赋值给 GRAPHSCOPE_ANALYTICAL_VERSION 变量
 file(READ ${CMAKE_CURRENT_SOURCE_DIR}/../VERSION GRAPHSCOPE_ANALYTICAL_VERSION)
 # Strip trailing newline
 string(REGEX REPLACE "\n$" "" GRAPHSCOPE_ANALYTICAL_VERSION "${GRAPHSCOPE_ANALYTICAL_VERSION}")
@@ -10,12 +10,13 @@ endif ()
 project(analytical_engine LANGUAGES C CXX)
 set(PROJECT_VERSION ${GRAPHSCOPE_ANALYTICAL_VERSION})
 
+# 添加一个名为 NETWORKX 的选项，默认值为 ON
 option(NETWORKX "networkx on?" ON)
 option(BUILD_TESTS "Build unit test" ON)
 option(ENABLE_JAVA_SDK "Build with support for java sdk" ON)
 option(LET_IT_CRASH_ON_EXCEPTION "Disable boost leaf's error handling and let it crash when exception occurs to help debugging" OFF)
 
-# Get system processor
+# Get system processor 在构建过程中执行外部命令
 execute_process(COMMAND uname -m OUTPUT_VARIABLE SYSTEM_PROCESSOR)
 string(REGEX REPLACE "\n$" "" SYSTEM_PROCESSOR "${SYSTEM_PROCESSOR}")
 
@@ -51,7 +52,7 @@ if (NETWORKX)
     add_definitions(-DRAPIDJSON_HAS_CXX11_RANGE_FOR=1)
 endif ()
 
-set(DEFAULT_BUILD_TYPE "Release")
+set(DEFAULT_BUILD_TYPE "Debug")
 if (NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
     message(STATUS "Setting build type to '${DEFAULT_BUILD_TYPE}' as none was specified.")
     set(CMAKE_BUILD_TYPE "${DEFAULT_BUILD_TYPE}" CACHE STRING "Choose the type of build." FORCE)
@@ -268,6 +269,7 @@ endif()
 
 find_package(gRPC QUIET)
 if(gRPC_FOUND)
+    # 设置变量值 gRPC::gpr -> 库名称::库中的可链接目标
     set(GRPC_LIBRARIES gRPC::gpr gRPC::grpc gRPC::grpc++)
     get_target_property(GRPC_CPP_PLUGIN gRPC::grpc_cpp_plugin LOCATION)
     get_target_property(GRPC_INCLUDE_DIR gRPC::grpc INTERFACE_INCLUDE_DIRECTORIES)
@@ -293,7 +295,7 @@ file(GLOB PROTO_CPP_FILES "proto/*.cc")
 file(GLOB CORE_RPC_SRC_FILES "core/server/*.cc")
 
 # Add targets
-add_library(gs_proto SHARED ${PROTO_CPP_FILES})
+add_library(gs_proto STATIC ${PROTO_CPP_FILES})
 set_source_files_properties(${PROTO_CPP_FILES} PROPERTIES COMPILE_FLAGS -Wno-array-bounds)
 target_include_directories(gs_proto PRIVATE "${PROJECT_SOURCE_DIR}/proto")
 target_link_libraries(gs_proto PUBLIC
@@ -301,7 +303,8 @@ target_link_libraries(gs_proto PUBLIC
         ${GRPC_LIBRARIES}
     )
 
-add_library(gs_util SHARED "core/flags.cc" "core/launcher.cc")
+add_library(gs_util STATIC "core/flags.cc" "core/launcher.cc")
+# target_link_libraries 是 cmake 的核心指令，添加需要链接的 其它库
 target_link_libraries(gs_util PRIVATE
     ${LIBGRAPELITE_LIBRARIES}
     ${GFLAGS_LIBRARIES}
@@ -392,8 +395,12 @@ if (BUILD_TESTS)
         target_link_libraries(giraph_runner ${CMAKE_DL_LIBS} gs_proto ${VINEYARD_LIBRARIES} ${Boost_LIBRARIES} ${GFLAGS_LIBRARIES}  ${JNI_LIBRARIES})
 
         # graphx related test
+        # 将源文件打包生成可执行文件
         add_executable(projected_fragment_mapper_test test/projected_fragment_mapper_test.cc)
+        # 可执行文件应搜索的头文件目录。这对于确保编译器能够找到并使用项目中的头文件或其他依赖的头文件至关重要
+        # target_include_directories(<target> <DIRECTORY>... [BEFORE])
         target_include_directories(projected_fragment_mapper_test PRIVATE core utils apps)
+        # target_link_libraries 链接其它库
         target_link_libraries(projected_fragment_mapper_test ${CMAKE_DL_LIBS} ${VINEYARD_LIBRARIES} ${Boost_LIBRARIES} ${GLOG_LIBRARIES} ${GFLAGS_LIBRARIES})
 
         add_executable(graphx_loader_test test/graphx_loader_test.cc)

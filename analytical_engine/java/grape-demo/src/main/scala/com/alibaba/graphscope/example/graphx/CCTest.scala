@@ -17,6 +17,7 @@
 package com.alibaba.graphscope.example.graphx
 
 // $example on$
+import com.alibaba.graphscope.example.graphx.BFSTest.log
 import org.apache.spark.graphx.Graph
 import org.apache.spark.internal.Logging
 import org.apache.spark.sql.{GSSparkSession, SparkSession}
@@ -26,6 +27,14 @@ import org.apache.spark.sql.{GSSparkSession, SparkSession}
  */
 object CCTest extends Logging{
   def main(args: Array[String]): Unit = {
+    try {
+      log.info("load grape-jni start")
+      System.loadLibrary("grape-jni")
+      log.info("load grape-jni end")
+    } catch {
+      case e: Exception => e.printStackTrace();
+    }
+
     // Creates a SparkSession.
     val spark = GSSparkSession
       .builder

@@ -91,6 +91,7 @@ load_fragment() {
   cmd="${MPIRUN_EXECUTABLE} -n ${NUM_WORKERS} --host ${HOST_SLOT} \
   -x GLOG_v ${GRAPHX_RUNNER} --task ${TASK} --raw_data_ids ${RAW_DATA_IDS} --ipc_socket ${IPC_SOCKET} \
   -vd_class ${VD_CLASS} --ed_class ${ED_CLASS}"
+  echo `whoami`
   echo "running cmd: "$cmd >&2
   eval ${cmd}
 }

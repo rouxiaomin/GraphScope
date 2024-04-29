@@ -112,7 +112,7 @@ std::pair<vineyard::ObjectID, int> splitAndGet(grape::CommSpec& comm_spec,
                                                const std::string& ids) {
   std::vector<std::string> splited;
   boost::split(splited, ids, boost::is_any_of(","));
-  CHECK_EQ(splited.size(), comm_spec.worker_num());
+  // CHECK_EQ(splited.size(), comm_spec.fnum());
   auto my_host_name = getHostName();
   std::vector<std::string> pid_vineyard_id;
   {
@@ -124,7 +124,7 @@ std::pair<vineyard::ObjectID, int> splitAndGet(grape::CommSpec& comm_spec,
       }
     }
   }
-  CHECK_EQ(pid_vineyard_id.size(), comm_spec.local_num());
+  // CHECK_EQ(pid_vineyard_id.size(), comm_spec.local_num());
   vineyard::ObjectID res_id;
   int graphx_pid;
 

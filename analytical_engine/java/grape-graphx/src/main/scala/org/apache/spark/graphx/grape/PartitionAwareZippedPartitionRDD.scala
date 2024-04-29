@@ -25,18 +25,19 @@ import java.io.{IOException, ObjectOutputStream}
 import scala.reflect.ClassTag
 
 /** In spark, we need use zipPartition to combine two rdd together. In Spark default impl, partitions
-  * of two rdd will be scheduled to same host. However, in our cases, we don't want data to move cross
-  * machines. So we create this rdd to make all partitions located on first rdd's preference.
-  */
+ * of two rdd will be scheduled to same host. However, in our cases, we don't want data to move cross
+ * machines. So we create this rdd to make all partitions located on first rdd's preference.
+ */
 class ZippedPartitionsPartition(
-    idx: Int,
-    @transient private val rdds: Seq[RDD[_]],
-    @transient val preferredLocations: Seq[String]
-) extends Partition
-    with Logging {
+                                 idx: Int,
+                                 @transient private val rdds: Seq[RDD[_]],
+                                 @transient val preferredLocations: Seq[String]
+                               ) extends Partition
+  with Logging {
 
   override val index: Int = idx
   var partitionValues = rdds.map(rdd => rdd.partitions(idx))
+
   def partitions: Seq[Partition] = partitionValues
 
   @throws(classOf[IOException])
@@ -49,22 +50,26 @@ class ZippedPartitionsPartition(
 }
 
 abstract class PartitionAwareZippedBaseRDD[V: ClassTag](
-    sc: SparkContext,
-    var rdds: Seq[RDD[_]],
-    preservesPartitioning: Boolean = false
-) extends RDD[V](sc, rdds.map(x => new OneToOneDependency(x))) {
+                                                         sc: SparkContext,
+                                                         var rdds: Seq[RDD[_]],
+                                                         preservesPartitioning: Boolean = false
+                                                       ) extends RDD[V](sc, rdds.map(x => new OneToOneDependency(x))) {
 
   override val partitioner =
     if (preservesPartitioning) firstParent[Any].partitioner else None
 
   override def getPartitions: Array[Partition] = {
-    val numParts = rdds.head.partitions.length
-    if (!rdds.forall(rdd => rdd.partitions.length == numParts)) {
-      throw new IllegalArgumentException(
-        s"Can't zip RDDs with unequal numbers of partitions: ${rdds.map(_.partitions.length)}"
-      )
-    }
-    Array.tabulate[Partition](numParts) { i =>
+    //val numParts = rdds.head.partitions.length
+    // if (!rdds.forall(rdd => rdd.partitions.length == numParts)) {
+    //   throw new IllegalArgumentException(
+    //     s"Can't zip RDDs with unequal numbers of partitions: ${rdds.map(_.partitions.length)}"
+    //   )
+    // }
+
+    val minNumParts = rdds.map(_.partitions.length).min
+    rdds = rdds.map(_.coalesce(minNumParts))
+
+    Array.tabulate[Partition](minNumParts) { i =>
       val firstPartition = rdds(0).partitions(i)
       new ZippedPartitionsPartition(
         i,
@@ -85,16 +90,16 @@ abstract class PartitionAwareZippedBaseRDD[V: ClassTag](
 }
 
 class PartitionAwareZippedPartitionRDD2[A: ClassTag, B: ClassTag, V: ClassTag](
-    sc: SparkContext,
-    var f: (Iterator[A], Iterator[B]) => Iterator[V],
-    var rdd1: RDD[A],
-    var rdd2: RDD[B],
-    preservesPartitioning: Boolean = false
-) extends PartitionAwareZippedBaseRDD[V](
-      sc,
-      List(rdd1, rdd2),
-      preservesPartitioning
-    ) {
+                                                                                sc: SparkContext,
+                                                                                var f: (Iterator[A], Iterator[B]) => Iterator[V],
+                                                                                var rdd1: RDD[A],
+                                                                                var rdd2: RDD[B],
+                                                                                preservesPartitioning: Boolean = false
+                                                                              ) extends PartitionAwareZippedBaseRDD[V](
+  sc,
+  List(rdd1, rdd2),
+  preservesPartitioning
+) {
 
   override def compute(s: Partition, context: TaskContext): Iterator[V] = {
     val partitions = s.asInstanceOf[ZippedPartitionsPartition].partitions
@@ -111,13 +116,14 @@ class PartitionAwareZippedPartitionRDD2[A: ClassTag, B: ClassTag, V: ClassTag](
     f = null
   }
 }
+
 object PartitionAwareZippedBaseRDD {
   def zipPartitions[T: ClassTag, B: ClassTag, V: ClassTag](
-      sc: SparkContext,
-      rdd1: RDD[T],
-      rdd2: RDD[B],
-      preservesPartitioning: Boolean = true
-  )(f: (Iterator[T], Iterator[B]) => Iterator[V]): RDD[V] = {
+                                                            sc: SparkContext,
+                                                            rdd1: RDD[T],
+                                                            rdd2: RDD[B],
+                                                            preservesPartitioning: Boolean = true
+                                                          )(f: (Iterator[T], Iterator[B]) => Iterator[V]): RDD[V] = {
     new PartitionAwareZippedPartitionRDD2(
       sc,
       sc.clean(f),

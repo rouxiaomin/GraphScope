@@ -99,6 +99,10 @@ public class GraphXParallelAdaptorContext<VDATA_T, EDATA_T, MSG>
         Object initMsg = objects[6];
         String appName = (String) objects[7];
         String socket = (String) objects[8];
+
+        Class edgeDirection = Class.forName("org.apache.spark.graphx.EdgeDirection");
+        logger.info("edgeDirection class is {}", edgeDirection.getProtectionDomain().getCodeSource().getLocation());
+
         EdgeDirection direction = (EdgeDirection) objects[9];
         return (GraphXParallelAdaptorContext<VD, ED, M>)
                 createImpl(

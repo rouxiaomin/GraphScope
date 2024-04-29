@@ -56,7 +56,8 @@ class HostsClusterLauncher(Launcher):
         if not is_free_port(port):
             port = get_free_port()
             self._config.coordinator.service_port = port
-        self._coordinator_endpoint = f"{self._config.hosts_launcher.hosts[0]}:{port}"
+        #self._coordinator_endpoint = f"{self._config.hosts_launcher.hosts[0]}:{port}"
+        self._coordinator_endpoint = f"127.0.0.1:{port}"
 
     def poll(self):
         if self._proc is not None:

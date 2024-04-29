@@ -565,6 +565,7 @@ object GrapeUtils extends Logging {
       rdd: RDD[(Int, _)],
       numPartition: Int
   ): (mutable.HashMap[String, ArrayBuffer[Int]], mutable.HashMap[Int, Int]) = {
+    // TODO check lm. RDD 的 partition 不一定每个executor都有
     val array = rdd
       .mapPartitionsWithIndex((ind, iter) => {
         if (iter.hasNext) {

@@ -29,7 +29,7 @@ public class SubprocessTest {
     @Test
     public void test2() throws IOException, InterruptedException {
         PythonInterpreter interpreter = new PythonInterpreter();
-        interpreter.init();
+        interpreter.init(null);
         interpreter.runCommand("1");
         String res = interpreter.getResult();
         System.out.println(res);

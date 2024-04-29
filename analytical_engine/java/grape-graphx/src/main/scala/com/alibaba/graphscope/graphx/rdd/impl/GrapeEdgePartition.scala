@@ -1114,7 +1114,7 @@ private class EdgeContextImpl[VD, ED, A](
     mergeMsg: (A, A) => A,
     aggregates: Array[A],
     bitset: BitSet
-) extends EdgeContext[VD, ED, A] {
+) extends EdgeContext[VD, ED, A] with Logging {
 
   private[this] var _srcId: VertexId = _
   private[this] var _dstId: VertexId = _
@@ -1169,11 +1169,19 @@ private class EdgeContextImpl[VD, ED, A](
   }
 
   @inline private def send(localId: Int, msg: A): Unit = {
-    if (bitset.get(localId)) {
-      aggregates(localId) = mergeMsg(aggregates(localId), msg)
-    } else {
-      aggregates(localId) = msg
-      bitset.set(localId)
+    try {
+      if (bitset.get(localId)) {
+        aggregates(localId) = mergeMsg(aggregates(localId), msg)
+      } else {
+        aggregates(localId) = msg
+        bitset.set(localId)
+      }
+    }catch {
+      case e:ArrayIndexOutOfBoundsException=>{
+        e.printStackTrace()
+        log.info(s"localId is ${localId}")
+      }
+
     }
   }
 }

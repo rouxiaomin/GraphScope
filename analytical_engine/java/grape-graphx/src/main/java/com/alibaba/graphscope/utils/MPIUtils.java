@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MPIUtils {
 
@@ -46,6 +47,9 @@ public class MPIUtils {
 
         public CommendBuilder() {
             commands = new ArrayList<>();
+            commands.add("sudo");
+            commands.add("-niu");
+            commands.add("tdops");
             commands.add("/bin/bash");
             commands.add(LAUNCH_GRAPHX_SHELL_SCRIPT);
         }
@@ -136,7 +140,8 @@ public class MPIUtils {
     }
 
     static {
-        GRAPHSCOPE_HOME = System.getenv("GRAPHSCOPE_HOME");
+        // 修改成通过spark 传参
+        GRAPHSCOPE_HOME = "/home/tdops/ljq/graphscope/GraphScope/analytical_engine/java";//System.getenv("GRAPHSCOPE_HOME");
         if (GRAPHSCOPE_HOME == null || GRAPHSCOPE_HOME.isEmpty()) {
             throw new IllegalStateException("GRAPHSCOPE_HOME empty");
         }
@@ -191,7 +196,7 @@ public class MPIUtils {
             String str;
             int cnt = 0;
             while ((str = stdInput.readLine()) != null) {
-                System.out.println(str);
+                logger.info(str);
                 if (str.contains(FINALIZE_PATTERN)) {
                     cnt += 1;
                 }
@@ -200,6 +205,13 @@ public class MPIUtils {
                     break;
                 }
             }
+            BufferedReader stdIn =
+                    new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String strLog;
+            while ((strLog = stdIn.readLine()) != null) {
+                logger.info(strLog);
+            }
+
             if (cnt >= numWorkers) {
                 process.destroyForcibly();
                 logger.info("kill mpi processes forcibly");
@@ -235,6 +247,7 @@ public class MPIUtils {
      * @return
      */
     private static String generateHostNameAndSlotsFromIDs(String[] ids) {
+        logger.info("ids is {}", Arrays.stream(ids).collect(Collectors.joining("&")));
         HashMap<String, Integer> map = new HashMap<>();
         for (String str : ids) {
             String[] splited = str.split(":");
@@ -255,7 +268,9 @@ public class MPIUtils {
             sb.append(value);
             sb.append(",");
         }
-        sb.deleteCharAt(sb.length() - 1);
+        if (sb.length() > 0) {
+            sb.deleteCharAt(sb.length() - 1);
+        }
         return sb.toString();
     }
 
@@ -291,7 +306,7 @@ public class MPIUtils {
                     new BufferedReader(new InputStreamReader(process.getErrorStream()));
             String str;
             while ((str = stdInput.readLine()) != null) {
-                System.out.println(str);
+                logger.info(str);
                 if (str.contains(Load_FRAGMENT_PATTERN)) {
                     if (ind >= numWorkers) {
                         throw new IllegalStateException(
@@ -309,8 +324,14 @@ public class MPIUtils {
                     ind += 1;
                 }
             }
+            BufferedReader stdIn =
+                    new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String strLog;
+            while ((strLog = stdIn.readLine()) != null) {
+                logger.info(strLog);
+            }
             int exitCode = process.waitFor();
-            logger.info("Mpi process exit code {}", exitCode);
+            logger.info("Mpi process exit code {},fragIds {}", exitCode, Arrays.stream(fragIds).collect(Collectors.joining("&")));
             if (exitCode != 0) {
                 throw new IllegalStateException("Error in mpi process" + exitCode);
             }

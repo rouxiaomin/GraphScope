@@ -48,7 +48,8 @@ class GSClientWrapper(
   log.info(s"Available executors ${executorInfo.toIterator.toArray
     .mkString(",")}, hosts str ${gsHostsArr.map(v => "\'" + v + "\'").mkString(",")}")
   val pythonInterpreter = new PythonInterpreter
-  pythonInterpreter.init()
+  val env = sc.getConf.get("spark.executorEnv.PYSPARK_PYTHON",null)
+  pythonInterpreter.init(env)
   pythonInterpreter.runCommand("import graphscope")
   pythonInterpreter.runCommand("graphscope.set_option(show_log=True)")
   //NOTICE: Please notice that graphscope cluster will launch one and only one process in each worker(host),
@@ -60,15 +61,20 @@ class GSClientWrapper(
       ", hosts=" + arr2PythonArrStr(gsHostsArr)
   //vineyard socket
   if (socketPath != null && socketPath.nonEmpty) {
-    initSessionCmd += ",vineyard_socket= \"" + socketPath + "\""
+    initSessionCmd += ",vineyard_sock= \"" + socketPath + "\""
   }
   initSessionCmd += ",vineyard_shared_mem=\"" + sharedMemSize + "\")"
   log.info(s"init session with: ${initSessionCmd}")
   pythonInterpreter.runCommand(initSessionCmd)
 
-  pythonInterpreter.getMatched("Analytical engine is listening on")
+  pythonInterpreter.getMatched("GraphScope coordinator service connected")
   log.info("Successfully start gs session")
-  val startedSocket: String     = getStartedSocket(pythonInterpreter)
+  //val startedSocket: String     = getStartedSocket(pythonInterpreter)
+  var startedSocket: String = socketPath
+  if (startedSocket == null || startedSocket.isEmpty()) {
+    startedSocket = getStartedSocket(pythonInterpreter)
+  }
+
   val v6dClient: VineyardClient = createVineyardClient(startedSocket)
   log.info(s"sess start vineyard on ${startedSocket}")
   sc.getConf.set("spark.gs.vineyard.sock", startedSocket)

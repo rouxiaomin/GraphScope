@@ -46,7 +46,8 @@ import scala.collection.mutable.ArrayBuffer
 import scala.reflect.ClassTag
 import scala.util.control.NonFatal
 
-class GSSparkSession(sparkContext: SparkContext) extends SparkSession(sparkContext) {
+
+class GSSparkSession(@transient sparkContext: SparkContext) extends SparkSession(sparkContext) {
 
   val sharedMemSize: String = {
     if (sparkContext.getConf.contains("spark.gs.vineyard.memory")) {
@@ -63,8 +64,8 @@ class GSSparkSession(sparkContext: SparkContext) extends SparkSession(sparkConte
   }
 
   /** We will start the python interpreter in lazy mode, since computing resources can be added after session
-    * launched..
-    */
+   * launched..
+   */
   private val creationSite: CallSite = Utils.getCallSite()
   val userSocketPath: String = {
     if (sparkContext.getConf.contains("spark.gs.vineyard.sock")) {
@@ -75,12 +76,12 @@ class GSSparkSession(sparkContext: SparkContext) extends SparkSession(sparkConte
     new GSClientWrapper(sparkContext, userSocketPath, sharedMemSize)
 
   def getSocketPath: String = {
-    if (userSocketPath.equals("")) {
-      log.info(s"Update socket path from GraphScope: ${interpreter.startedSocket}")
-      interpreter.startedSocket
-    } else {
-      userSocketPath
-    }
+    //if (userSocketPath.equals("")) {
+    //  log.info(s"Update socket path from GraphScope: ${interpreter.startedSocket}")
+    interpreter.startedSocket
+    //} else {
+    //userSocketPath
+    //}
   }
 
   override def stop(): Unit = {
@@ -90,25 +91,25 @@ class GSSparkSession(sparkContext: SparkContext) extends SparkSession(sparkConte
   }
 
   def loadGraphToGS[VD: ClassTag, ED: ClassTag](
-      vFilePath: String,
-      eFilePath: String,
-      numPartitions: Int
-  ): GrapeGraphImpl[VD, ED] = {
+                                                 vFilePath: String,
+                                                 eFilePath: String,
+                                                 numPartitions: Int
+                                               ): GrapeGraphImpl[VD, ED] = {
     interpreter.loadGraph(vFilePath, eFilePath, numPartitions)
   }
 
   /** Similar to methods defined in GraphLoader, same signature but read the edges to GraphScope store. Although
-    * the Graph structure is stored in c++, with wrappers based on JNI, RDD can not differ GS-based RDD with graphx
-    * rdd in java heap.
-    */
+   * the Graph structure is stored in c++, with wrappers based on JNI, RDD can not differ GS-based RDD with graphx
+   * rdd in java heap.
+   */
   def edgeListFile(
-      sc: SparkContext,
-      path: String,
-      canonicalOrientation: Boolean = false,
-      numEdgePartitions: Int = -1,
-      edgeStorageLevel: StorageLevel = StorageLevel.MEMORY_ONLY,
-      vertexStorageLevel: StorageLevel = StorageLevel.MEMORY_ONLY
-  ): Graph[Int, Int] = {
+                    sc: SparkContext,
+                    path: String,
+                    canonicalOrientation: Boolean = false,
+                    numEdgePartitions: Int = -1,
+                    edgeStorageLevel: StorageLevel = StorageLevel.MEMORY_ONLY,
+                    vertexStorageLevel: StorageLevel = StorageLevel.MEMORY_ONLY
+                  ): Graph[Int, Int] = {
     val lines = {
       if (numEdgePartitions > 0) {
         sc.hadoopFile(
@@ -130,13 +131,13 @@ class GSSparkSession(sparkContext: SparkContext) extends SparkSession(sparkConte
   }
 
   def fromLineRDD(
-      lines: RDD[(Long, Long)],
-      numPartitions: Int,
-      edgeStorageLevel: StorageLevel = StorageLevel.MEMORY_ONLY,
-      vertexStorageLevel: StorageLevel = StorageLevel.MEMORY_ONLY
-  ): Graph[Int, Int] = {
-    val sc                = SparkContext.getOrCreate()
-    val partPartitioner   = new HashPartitioner(numPartitions)
+                   lines: RDD[(Long, Long)],
+                   numPartitions: Int,
+                   edgeStorageLevel: StorageLevel = StorageLevel.MEMORY_ONLY,
+                   vertexStorageLevel: StorageLevel = StorageLevel.MEMORY_ONLY
+                 ): Graph[Int, Int] = {
+    val sc = SparkContext.getOrCreate()
+    val partPartitioner = new HashPartitioner(numPartitions)
     val rangePartitioner1 = new GSPartitioner[Long](numPartitions)
     val dataShuffles = lines
       .mapPartitionsWithIndex((fromPid, iter) => {
@@ -152,9 +153,9 @@ class GSSparkSession(sparkContext: SparkContext) extends SparkSession(sparkConte
         //        val pid2OuterIds = Array.fill(numFrag)(new OpenHashSet[VertexId](6000))
         val time0 = System.nanoTime();
         while (iter.hasNext) {
-          val line   = iter.next()
-          val srcId  = line._1
-          val dstId  = line._2
+          val line = iter.next()
+          val srcId = line._1
+          val dstId = line._2
           val srcPid = partPartitioner.getPartition(srcId)
           val dstPid = partPartitioner.getPartition(dstId)
           pid2src(srcPid).+=(srcId)
@@ -185,11 +186,11 @@ class GSSparkSession(sparkContext: SparkContext) extends SparkSession(sparkConte
                 defaultED = 1
               )
             )
-          )
+            )
           ind += 1
         }
         val resIter = res.toIterator
-        val time2   = System.nanoTime()
+        val time2 = System.nanoTime()
         log.info(
           "[edgeListFile: ] convert to iterator cost " + (time2 - time1) / 1000000 + "ms"
         )
@@ -201,15 +202,15 @@ class GSSparkSession(sparkContext: SparkContext) extends SparkSession(sparkConte
   }
 
   def fromDataShuffle[VD: ClassTag, ED: ClassTag](
-      numPartitions: Int,
-      sc: SparkContext,
-      dataShuffles: RDD[(PartitionID, DataShuffle[VD, ED])],
-      edgeStorageLevel: StorageLevel = StorageLevel.MEMORY_ONLY,
-      vertexStorageLevel: StorageLevel = StorageLevel.MEMORY_ONLY
-  ): GrapeGraphImpl[VD, ED] = {
+                                                   numPartitions: Int,
+                                                   sc: SparkContext,
+                                                   dataShuffles: RDD[(PartitionID, DataShuffle[VD, ED])],
+                                                   edgeStorageLevel: StorageLevel = StorageLevel.MEMORY_ONLY,
+                                                   vertexStorageLevel: StorageLevel = StorageLevel.MEMORY_ONLY
+                                                 ): GrapeGraphImpl[VD, ED] = {
     log.info("in fromDataShuffle")
     val executorInfo = ExecutorInfoHelper.getExecutorsHost2Id(sc)
-    val executorNum  = executorInfo.values.map(_.size).sum
+    val executorNum = executorInfo.values.map(_.size).sum
     //construct
     //gather the host <-> partition id info.
     val (host2Pids, executorIds2Times) = GrapeUtils.extractHostInfo(
@@ -266,12 +267,12 @@ class GSSparkSession(sparkContext: SparkContext) extends SparkSession(sparkConte
   }
 
   def loadFragmentAsGraph[VD: ClassTag, ED: ClassTag](
-      sc: SparkContext,
-      userNumPartitions: Int,
-      objectIDs: String,
-      fragName: String,
-      vineyardSocket: String
-  ): GrapeGraphImpl[VD, ED] = {
+                                                       sc: SparkContext,
+                                                       userNumPartitions: Int,
+                                                       objectIDs: String,
+                                                       fragName: String,
+                                                       vineyardSocket: String
+                                                     ): GrapeGraphImpl[VD, ED] = {
     val fragmentRDD = new FragmentRDD[VD, ED](
       sc,
       ExecutorInfoHelper.getExecutors(sc),
@@ -284,6 +285,7 @@ class GSSparkSession(sparkContext: SparkContext) extends SparkSession(sparkConte
   }
 
 }
+
 object GSSparkSession extends Logging {
 
   private val listenerRegistered: AtomicBoolean = new AtomicBoolean(false)
@@ -297,33 +299,33 @@ object GSSparkSession extends Logging {
     "org.apache.spark.sql.hive.HiveSessionStateBuilder"
 
   /** Creates a [[SparkSession.Builder]] for constructing a [[SparkSession]].
-    *
-    * @since 2.0.0
-    */
+   *
+   * @since 2.0.0
+   */
   def builder(): Builder = new Builder
 
   /** Clears the active SparkSession for current thread. Subsequent calls to getOrCreate will return the first
-    * created context instead of a thread-local override.
-    *
-    * @since 2.0.0
-    */
+   * created context instead of a thread-local override.
+   *
+   * @since 2.0.0
+   */
   def clearActiveSession(): Unit = {
     activeThreadSession.remove()
   }
 
   /** Clears the default SparkSession that is returned by the builder.
-    *
-    * @since 2.0.0
-    */
+   *
+   * @since 2.0.0
+   */
   def clearDefaultSession(): Unit = {
     defaultSession.set(null)
   }
 
   /** Returns the currently active SparkSession, otherwise the default one. If there is no default SparkSession,
-    * throws an exception.
-    *
-    * @since 2.4.0
-    */
+   * throws an exception.
+   *
+   * @since 2.4.0
+   */
   def active: SparkSession = {
     getActiveSession.getOrElse(
       getDefaultSession.getOrElse(
@@ -335,12 +337,12 @@ object GSSparkSession extends Logging {
   }
 
   /** Returns the active SparkSession for the current thread, returned by the builder.
-    *
-    * @note
-    *   Return None, when calling this function on executors
-    *
-    * @since 2.2.0
-    */
+   *
+   * @note
+   *   Return None, when calling this function on executors
+   *
+   * @since 2.2.0
+   */
   def getActiveSession: Option[GSSparkSession] = {
     if (TaskContext.get != null) {
       // Return None when running on executors.
@@ -351,11 +353,11 @@ object GSSparkSession extends Logging {
   }
 
   /** Changes the SparkSession that will be returned in this thread and its children when
-    * SparkSession.getOrCreate() is called. This can be used to ensure that a given thread receives a SparkSession
-    * with an isolated session, instead of the global (first created) context.
-    *
-    * @since 2.0.0
-    */
+   * SparkSession.getOrCreate() is called. This can be used to ensure that a given thread receives a SparkSession
+   * with an isolated session, instead of the global (first created) context.
+   *
+   * @since 2.0.0
+   */
   def setActiveSession(session: GSSparkSession): Unit = {
     activeThreadSession.set(session)
   }
@@ -365,12 +367,12 @@ object GSSparkSession extends Logging {
   ////////////////////////////////////////////////////////////////////////////////////////
 
   /** Returns the default SparkSession that is returned by the builder.
-    *
-    * @note
-    *   Return None, when calling this function on executors
-    *
-    * @since 2.2.0
-    */
+   *
+   * @note
+   *   Return None, when calling this function on executors
+   *
+   * @since 2.2.0
+   */
   def getDefaultSession: Option[GSSparkSession] = {
     if (TaskContext.get != null) {
       // Return None when running on executors.
@@ -381,18 +383,18 @@ object GSSparkSession extends Logging {
   }
 
   /** Sets the default SparkSession that is returned by the builder.
-    *
-    * @since 2.0.0
-    */
+   *
+   * @since 2.0.0
+   */
   def setDefaultSession(session: GSSparkSession): Unit = {
     defaultSession.set(session)
   }
 
   def setExtensionsField(
-      session: SparkSession,
-      extensions: SparkSessionExtensions,
-      initialSessionOptions: Map[String, String]
-  ): SparkSession = {
+                          session: SparkSession,
+                          extensions: SparkSessionExtensions,
+                          initialSessionOptions: Map[String, String]
+                        ): SparkSession = {
     val extensionField = classOf[SparkSession].getDeclaredField("extensions")
     val initOptionField =
       classOf[SparkSession].getDeclaredField("initialSessionOptions")
@@ -407,18 +409,18 @@ object GSSparkSession extends Logging {
   }
 
   /** Convert a spark graphx graph to gs fragment-based graph.
-    * @param graph
-    *   input graphx graph
-    * @tparam VD
-    *   vertex data type
-    * @tparam ED
-    *   edge data type
-    * @return
-    *   graphGraphImpl
-    */
+   * @param graph
+   *   input graphx graph
+   * @tparam VD
+   *   vertex data type
+   * @tparam ED
+   *   edge data type
+   * @return
+   *   graphGraphImpl
+   */
   def toGSGraph[VD: ClassTag, ED: ClassTag](
-      graph: Graph[VD, ED]
-  ): GrapeGraphImpl[VD, ED] = {
+                                             graph: Graph[VD, ED]
+                                           ): GrapeGraphImpl[VD, ED] = {
     graph match {
       case graphImpl: GrapeGraphImpl[VD, ED] => {
         log.info(s"${graph} is already a GS fragment-based graph")
@@ -429,7 +431,7 @@ object GSSparkSession extends Logging {
           s"Converting graph of ${graphImpl.numVertices} vertices and ${graphImpl.numEdges} edges to GS fragment-based graph"
         )
         val time0 = System.nanoTime()
-        val res   = graphXtoGSGraph(graphImpl)
+        val res = graphXtoGSGraph(graphImpl)
         val time1 = System.nanoTime()
         log.info(
           s"[Perf:] Converting graph ${graphImpl} to grapeGraph ${res} cost ${(time1 - time0) / 1000000} ms"
@@ -440,24 +442,24 @@ object GSSparkSession extends Logging {
   }
 
   def graphXtoGSGraph[VD: ClassTag, ED: ClassTag](
-      originGraph: GraphImpl[VD, ED]
-  ): GrapeGraphImpl[VD, ED] = {
+                                                   originGraph: GraphImpl[VD, ED]
+                                                 ): GrapeGraphImpl[VD, ED] = {
     val numPartitions = originGraph.vertices.getNumPartitions
-    val time0         = System.nanoTime()
+    val time0 = System.nanoTime()
 
     val graphShuffles = generateGraphShuffle(originGraph).cache()
     log.info(s"got graph shuffle of size ${graphShuffles.count()}")
     val session = GSSparkSession.getDefaultSession.getOrElse(throw new IllegalStateException("empty session"))
-    val res     = session.fromDataShuffle(numPartitions, SparkContext.getOrCreate(), graphShuffles)
+    val res = session.fromDataShuffle(numPartitions, SparkContext.getOrCreate(), graphShuffles)
     graphShuffles.unpersist()
     res
   }
 
   def generateGraphShuffle[VD: ClassTag, ED: ClassTag](
-      graph: GraphImpl[VD, ED]
-  ): RDD[(PartitionID, DataShuffle[VD, ED])] = {
-    val numPartitions    = graph.vertices.getNumPartitions
-    val partPartitioner  = new HashPartitioner(numPartitions)
+                                                        graph: GraphImpl[VD, ED]
+                                                      ): RDD[(PartitionID, DataShuffle[VD, ED])] = {
+    val numPartitions = graph.vertices.getNumPartitions
+    val partPartitioner = new HashPartitioner(numPartitions)
     val rangePartitioner = new GSPartitioner[Long](numPartitions)
 
     val shuffledVertexRDD = graph.vertices
@@ -469,7 +471,7 @@ object GSSparkSession extends Logging {
           val dstVertexData = Array.fill(numPartitions)(new org.apache.spark.util.collection.PrimitiveVector[VD])
           while (iter.hasNext) {
             val tuple = iter.next();
-            val pid   = partPartitioner.getPartition(tuple._1)
+            val pid = partPartitioner.getPartition(tuple._1)
             dstVertices(pid).+=(tuple._1)
             dstVertexData(pid).+=(tuple._2)
           }
@@ -481,7 +483,7 @@ object GSSparkSession extends Logging {
                 ind,
                 new CustomDataShuffle[VD, ED](ind, dstVertices(ind).trim().array, dstVertexData(ind).trim().array)
               )
-            )
+              )
             ind += 1
           }
           res.toIterator
@@ -504,10 +506,10 @@ object GSSparkSession extends Logging {
             new org.apache.spark.util.collection.PrimitiveVector[ED]()
           )
           while (iter.hasNext) {
-            val edge   = iter.next();
-            val srcId  = edge.srcId
-            val dstId  = edge.dstId
-            val data   = edge.attr
+            val edge = iter.next();
+            val srcId = edge.srcId
+            val dstId = edge.dstId
+            val data = edge.attr
             val srcPid = partPartitioner.getPartition(srcId)
             pid2src(srcPid) += srcId
             pid2Dst(srcPid) += dstId
@@ -526,7 +528,7 @@ object GSSparkSession extends Logging {
                   pid2Data(ind).trim().array
                 )
               )
-            )
+              )
             ind += 1
           }
           res.toIterator
@@ -540,12 +542,12 @@ object GSSparkSession extends Logging {
   }
 
   /** Returns a cloned SparkSession with all specified configurations disabled, or the original SparkSession if all
-    * configurations are already disabled.
-    */
+   * configurations are already disabled.
+   */
   private[sql] def getOrCloneSessionWithConfigsOff(
-      session: SparkSession,
-      configurations: Seq[ConfigEntry[Boolean]]
-  ): SparkSession = {
+                                                    session: SparkSession,
+                                                    configurations: Seq[ConfigEntry[Boolean]]
+                                                  ): SparkSession = {
     val configsEnabled =
       configurations.filter(session.sessionState.conf.getConf(_))
     if (configsEnabled.isEmpty) {
@@ -564,8 +566,8 @@ object GSSparkSession extends Logging {
     if (!listenerRegistered.get()) {
       sparkContext.addSparkListener(new SparkListener {
         override def onApplicationEnd(
-            applicationEnd: SparkListenerApplicationEnd
-        ): Unit = {
+                                       applicationEnd: SparkListenerApplicationEnd
+                                     ): Unit = {
           defaultSession.set(null)
           listenerRegistered.set(false)
         }
@@ -576,7 +578,7 @@ object GSSparkSession extends Logging {
 
   private def sessionStateClassName(conf: SparkConf): String = {
     conf.get(CATALOG_IMPLEMENTATION) match {
-      case "hive"      => HIVE_SESSION_STATE_BUILDER_CLASS_NAME
+      case "hive" => HIVE_SESSION_STATE_BUILDER_CLASS_NAME
       case "in-memory" => classOf[SessionStateBuilder].getCanonicalName
     }
   }
@@ -591,20 +593,20 @@ object GSSparkSession extends Logging {
   }
 
   /** Helper method to create an instance of `SessionState` based on `className` from conf. The result is either
-    * `SessionState` or a Hive based `SessionState`.
-    */
+   * `SessionState` or a Hive based `SessionState`.
+   */
   private def instantiateSessionState(
-      className: String,
-      sparkSession: SparkSession,
-      options: Map[String, String]
-  ): SessionState = {
+                                       className: String,
+                                       sparkSession: SparkSession,
+                                       options: Map[String, String]
+                                     ): SessionState = {
     try {
       // invoke new [Hive]SessionStateBuilder(
       //   SparkSession,
       //   Option[SessionState],
       //   Map[String, String])
       val clazz = Utils.classForName(className)
-      val ctor  = clazz.getConstructors.head
+      val ctor = clazz.getConstructors.head
       ctor
         .newInstance(sparkSession, None, options)
         .asInstanceOf[BaseSessionStateBuilder]
@@ -619,8 +621,8 @@ object GSSparkSession extends Logging {
   }
 
   /** @return
-    *   true if Hive classes can be loaded, otherwise false.
-    */
+   *   true if Hive classes can be loaded, otherwise false.
+   */
   private[spark] def hiveClassesArePresent: Boolean = {
     try {
       Utils.classForName(HIVE_SESSION_STATE_BUILDER_CLASS_NAME)
@@ -650,12 +652,12 @@ object GSSparkSession extends Logging {
   }
 
   /** Initialize extensions for given extension classnames. The classes will be applied to the extensions passed
-    * into this function.
-    */
+   * into this function.
+   */
   private def applyExtensions(
-      extensionConfClassNames: Seq[String],
-      extensions: SparkSessionExtensions
-  ): SparkSessionExtensions = {
+                               extensionConfClassNames: Seq[String],
+                               extensions: SparkSessionExtensions
+                             ): SparkSessionExtensions = {
     extensionConfClassNames.foreach { extensionConfClassName =>
       try {
         val extensionConfClass = Utils.classForName(extensionConfClassName)
@@ -666,7 +668,7 @@ object GSSparkSession extends Logging {
         extensionConf(extensions)
       } catch {
         // Ignore the error if we cannot find the class or when the class has the wrong type.
-        case e @ (_: ClassCastException | _: ClassNotFoundException | _: NoClassDefFoundError) =>
+        case e@(_: ClassCastException | _: ClassNotFoundException | _: NoClassDefFoundError) =>
           logWarning(
             s"Cannot use $extensionConfClassName to configure session extensions.",
             e
@@ -677,7 +679,7 @@ object GSSparkSession extends Logging {
   }
 
   /** Builder for [[GSSparkSession]].
-    */
+   */
   @Stable
   class Builder extends Logging {
 
@@ -689,90 +691,90 @@ object GSSparkSession extends Logging {
     private[this] var userSuppliedContext: Option[SparkContext] = None
 
     /** Sets a name for the application, which will be shown in the Spark web UI. If no application name is set, a
-      * randomly generated name will be used.
-      *
-      * @since 2.0.0
-      */
+     * randomly generated name will be used.
+     *
+     * @since 2.0.0
+     */
     def appName(name: String): Builder = config("spark.app.name", name)
 
     /** Sets a config option. Options set using this method are automatically propagated to both `SparkConf` and
-      * SparkSession's own configuration.
-      *
-      * @since 2.0.0
-      */
+     * SparkSession's own configuration.
+     *
+     * @since 2.0.0
+     */
     def config(key: String, value: String): Builder = synchronized {
       options += key -> value
       this
     }
 
     /** Sets a config option. Options set using this method are automatically propagated to both `SparkConf` and
-      * SparkSession's own configuration.
-      *
-      * @since 2.0.0
-      */
+     * SparkSession's own configuration.
+     *
+     * @since 2.0.0
+     */
     def config(key: String, value: Long): Builder = synchronized {
       options += key -> value.toString
       this
     }
 
     /** Sets a config option. Options set using this method are automatically propagated to both `SparkConf` and
-      * SparkSession's own configuration.
-      *
-      * @since 2.0.0
-      */
+     * SparkSession's own configuration.
+     *
+     * @since 2.0.0
+     */
     def config(key: String, value: Double): Builder = synchronized {
       options += key -> value.toString
       this
     }
 
     /** Sets a config option. Options set using this method are automatically propagated to both `SparkConf` and
-      * SparkSession's own configuration.
-      *
-      * @since 2.0.0
-      */
+     * SparkSession's own configuration.
+     *
+     * @since 2.0.0
+     */
     def config(key: String, value: Boolean): Builder = synchronized {
       options += key -> value.toString
       this
     }
 
     /** Sets a list of config options based on the given `SparkConf`.
-      *
-      * @since 2.0.0
-      */
+     *
+     * @since 2.0.0
+     */
     def config(conf: SparkConf): Builder = synchronized {
       conf.getAll.foreach { case (k, v) => options += k -> v }
       this
     }
 
     /** Sets the Spark master URL to connect to, such as "local" to run locally, "local[4]" to run locally with 4
-      * cores, or "spark://master:7077" to run on a Spark standalone cluster.
-      *
-      * @since 2.0.0
-      */
+     * cores, or "spark://master:7077" to run on a Spark standalone cluster.
+     *
+     * @since 2.0.0
+     */
     def master(master: String): Builder = config("spark.master", master)
 
     /** GraphgScope related param, setting vineyard memroy size.
-      */
+     */
     def vineyardMemory(memoryStr: String): Builder =
       config("spark.gs.vineyard.memory", memoryStr)
 
     /** GraphScope vineyard socket file. Vineyard process should be bound on this address on all workers.
-      */
+     */
     def vineyardSock(filePath: String): Builder = {
       config("spark.gs.vineyard.sock", filePath)
     }
 
     /** User need to specify the file path to the jar submitted to spark cluster.
-      */
+     */
     def gsSubmitJar(filePath: String): Builder = {
       config("spark.gs.submit.jar", filePath)
     }
 
     /** Enables Hive support, including connectivity to a persistent Hive metastore, support for Hive serdes, and
-      * Hive user-defined functions.
-      *
-      * @since 2.0.0
-      */
+     * Hive user-defined functions.
+     *
+     * @since 2.0.0
+     */
     def enableHiveSupport(): Builder = synchronized {
       if (hiveClassesArePresent) {
         config(CATALOG_IMPLEMENTATION.key, "hive")
@@ -785,10 +787,10 @@ object GSSparkSession extends Logging {
     }
 
     /** Inject extensions into the [[SparkSession]]. This allows a user to add Analyzer rules, Optimizer rules,
-      * Planning Strategies or a customized parser.
-      *
-      * @since 2.2.0
-      */
+     * Planning Strategies or a customized parser.
+     *
+     * @since 2.2.0
+     */
     def withExtensions(f: SparkSessionExtensions => Unit): Builder =
       synchronized {
         f(extensions)
@@ -796,18 +798,18 @@ object GSSparkSession extends Logging {
       }
 
     /** Gets an existing [[SparkSession]] or, if there is no existing one, creates a new one based on the options
-      * set in this builder.
-      *
-      * This method first checks whether there is a valid thread-local SparkSession, and if yes, return that one.
-      * It then checks whether there is a valid global default SparkSession, and if yes, return that one. If no
-      * valid global default SparkSession exists, the method creates a new SparkSession and assigns the newly
-      * created SparkSession as the global default.
-      *
-      * In case an existing SparkSession is returned, the non-static config options specified in this builder will
-      * be applied to the existing SparkSession.
-      *
-      * @since 2.0.0
-      */
+     * set in this builder.
+     *
+     * This method first checks whether there is a valid thread-local SparkSession, and if yes, return that one.
+     * It then checks whether there is a valid global default SparkSession, and if yes, return that one. If no
+     * valid global default SparkSession exists, the method creates a new SparkSession and assigns the newly
+     * created SparkSession as the global default.
+     *
+     * In case an existing SparkSession is returned, the non-static config options specified in this builder will
+     * be applied to the existing SparkSession.
+     *
+     * @since 2.0.0
+     */
     def getOrCreate(): GSSparkSession = synchronized {
       val sparkConf = new SparkConf()
       options.foreach { case (k, v) => sparkConf.set(k, v) }

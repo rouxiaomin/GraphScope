@@ -38,25 +38,25 @@ import org.apache.spark.internal.Logging
 import scala.reflect.ClassTag
 
 /** Although fragment structure is independent of vertex data type and edge data type, but we still need to store
-  * the vd and ed class tag, in case we want to map to a new Fragment.
-  * @param fragment
-  * @param vdClass
-  * @param edClass
-  */
+ * the vd and ed class tag, in case we want to map to a new Fragment.
+ * @param fragment
+ * @param vdClass
+ * @param edClass
+ */
 class FragmentStructure(
-    val fragment: IFragment[Long, Long, _, _]
-) extends AbstractGraphStructure
-    with Logging
-    with Serializable {
+                         val fragment: IFragment[Long, Long, _, _]
+                       ) extends AbstractGraphStructure
+  with Logging
+  with Serializable {
   override val structureType: GraphStructureType = ArrowProjectedStructure
-  val fid2Pid                                    = new Array[Int](fragment.fnum())
-  val ivnum                                      = fragment.getInnerVerticesNum
+  val fid2Pid = new Array[Int](fragment.fnum())
+  val ivnum = fragment.getInnerVerticesNum
 
-  var oePtr, iePtr: PropertyNbrUnit[Long]                         = null
-  var oePtrStartAddr, iePtrStartAddr: Long                        = 0
+  var oePtr, iePtr: PropertyNbrUnit[Long] = null
+  var oePtrStartAddr, iePtrStartAddr: Long = 0
   var oeOffsetBeginArray, ieOffsetBeginArray: LongPointerAccessor = null
-  var oeOffsetEndArray, ieOffsetEndArray: LongPointerAccessor     = null
-  var fragEdgeNum                                                 = 0
+  var oeOffsetEndArray, ieOffsetEndArray: LongPointerAccessor = null
+  var fragEdgeNum = 0
 
   if (fragment.fragmentType().equals(FragmentType.ArrowProjectedFragment)) {
     val projectedFragment = fragment
@@ -76,7 +76,7 @@ class FragmentStructure(
     throw new IllegalStateException(s"not supported type ${fragment.fragmentType()}")
   }
 
-  val startLid     = 0
+  val startLid = 0
   val endLid: Long = fragment.getInnerVerticesNum()
   log.info(
     s"Creating graphStructure@${hashCode()}, vertices (${startLid},${endLid}), edges ${fragEdgeNum} out edges ${getOutEdgesNum} "
@@ -93,10 +93,10 @@ class FragmentStructure(
   }
 
   def outDegreeArray(startLid: Long, endLid: Long): Array[Int] = {
-    val time0  = System.nanoTime()
-    val len    = fragment.getVerticesNum.toInt
-    val res    = new Array[Int](len)
-    var i      = startLid.toInt
+    val time0 = System.nanoTime()
+    val len = fragment.getVerticesNum.toInt
+    val res = new Array[Int](len)
+    var i = startLid.toInt
     val vertex = FFITypeFactoryhelper.newVertexLong().asInstanceOf[Vertex[Long]]
     while (i < endLid) {
       vertex.setValue(i)
@@ -113,10 +113,10 @@ class FragmentStructure(
   }
 
   def inDegreeArray(startLid: Long, endLid: Long): Array[Int] = {
-    val time0  = System.nanoTime()
-    val len    = fragment.getVerticesNum.toInt
-    val res    = new Array[Int](len)
-    var i      = startLid.toInt
+    val time0 = System.nanoTime()
+    val len = fragment.getVerticesNum.toInt
+    val res = new Array[Int](len)
+    var i = startLid.toInt
     val vertex = FFITypeFactoryhelper.newVertexLong().asInstanceOf[Vertex[Long]]
     while (i < endLid) {
       vertex.setValue(i)
@@ -133,9 +133,9 @@ class FragmentStructure(
   }
 
   def inOutDegreeArray(startLid: Long, endLid: Long): Array[Int] = {
-    val len    = fragment.getVerticesNum.toInt
-    val res    = new Array[Int](len)
-    var i      = 0
+    val len = fragment.getVerticesNum.toInt
+    val res = new Array[Int](len)
+    var i = 0
     val vertex = FFITypeFactoryhelper.newVertexLong().asInstanceOf[Vertex[Long]]
     while (i < endLid) {
       vertex.setValue(i)
@@ -199,20 +199,20 @@ class FragmentStructure(
   }
 
   override def outerVertexGid2Vertex(
-      gid: Long,
-      vertex: Vertex[Long]
-  ): Boolean = {
+                                      gid: Long,
+                                      vertex: Vertex[Long]
+                                    ): Boolean = {
     fragment.outerVertexGid2Vertex(gid, vertex)
   }
 
   /** For us, the input edatas should be null, and we shall not reply on it to get edge data. */
   override def iterator[ED: ClassTag](
-      startLid: Long,
-      endLid: Long,
-      edatas: EdgeDataStore[ED],
-      activeSet: BitSetWithOffset,
-      edgeReversed: Boolean
-  ): Iterator[Edge[ED]] = {
+                                       startLid: Long,
+                                       endLid: Long,
+                                       edatas: EdgeDataStore[ED],
+                                       activeSet: BitSetWithOffset,
+                                       edgeReversed: Boolean
+                                     ): Iterator[Edge[ED]] = {
     if (fragment.fragmentType().equals(FragmentType.ArrowProjectedFragment)) {
       val projectedFragment =
         fragment.asInstanceOf[AbstractArrowProjectedAdaptor[Long, Long, _, ED]]
@@ -231,13 +231,13 @@ class FragmentStructure(
   }
 
   private def newProjectedIterator[ED: ClassTag](
-      startLid: Long,
-      endLid: Long,
-      frag: BaseArrowProjectedFragment[Long, Long, _, ED],
-      edatas: EdgeDataStore[ED],
-      activeEdgeSet: BitSetWithOffset,
-      edgeReverse: Boolean
-  ): Iterator[Edge[ED]] = {
+                                                  startLid: Long,
+                                                  endLid: Long,
+                                                  frag: BaseArrowProjectedFragment[Long, Long, _, ED],
+                                                  edatas: EdgeDataStore[ED],
+                                                  activeEdgeSet: BitSetWithOffset,
+                                                  edgeReverse: Boolean
+                                                ): Iterator[Edge[ED]] = {
     getEdgeIterator(
       frag.getOutEdgesPtr,
       startLid,
@@ -249,17 +249,17 @@ class FragmentStructure(
   }
 
   override def tripletIterator[VD: ClassTag, ED: ClassTag](
-      startLid: Long,
-      endLid: Long,
-      innerVertexDataStore: VertexDataStore[VD],
-      edatas: EdgeDataStore[ED],
-      activeSet: BitSetWithOffset,
-      edgeReversed: Boolean = false,
-      includeSrc: Boolean = true,
-      includeDst: Boolean = true,
-      reuseTriplet: Boolean = false,
-      includeLid: Boolean = false
-  ): Iterator[EdgeTriplet[VD, ED]] = {
+                                                            startLid: Long,
+                                                            endLid: Long,
+                                                            innerVertexDataStore: VertexDataStore[VD],
+                                                            edatas: EdgeDataStore[ED],
+                                                            activeSet: BitSetWithOffset,
+                                                            edgeReversed: Boolean = false,
+                                                            includeSrc: Boolean = true,
+                                                            includeDst: Boolean = true,
+                                                            reuseTriplet: Boolean = false,
+                                                            includeLid: Boolean = false
+                                                          ): Iterator[EdgeTriplet[VD, ED]] = {
     if (fragment.fragmentType().equals(FragmentType.ArrowProjectedFragment)) {
       val projectedFragment = fragment
         .asInstanceOf[AbstractArrowProjectedAdaptor[Long, Long, VD, ED]]
@@ -287,18 +287,18 @@ class FragmentStructure(
   }
 
   private def newProjectedTripletIterator[VD: ClassTag, ED: ClassTag](
-      startLid: Long,
-      endLid: Long,
-      frag: BaseArrowProjectedFragment[Long, Long, VD, ED],
-      vertexDataStore: VertexDataStore[VD],
-      edatas: EdgeDataStore[ED],
-      activeEdgeSet: BitSetWithOffset,
-      edgeReversed: Boolean,
-      includeSrc: Boolean,
-      includeDst: Boolean,
-      reuseTriplet: Boolean,
-      includeLid: Boolean = false
-  ): Iterator[EdgeTriplet[VD, ED]] = {
+                                                                       startLid: Long,
+                                                                       endLid: Long,
+                                                                       frag: BaseArrowProjectedFragment[Long, Long, VD, ED],
+                                                                       vertexDataStore: VertexDataStore[VD],
+                                                                       edatas: EdgeDataStore[ED],
+                                                                       activeEdgeSet: BitSetWithOffset,
+                                                                       edgeReversed: Boolean,
+                                                                       includeSrc: Boolean,
+                                                                       includeDst: Boolean,
+                                                                       reuseTriplet: Boolean,
+                                                                       includeLid: Boolean = false
+                                                                     ): Iterator[EdgeTriplet[VD, ED]] = {
     getTripletIterator(
       frag.getOutEdgesPtr,
       startLid,
@@ -326,14 +326,14 @@ class FragmentStructure(
 
   override def getOutNbrIds(vertex: Vertex[Long]): Array[VertexId] = {
     val size = getOutDegree(vertex)
-    val res  = new Array[VertexId](size.toInt)
+    val res = new Array[VertexId](size.toInt)
     fillOutNbrIdsImpl(vertex.getValue(), res)
     res
   }
 
   override def getInNbrIds(vertex: Vertex[Long]): Array[VertexId] = {
     val size = getInDegree(vertex)
-    val res  = new Array[VertexId](size.toInt)
+    val res = new Array[VertexId](size.toInt)
     fillInNbrIdsImpl(vertex.getValue().toInt, res)
     res
   }
@@ -343,14 +343,14 @@ class FragmentStructure(
   }
 
   def fillInNbrIdsImpl(
-      vid: Int,
-      array: Array[VertexId],
-      startInd: Int = 0
-  ): Unit = {
+                        vid: Int,
+                        array: Array[VertexId],
+                        startInd: Int = 0
+                      ): Unit = {
     var curOff = ieOffsetBeginArray.get(vid)
     val endOff = ieOffsetEndArray.get(vid)
     iePtr.setAddress(iePtrStartAddr + curOff * 16)
-    var i      = startInd
+    var i = startInd
     val vertex = FFITypeFactoryhelper.newVertexLong().asInstanceOf[Vertex[Long]]
     while (curOff < endOff) {
       vertex.setValue(iePtr.vid())
@@ -364,8 +364,8 @@ class FragmentStructure(
 
   override def getInOutNbrIds(vertex: Vertex[Long]): Array[VertexId] = {
     val size = getInDegree(vertex) + getOutDegree(vertex)
-    val res  = new Array[VertexId](size.toInt)
-    val vid  = vertex.getValue()
+    val res = new Array[VertexId](size.toInt)
+    val vid = vertex.getValue()
     fillOutNbrIdsImpl(vid, res, 0)
     fillInNbrIdsImpl(vid.toInt, res, getOutDegree(vertex).toInt)
     res
@@ -376,14 +376,14 @@ class FragmentStructure(
   }
 
   def fillOutNbrIdsImpl(
-      vid: VertexId,
-      array: Array[VertexId],
-      startInd: Int = 0
-  ): Unit = {
+                         vid: VertexId,
+                         array: Array[VertexId],
+                         startInd: Int = 0
+                       ): Unit = {
     var curOff = oeOffsetBeginArray.get(vid)
     val endOff = oeOffsetEndArray.get(vid)
     oePtr.setAddress(oePtrStartAddr + curOff * 16)
-    var i      = startInd
+    var i = startInd
     val vertex = FFITypeFactoryhelper.newVertexLong().asInstanceOf[Vertex[Long]]
     while (curOff < endOff) {
       vertex.setValue(oePtr.vid())
@@ -396,18 +396,18 @@ class FragmentStructure(
   }
 
   override def iterateTriplets[VD: ClassTag, ED: ClassTag, ED2: ClassTag](
-      startLid: Long,
-      endLid: Long,
-      f: EdgeTriplet[VD, ED] => ED2,
-      activeVertices: BitSetWithOffset,
-      innerVertexDataStore: VertexDataStore[VD],
-      edatas: EdgeDataStore[ED],
-      activeSet: BitSetWithOffset,
-      edgeReversed: Boolean,
-      includeSrc: Boolean,
-      includeDst: Boolean,
-      newArray: EdgeDataStore[ED2]
-  ): Unit = {
+                                                                           startLid: Long,
+                                                                           endLid: Long,
+                                                                           f: EdgeTriplet[VD, ED] => ED2,
+                                                                           activeVertices: BitSetWithOffset,
+                                                                           innerVertexDataStore: VertexDataStore[VD],
+                                                                           edatas: EdgeDataStore[ED],
+                                                                           activeSet: BitSetWithOffset,
+                                                                           edgeReversed: Boolean,
+                                                                           includeSrc: Boolean,
+                                                                           includeDst: Boolean,
+                                                                           newArray: EdgeDataStore[ED2]
+                                                                         ): Unit = {
     if (fragment.fragmentType().equals(FragmentType.ArrowProjectedFragment)) {
       val projectedFragment = fragment
         .asInstanceOf[AbstractArrowProjectedAdaptor[Long, Long, VD, ED]]
@@ -433,28 +433,28 @@ class FragmentStructure(
   }
 
   def iterateProjectedTriplets[VD: ClassTag, ED: ClassTag, ED2: ClassTag](
-      frag: BaseArrowProjectedFragment[Long, Long, VD, ED],
-      startLid: Long,
-      endLid: Long,
-      f: EdgeTriplet[VD, ED] => ED2,
-      activeVertices: BitSetWithOffset,
-      vertexDataStore: VertexDataStore[VD],
-      prevStore: EdgeDataStore[ED],
-      activeSet: BitSetWithOffset,
-      edgeReversed: Boolean,
-      includeSrc: Boolean,
-      includeDst: Boolean,
-      nextStore: EdgeDataStore[ED2]
-  ): Unit = {
-    var curLid      = activeVertices.nextSetBit(startLid.toInt)
+                                                                           frag: BaseArrowProjectedFragment[Long, Long, VD, ED],
+                                                                           startLid: Long,
+                                                                           endLid: Long,
+                                                                           f: EdgeTriplet[VD, ED] => ED2,
+                                                                           activeVertices: BitSetWithOffset,
+                                                                           vertexDataStore: VertexDataStore[VD],
+                                                                           prevStore: EdgeDataStore[ED],
+                                                                           activeSet: BitSetWithOffset,
+                                                                           edgeReversed: Boolean,
+                                                                           includeSrc: Boolean,
+                                                                           includeDst: Boolean,
+                                                                           nextStore: EdgeDataStore[ED2]
+                                                                         ): Unit = {
+    var curLid = activeVertices.nextSetBit(startLid.toInt)
     val edgeTriplet = new GSEdgeTripletImpl[VD, ED]
     log.info(
       s"start iterating triplets, from ${startLid} to ${endLid}, ivnum ${frag.getInnerVerticesNum}, tvnum ${frag.getVerticesNum}"
     )
 
-    val myNbr     = frag.getOutEdgesPtr
+    val myNbr = frag.getOutEdgesPtr
     val myAddress = myNbr.getAddress
-    val vertex    = FFITypeFactoryhelper.newVertexLong().asInstanceOf[Vertex[Long]]
+    val vertex = FFITypeFactoryhelper.newVertexLong().asInstanceOf[Vertex[Long]]
     while (curLid < endLid && curLid >= 0) {
       val curAddress = getOEBeginOffset(curLid) * 16 + myAddress
       val endAddress = getOEEndOffset(curLid) * 16 + myAddress
@@ -469,7 +469,7 @@ class FragmentStructure(
       }
       while (myNbr.getAddress < endAddress) {
         val dstLid = myNbr.vid().toInt
-        val eid    = myNbr.eid().toInt
+        val eid = myNbr.eid().toInt
         vertex.setValue(dstLid)
         if (edgeReversed) {
           edgeTriplet.srcId = getId(vertex)
@@ -505,14 +505,14 @@ class FragmentStructure(
   }
 
   override def iterateEdges[ED: ClassTag, ED2: ClassTag](
-      startLid: Long,
-      endLid: Long,
-      f: Edge[ED] => ED2,
-      edatas: EdgeDataStore[ED],
-      activeSet: BitSetWithOffset,
-      edgeReversed: Boolean,
-      newArray: EdgeDataStore[ED2]
-  ): Unit = {
+                                                          startLid: Long,
+                                                          endLid: Long,
+                                                          f: Edge[ED] => ED2,
+                                                          edatas: EdgeDataStore[ED],
+                                                          activeSet: BitSetWithOffset,
+                                                          edgeReversed: Boolean,
+                                                          newArray: EdgeDataStore[ED2]
+                                                        ): Unit = {
     if (fragment.fragmentType().equals(FragmentType.ArrowProjectedFragment)) {
       val projectedFragment = fragment
         .asInstanceOf[AbstractArrowProjectedAdaptor[Long, Long, _, ED]]
@@ -534,21 +534,21 @@ class FragmentStructure(
   }
 
   def iterateProjectedEdges[ED: ClassTag, ED2: ClassTag](
-      frag: BaseArrowProjectedFragment[Long, Long, _, ED],
-      startLid: Long,
-      endLid: Long,
-      f: Edge[ED] => ED2,
-      prevStore: EdgeDataStore[ED],
-      activeSet: BitSetWithOffset,
-      edgeReversed: Boolean,
-      nextStore: EdgeDataStore[ED2]
-  ): Unit = {
+                                                          frag: BaseArrowProjectedFragment[Long, Long, _, ED],
+                                                          startLid: Long,
+                                                          endLid: Long,
+                                                          f: Edge[ED] => ED2,
+                                                          prevStore: EdgeDataStore[ED],
+                                                          activeSet: BitSetWithOffset,
+                                                          edgeReversed: Boolean,
+                                                          nextStore: EdgeDataStore[ED2]
+                                                        ): Unit = {
 
-    var curLid    = startLid.toInt
-    val edge      = new ReusableEdgeImpl[ED]
-    val myNbr     = frag.getOutEdgesPtr
+    var curLid = startLid.toInt
+    val edge = new ReusableEdgeImpl[ED]
+    val myNbr = frag.getOutEdgesPtr
     val myAddress = myNbr.getAddress
-    val vertex    = FFITypeFactoryhelper.newVertexLong().asInstanceOf[Vertex[Long]]
+    val vertex = FFITypeFactoryhelper.newVertexLong().asInstanceOf[Vertex[Long]]
     while (curLid < endLid && curLid >= 0) {
       val curAddress = getOEBeginOffset(curLid) * 16 + myAddress
       val endAddress = getOEEndOffset(curLid) * 16 + myAddress
@@ -561,7 +561,7 @@ class FragmentStructure(
       }
       while (myNbr.getAddress < endAddress) {
         val dstLid = myNbr.vid().toInt
-        val eid    = myNbr.eid().toInt
+        val eid = myNbr.eid().toInt
         vertex.setValue(dstLid)
         if (edgeReversed) {
           edge.srcId = getId(vertex)
@@ -577,21 +577,21 @@ class FragmentStructure(
   }
 
   override def getOEOffsetRange(
-      startLid: VertexId,
-      endLid: VertexId
-  ): (VertexId, VertexId) = {
+                                 startLid: VertexId,
+                                 endLid: VertexId
+                               ): (VertexId, VertexId) = {
     (oeOffsetBeginArray.get(startLid), oeOffsetEndArray.get(endLid - 1))
   }
 
   def mapToNewFragImp[VD: ClassTag, ED: ClassTag](
-      vertexDataStore: VertexDataStore[VD],
-      edgeDataStore: EdgeDataStore[ED],
-      client: VineyardClient
-  ): String = {
+                                                   vertexDataStore: VertexDataStore[VD],
+                                                   edgeDataStore: EdgeDataStore[ED],
+                                                   client: VineyardClient
+                                                 ): String = {
 
     /** when map to the new fragment, the dest vertex data or edge data could be complex type, we should store it
-      * as string. We don't want to create too many mapper classes.
-      */
+     * as string. We don't want to create too many mapper classes.
+     */
     val vertexDataArrayBuilder: BaseArrowArrayBuilder[_] = {
       val res = ScalaFFIFactory.newBaseArrowArrayBuilder[VD] //create ffiByteString for non-primitive vd
       if (GrapeUtils.isPrimitive[VD]) {
@@ -605,10 +605,17 @@ class FragmentStructure(
     }
 
     val edgeDataArrayBuilder: BaseArrowArrayBuilder[_] = {
-      val res = ScalaFFIFactory.newBaseArrowArrayBuilder[ED] //create ffiByteString for non-primitive ed
+      var res = ScalaFFIFactory.newBaseArrowArrayBuilder[ED] //create ffiByteString for non-primitive ed
       if (GrapeUtils.isPrimitive[ED]) {
         val tmp = GrapeUtils.edgeDataStore2ArrowArrayBuilder(edgeDataStore)
-        res.setAddress(tmp.getAddress)
+        log.info(s"tmp=(${tmp})," +
+          s" res=(${res})");
+        if (tmp == null) {
+          res = null
+        }
+        else {
+          res.setAddress(tmp.getAddress)
+        }
       } else {
         val stringEDArrayBuilder = GrapeUtils.edgeDataStore2ArrowStringArrayBuilder(edgeDataStore)
         res.setAddress(stringEDArrayBuilder.getAddress)
@@ -735,10 +742,10 @@ class FragmentStructure(
 
   /** Construct a new fragment with new vd and ed, return the frag id */
   def mapToNewFragment[VD: ClassTag, ED: ClassTag](
-      vertexDataStore: VertexDataStore[VD],
-      edgeDataStore: EdgeDataStore[ED],
-      client: VineyardClient
-  ): String = {
+                                                    vertexDataStore: VertexDataStore[VD],
+                                                    edgeDataStore: EdgeDataStore[ED],
+                                                    client: VineyardClient
+                                                  ): String = {
     mapToNewFragImp(vertexDataStore, edgeDataStore, client)
   }
 }

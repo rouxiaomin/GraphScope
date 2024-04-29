@@ -51,6 +51,7 @@ object ExecutorInfoHelper extends Logging {
     }
   }
 
+  // TODO check lm
   def getExecutorsHost2Id(sc: SparkContext): mutable.HashMap[String, ArrayBuffer[String]] = {
     //executor backend can be several kinds,
     log.info(s"Got scheduler backend ${sc.schedulerBackend}")
@@ -117,7 +118,17 @@ object ExecutorInfoHelper extends Logging {
     log.info(
       s"Scheduler backend is coarseGrainedBackend, total num executors ${backend.getExecutorIds().mkString(",")}"
     )
-    val field = backend.getClass.getSuperclass.getDeclaredField(executorMapFieldName)
+    log.info(s"backend.getClass.getSuperclass=${backend.getClass.getSuperclass.toGenericString}")
+    log.info(s"backend.getClass.getSuperclass.getDeclaredFields=${backend.getClass.getSuperclass.getDeclaredFields.map(x => x.toGenericString).mkString(",")}")
+
+    log.info(s"backend.getClass.getSuperclass=${backend.getClass.getSuperclass.getSuperclass.toGenericString}")
+    log.info(s"backend.getClass.getSuperclass.getDeclaredFields=${backend.getClass.getSuperclass.getSuperclass.getDeclaredFields.map(x => x.toGenericString).mkString(",")}")
+
+    val field = try {
+      backend.getClass.getSuperclass.getDeclaredField(executorMapFieldName)
+    } catch {
+      case e: NoSuchFieldException => backend.getClass.getSuperclass.getSuperclass.getDeclaredField(executorMapFieldName)
+    }
     require(field != null)
     field
   }
@@ -134,6 +145,12 @@ object ExecutorInfoHelper extends Logging {
     val executorDataMap = field
       .get(castedBackend)
       .asInstanceOf[mutable.HashMap[String, ExecutorData]]
+    log.info(s"field=${
+      field
+        .get(castedBackend)
+    }")
+    log.info(s"castedBackend=${castedBackend.getExecutorIds().mkString(",")}")
+    log.info(s"executorDataMap=${executorDataMap.map(x => (x._1, x._2.executorHost)).mkString(",")}")
     require(executorDataMap != null)
     executorDataMap
   }
