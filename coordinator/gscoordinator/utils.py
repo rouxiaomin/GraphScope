@@ -1984,6 +1984,9 @@ class ResolveMPICmdPrefix(object):
                     env[self._OPENMPI_RSH_AGENT] = rsh_agent_path
             cmd.extend(
                 [
+                    "sudo",
+                    "-niu",
+                    "tdops",
                     self.find_mpi(),
                     "--allow-run-as-root",
                     "--bind-to",

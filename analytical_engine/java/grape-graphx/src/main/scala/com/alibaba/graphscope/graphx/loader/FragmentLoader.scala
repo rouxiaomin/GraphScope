@@ -36,7 +36,7 @@ object FragmentLoader extends Logging {
                                                  vertexStorageLevel: StorageLevel,
                                                  edgeStorageLevel: StorageLevel
                                                ): GrapeGraphImpl[VD, ED] = {
-    prevRDD.foreachPartition(iter => {
+    prevRDD.foreachPartition(iter => { // 分区数 等于 shuffle partition 数量 100
       while (iter.hasNext) {
         val part = iter.next()
         DataShuffleHolder.push(part)
@@ -53,13 +53,13 @@ object FragmentLoader extends Logging {
     val hostArray = hosts2Pids.keys.toArray
     val hostNum = hostArray.length
     val numEmptyPartitions = hostName2ExecutorId.values.map(_.size).sum
-    val rddHosts = new Array[String](fragNum)
-    val rddLocations = new Array[String](fragNum)
-    val partitionIds = new Array[Int](fragNum)
+    val rddHosts = new Array[String](numShuffles)
+    val rddLocations = new Array[String](numShuffles)
+    val partitionIds = new Array[Int](numShuffles)
     var hostInd = 0
     var curPartition = 0
-    log.info(s"num Empty partitions ${numEmptyPartitions}, num Frag ${fragNum}")
-    log.info(s"executor ids to times: ${executorId2Time.toString()}")
+    log.info(s"num Empty partitions ${numEmptyPartitions}, num Frag ${fragNum},num shuffle ${numShuffles}")
+    log.info(s"executor ids to times: ${executorId2Time.toString()}") // executorId2Time 所有 executor 总次数等于100
     //one executor, one fragment,
     //the data must exist on there executors.
     //hostname -> executors
@@ -86,8 +86,8 @@ object FragmentLoader extends Logging {
           .mkString(",")
       } total cores ${curCores}, per executor parallelsim ${hostname2Cores(host)}")
     }
-
-    while (hostInd < hostNum && curPartition < numEmptyPartitions) {
+    // numEmptyPartitions = executor个数 TODO lm && curPartition < numEmptyPartitions 去掉该条件
+    while (hostInd < hostNum) {
       val host = hostArray(hostInd)
       //the number of executor on one host can be more than the num partitions on this host. We take
       //the minimum value.
@@ -99,7 +99,7 @@ object FragmentLoader extends Logging {
           ).size
         }, part on this host ${hosts2Pids(host).size}"
       )
-      val innerIterator = hostName2ExecutorId(host).iterator
+      val innerIterator = hostName2ExecutorId(host).iterator //host 和 executor 的映射关系，一个 host 对应多个 executor
       while (innerIterator.hasNext) {
         val curExecutorId = innerIterator.next()
         // require(executorId2Time.contains(curExecutorId.toInt))
@@ -134,7 +134,7 @@ object FragmentLoader extends Logging {
     log.info(s"rdd locations ${rddLocations.mkString(",")}")
     log.info(s"rdd partitions id ${partitionIds.mkString(",")}")
     val emptyRDD =
-      new LocationAwareRDD(sc, rddLocations, rddHosts, partitionIds)
+      new LocationAwareRDD(sc, rddLocations, rddHosts, partitionIds) // 分区数等于 executor 数量 17
     //At this time, the partition num of this rdd is possibly larger than numFrag.
 
     val graphRDD = emptyRDD2Graph[VD, ED](
@@ -153,15 +153,16 @@ object FragmentLoader extends Logging {
                                                   numShuffles: Int,
                                                   userNumPartitions: Int,
                                                   parallelisms: mutable.HashMap[String, Int],
-                                                  emptyRDD: LocationAwareRDD
+                                                  emptyRDDInput: LocationAwareRDD
                                                 ): GrapeGraphImpl[VD, ED] = {
+    val emptyRDD = emptyRDDInput.coalesce(userNumPartitions)
     val numFrag = emptyRDD.getNumPartitions
     //For every executor, we get all partitions in this executor.
     val sparkSession = GSSparkSession.getDefaultSession.getOrElse(
       throw new IllegalStateException("empty session")
     )
     val socketPath = sparkSession.getSocketPath // add System.loadLibrary
-    val shufflesRDD = emptyRDD
+    val shufflesRDD = emptyRDD // 分区数 等于 executor 数量 17
       .mapPartitionsWithIndex(
         (pid, iter) => {
           if (iter.hasNext) {
@@ -207,7 +208,7 @@ object FragmentLoader extends Logging {
             )
             //expect size > 1
             log.info(
-              s"partition ${pid} receive shuffles size ${receivedShuffles.size}"
+              s"partition ${ExecutorUtils.getHostName}:${pid} receive shuffles size ${receivedShuffles.size}"
             )
             Iterator((pid, rawData))
           } else Iterator.empty

@@ -23,6 +23,7 @@ class DataShuffleHolder[VD: ClassTag, ED: ClassTag] extends Serializable {
 }
 
 object DataShuffleHolder extends Logging {
+  // 1个 executor 初始化 1 次
   val queue = new ArrayBlockingQueue[DataShuffleHolder[_, _]](1024000)
 //  var array        = null.asInstanceOf[Array[DataShuffleHolder[_, _]]]
 

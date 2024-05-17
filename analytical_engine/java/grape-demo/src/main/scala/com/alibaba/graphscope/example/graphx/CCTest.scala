@@ -38,6 +38,7 @@ object CCTest extends Logging{
     // Creates a SparkSession.
     val spark = GSSparkSession
       .builder
+      .master("local[*]")
       .appName(s"${this.getClass.getSimpleName}")
       .getOrCreate()
     val sc = spark.sparkContext

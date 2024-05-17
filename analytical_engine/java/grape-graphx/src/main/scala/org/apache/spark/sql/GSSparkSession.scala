@@ -47,7 +47,7 @@ import scala.reflect.ClassTag
 import scala.util.control.NonFatal
 
 
-class GSSparkSession(@transient sparkContext: SparkContext) extends SparkSession(sparkContext) {
+class GSSparkSession(@transient override val sparkContext: SparkContext) extends SparkSession(sparkContext) {
 
   val sharedMemSize: String = {
     if (sparkContext.getConf.contains("spark.gs.vineyard.memory")) {
@@ -139,6 +139,10 @@ class GSSparkSession(@transient sparkContext: SparkContext) extends SparkSession
     val sc = SparkContext.getOrCreate()
     val partPartitioner = new HashPartitioner(numPartitions)
     val rangePartitioner1 = new GSPartitioner[Long](numPartitions)
+
+    // GSSparkSession 类加载的包 来自 spark jars
+    log.info("=========GSSparkSession===========" + classOf[GSSparkSession].getProtectionDomain.getCodeSource.getLocation)
+
     val dataShuffles = lines
       .mapPartitionsWithIndex((fromPid, iter) => {
         //        iter.toArray
@@ -212,7 +216,7 @@ class GSSparkSession(@transient sparkContext: SparkContext) extends SparkSession
     val executorInfo = ExecutorInfoHelper.getExecutorsHost2Id(sc)
     val executorNum = executorInfo.values.map(_.size).sum
     //construct
-    //gather the host <-> partition id info.
+    //gather the host <-> partition id info. lm executorIds2Times 有问题，这里的是从参数设置100的RDD partition中获取executor信息
     val (host2Pids, executorIds2Times) = GrapeUtils.extractHostInfo(
       dataShuffles.asInstanceOf[RDD[(Int, _)]],
       numPartitions
